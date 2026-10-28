@@ -1,0 +1,16 @@
+{
+  "name": "VAULT",
+  "short_name": "VAULT",
+  "description": "売上・経費・人件費をまとめて記録し、利益がひと目で分かる経営アプリ",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#05070b",
+  "theme_color": "#05070b",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
