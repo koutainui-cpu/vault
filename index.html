@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>VAULT</title>
 <meta name="description" content="売上・経費・人件費をまとめて記録し、利益がひと目で分かる経営アプリ">
-<meta name="theme-color" content="#0b1630">
+<meta name="theme-color" content="#0e1013">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -467,15 +467,15 @@ body.obon .page,body.obon nav{visibility:hidden}
    COCKPIT テーマ：スレートの地に設計図の方眼、青い光の線だけで見せる
    ===================================================================== */
 :root{
-  --bg:#0b1630; --char:#1b1f27; --navy:#1a2233;
+  --bg:#0e1013; --char:#1b1f27; --navy:#1a2233;
   --ink:#f2f5fa; --sub:rgba(222,230,242,.74); --muted:rgba(210,220,236,.56); --faint:rgba(210,220,236,.42);
   --gold:#5b9bff; --gold-rgb:91,155,255;          /* 利益・強調（青） */
   --ice:#b3cdff; --ice-rgb:179,205,255;           /* 売上（淡い青） */
   --vio:#7f8cff; --vio-rgb:127,140,255;
   --exp:#a48bff; --exp-rgb:164,139,255; --lab:#3fc7d4; --lab-rgb:63,199,212;
   --blue:#3d7dff; --blue-rgb:61,125,255;
-  --glass:rgba(12,22,44,.8); --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.12);
-  --panel:rgba(11,20,40,.84); --grid:rgba(140,170,220,.06);
+  --glass:rgba(22,24,29,.82); --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.12);
+  --panel:rgba(22,24,29,.86); --grid:rgba(255,255,255,.035);
 }
 body{background:var(--bg)}
 
@@ -485,21 +485,21 @@ body{background:var(--bg)}
 .brand{justify-self:center;flex-direction:column;gap:4px}
 .brand svg{width:40px;height:40px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6)) drop-shadow(0 0 10px rgba(var(--blue-rgb),.18))}
 .brand b{display:block;font:600 9.5px/1 var(--disp);letter-spacing:.55em;margin-right:-.55em;background:linear-gradient(180deg,#ffffff,#b8c3d2 55%,#7d899b);-webkit-background-clip:text;background-clip:text;color:transparent}
-.iconbtn{background:rgba(12,22,44,.8);border-color:var(--line)}
+.iconbtn{background:rgba(22,24,29,.82);border-color:var(--line)}
 
 /* ---------- 設計図パネル ---------- */
-.bp{position:relative;padding:14px 16px 14px;border-radius:18px;border:1px solid rgba(140,170,220,.12);overflow:hidden;
+.bp{position:relative;padding:14px 16px 14px;border-radius:18px;border:1px solid rgba(255,255,255,.08);overflow:hidden;
   background:
     linear-gradient(var(--grid) 1px,transparent 1px) 0 0/18px 18px,
     linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/18px 18px,
-    linear-gradient(180deg,rgba(16,28,56,.88),rgba(9,17,36,.9));
+    linear-gradient(180deg,rgba(30,32,38,.9),rgba(18,19,23,.92));
   box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 14px 30px rgba(0,0,0,.35)}
 .bp::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(80% 60% at 70% 30%,rgba(var(--blue-rgb),.08),transparent 70%)}
 .bp>*{position:relative}
 .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .ptop .lab{flex-direction:column;align-items:flex-start;gap:1px}
 .ptop .lab em{font-size:11px}
-.bp .mon{background:rgba(10,13,18,.45);border-color:rgba(140,170,220,.14);backdrop-filter:none;-webkit-backdrop-filter:none;flex:none}
+.bp .mon{background:rgba(10,11,14,.45);border-color:rgba(255,255,255,.1);backdrop-filter:none;-webkit-backdrop-filter:none;flex:none}
 .bp .mon button{width:34px;height:36px}
 .bp .mon span{font:400 13px var(--num);min-width:76px;color:var(--ink)}
 .flow{display:block;width:calc(100% + 8px);height:92px;margin:4px -4px 0;overflow:visible}
@@ -508,7 +508,7 @@ body{background:var(--bg)}
 .cmp{font-size:12px}
 .info{border-color:rgba(140,170,220,.25)!important;color:var(--sub)!important}
 
-.gauges{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:12px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(140,170,220,.1)}
+.gauges{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:12px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.07)}
 .gg{display:flex;flex-direction:column;align-items:flex-start;min-width:0;padding:0;border:0;background:none;color:inherit;text-align:left;font:inherit}
 .gt{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);white-space:nowrap}
 .gt svg{width:16px;height:16px;opacity:.75}
@@ -549,40 +549,40 @@ body{background:var(--bg)}
 .btn.ghost2{background:rgba(255,255,255,.04);color:var(--ink);box-shadow:none}
 .opts button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
 .toast button{background:rgba(var(--blue-rgb),.18);color:#cfe0ff}
-.sheet{background:linear-gradient(180deg,#13213f,#0c162d)!important;border-color:rgba(140,170,220,.12)!important}
+.sheet{background:linear-gradient(180deg,#1e2026,#131418)!important;border-color:rgba(255,255,255,.08)!important}
 
 /* ---------- 下のメニュー：青いパネルを並べたバー ---------- */
-nav{background:linear-gradient(180deg,rgba(8,16,34,0),rgba(8,16,34,.9) 45%)}
+nav{background:linear-gradient(180deg,rgba(12,13,16,0),rgba(12,13,16,.9) 45%)}
 .dock{border-radius:18px;background:linear-gradient(180deg,rgba(40,56,92,.94),rgba(29,41,70,.96));border:1px solid rgba(140,175,235,.18);box-shadow:0 14px 34px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.06)}
-.tab{color:rgba(205,218,240,.6)}
+.tab{color:rgba(220,224,232,.58)}
 .tab+.tab,.addw+.tab{border-left:1px solid rgba(0,0,0,.25);box-shadow:-1px 0 0 rgba(255,255,255,.04)}
 .tab.on{color:#fff}
 .tab.on svg{color:#9cc4ff;filter:drop-shadow(0 0 6px rgba(var(--blue-rgb),.8))}
 .tab.on::after{background:#7fb0ff;box-shadow:0 0 8px rgba(var(--blue-rgb),.9);bottom:5px}
-.add{width:62px;height:62px;margin-top:-32px;background:conic-gradient(from 210deg,#5d9bff 0 68%,rgba(93,155,255,.14) 68% 100%);box-shadow:0 10px 26px rgba(0,0,0,.65),0 0 0 6px #1b2338,0 0 22px rgba(var(--blue-rgb),.35)}
+.add{width:62px;height:62px;margin-top:-32px;background:conic-gradient(from 210deg,#5d9bff 0 68%,rgba(93,155,255,.14) 68% 100%);box-shadow:0 10px 26px rgba(0,0,0,.65),0 0 0 6px #1a1b20,0 0 22px rgba(var(--blue-rgb),.35)}
 .add span{width:54px;height:54px;background:radial-gradient(circle at 50% 50%,#2b3446 0 46%,#151a24 47% 100%);box-shadow:inset 0 2px 6px rgba(0,0,0,.6)}
 .add svg{width:24px;height:24px;color:#fff;filter:drop-shadow(0 0 6px rgba(160,200,255,.9));transition:transform .25s cubic-bezier(.3,.7,.2,1)}
-.add-l{color:rgba(205,218,240,.75)}
+.add-l{color:rgba(220,224,232,.72)}
 body.dialon .add svg{transform:rotate(45deg)}
 
 /* ---------- 円形メニュー ---------- */
 .dial{position:fixed;inset:0;z-index:60}
-.dscrim{position:absolute;inset:0;background:rgba(5,10,24,.8);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;transition:opacity .2s}
+.dscrim{position:absolute;inset:0;background:rgba(8,9,12,.8);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;transition:opacity .2s}
 .dial.on .dscrim{opacity:1}
 body.dialon nav{z-index:62;background:none}
-body.dialon .dock{background:rgba(29,41,70,.35);border-color:transparent;box-shadow:none}
+body.dialon .dock{background:rgba(40,42,48,.35);border-color:transparent;box-shadow:none}
 body.dialon .tab{opacity:.25;pointer-events:none}
 .dfan{position:absolute;inset:0;z-index:63;pointer-events:none}
 .dsvg{position:absolute;left:0;top:0;opacity:0;transition:opacity .18s}
 .dial.on .dsvg{opacity:1}
-.wd{fill:rgba(30,50,90,.62);stroke:rgba(150,180,230,.16);stroke-width:1;pointer-events:auto;cursor:pointer;transition:fill .2s,transform .28s cubic-bezier(.3,1.4,.5,1)}
+.wd{fill:rgba(46,49,58,.66);stroke:rgba(255,255,255,.1);stroke-width:1;pointer-events:auto;cursor:pointer;transition:fill .2s,transform .28s cubic-bezier(.3,1.4,.5,1)}
 .wd.lit{fill:url(#dwg);stroke:rgba(150,190,255,.5)}
 .wedge-edge{fill:rgba(120,170,255,.18);pointer-events:none;transition:transform .28s cubic-bezier(.3,1.4,.5,1),fill .2s}
 .wgrp.lit .wedge-edge{fill:#7fb0ff;filter:drop-shadow(0 0 5px rgba(93,155,255,.95))}
-.dticks line{stroke:rgba(160,195,255,.35);stroke-width:1}
+.dticks line{stroke:rgba(210,218,230,.3);stroke-width:1}
 .dticks line.tb{stroke:rgba(190,215,255,.7);stroke-width:1.4}
-.dgear rect{fill:rgba(140,175,235,.32)}
-.dring{fill:none;stroke:rgba(8,14,30,.92);stroke-width:14}
+.dgear rect{fill:rgba(200,208,222,.3)}
+.dring{fill:none;stroke:rgba(12,13,16,.92);stroke-width:14}
 .dneedle path{fill:#cfe0ff;filter:drop-shadow(0 0 4px rgba(93,155,255,.9))}
 .dneedle .tip{fill:#fff;filter:drop-shadow(0 0 5px rgba(140,190,255,1))}
 .darc{fill:#5d9bff;filter:drop-shadow(0 0 6px rgba(93,155,255,.9))}
@@ -602,7 +602,7 @@ body.dialon .tab{opacity:.25;pointer-events:none}
 body.calm .dscrim,body.calm .dsvg,body.calm .dk,body.calm .dlab,body.calm .wd,body.calm .wedge-edge{transition:none}
 
 /* ---------- 起動演出・案内（クロームと青） ---------- */
-#intro{background:radial-gradient(120% 80% at 50% 40%,#16305c,#0b1630 60%,#060c1c)}
+#intro{background:radial-gradient(120% 80% at 50% 40%,#22252c,#121317 60%,#09090b)}
 #intro .em{filter:drop-shadow(0 0 24px rgba(var(--blue-rgb),.3))}
 .wm{filter:drop-shadow(0 1px 0 rgba(0,0,0,.75)) drop-shadow(0 0 12px rgba(120,170,255,.2))}
 .wm .ltr{background:linear-gradient(180deg,#ffffff 0%,#dfe6ef 30%,#9aa6b6 48%,#4a5466 53%,#a7b3c3 66%,#eef3f8 100%);-webkit-background-clip:text;background-clip:text}
@@ -611,7 +611,7 @@ body.calm .dscrim,body.calm .dsvg,body.calm .dk,body.calm .dlab,body.calm .wd,bo
 #intro .rule i:last-child{background:linear-gradient(270deg,transparent,#5d9bff)}
 #intro .rule small{color:#9cc4ff}
 #intro .skip{color:rgba(200,215,240,.3)}
-#ob{background:radial-gradient(120% 80% at 50% 0%,#1a3263 0%,#0b1630 60%)}
+#ob{background:radial-gradient(120% 80% at 50% 0%,#24262d 0%,#0e1013 60%)}
 #ob .obtop .brand{flex-direction:row}
 #ob .obtop .brand b{color:#dfe7f2;background:none;-webkit-text-fill-color:currentColor;font-size:15px;letter-spacing:.2em;margin:0}
 
@@ -622,15 +622,15 @@ body.calm .dscrim,body.calm .dsvg,body.calm .dk,body.calm .dlab,body.calm .wd,bo
    GLASS 部品：重なったガラス板・斜めの光沢・下ふちの青い光
    ===================================================================== */
 :root{
-  --gl:linear-gradient(160deg,rgba(130,165,230,.17),rgba(60,85,140,.10));
-  --gl-solid:linear-gradient(160deg,rgba(28,42,74,.94),rgba(15,24,46,.95));
+  --gl:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.03));
+  --gl-solid:linear-gradient(160deg,rgba(34,36,42,.94),rgba(19,20,24,.95));
   --gl-sheen:linear-gradient(118deg,rgba(255,255,255,0) 0 56%,rgba(255,255,255,.05) 56.3% 100%);
-  --gl-bd:rgba(170,200,255,.30);
-  --gl-edge:linear-gradient(135deg,rgba(130,190,255,.75),rgba(120,140,255,.25) 45%,rgba(170,130,255,.6));
+  --gl-bd:rgba(215,222,235,.30);
+  --gl-edge:linear-gradient(135deg,rgba(225,232,245,.42),rgba(255,255,255,.07) 45%,rgba(175,190,225,.32));
   --gl-in:inset 0 1px 0 rgba(255,255,255,.16),inset 0 -1px 0 rgba(120,180,255,.10);
   /* 後ろに2枚重なったガラス板 */
-  --stack:5px 6px 0 -1px rgba(12,20,40,.93),5px 6px 0 0 rgba(150,185,245,.22),10px 12px 0 -1px rgba(10,17,35,.92),10px 12px 0 0 rgba(150,185,245,.13),14px 20px 30px rgba(0,0,0,.42);
-  --stack1:4px 5px 0 -1px rgba(12,20,40,.93),4px 5px 0 0 rgba(150,185,245,.22),8px 12px 22px rgba(0,0,0,.4);
+  --stack:5px 6px 0 -1px rgba(15,16,20,.93),5px 6px 0 0 rgba(205,210,222,.22),10px 12px 0 -1px rgba(15,16,20,.92),10px 12px 0 0 rgba(205,210,222,.13),14px 20px 30px rgba(0,0,0,.42);
+  --stack1:4px 5px 0 -1px rgba(15,16,20,.93),4px 5px 0 0 rgba(205,210,222,.22),8px 12px 22px rgba(0,0,0,.4);
   --glow-b:0 0 18px rgba(80,150,255,.45);
   --glow-v:0 0 16px rgba(160,120,255,.38);
 }
@@ -652,22 +652,22 @@ body.calm .dscrim,body.calm .dsvg,body.calm .dk,body.calm .dlab,body.calm .wd,bo
 /* ---------- 主なボタン（Primary） ---------- */
 .btn{position:relative;border-radius:999px;border:1px solid rgba(175,215,255,.75);color:#fff;font-weight:500;letter-spacing:.02em;text-shadow:0 0 8px rgba(160,210,255,.6);
   background:linear-gradient(180deg,rgba(255,255,255,.36),rgba(255,255,255,.04) 50%,rgba(255,255,255,0) 52%) padding-box,linear-gradient(180deg,rgba(140,195,255,.72),rgba(70,130,245,.64)) padding-box;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 6px rgba(20,60,160,.35),0 0 20px rgba(80,150,255,.5),4px 5px 0 -1px rgba(14,24,48,.9),4px 5px 0 0 rgba(150,190,255,.25)}
-.btn:active{transform:translateY(1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 12px rgba(80,150,255,.45),2px 3px 0 -1px rgba(14,24,48,.9),2px 3px 0 0 rgba(150,190,255,.25)}
-.btn:disabled{opacity:.42;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),4px 5px 0 -1px rgba(14,24,48,.9),4px 5px 0 0 rgba(150,190,255,.15)}
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 6px rgba(20,60,160,.35),0 0 20px rgba(80,150,255,.5),4px 5px 0 -1px rgba(15,16,20,.9),4px 5px 0 0 rgba(150,190,255,.25)}
+.btn:active{transform:translateY(1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 12px rgba(80,150,255,.45),2px 3px 0 -1px rgba(15,16,20,.9),2px 3px 0 0 rgba(150,190,255,.25)}
+.btn:disabled{opacity:.42;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),4px 5px 0 -1px rgba(15,16,20,.9),4px 5px 0 0 rgba(150,190,255,.15)}
 /* 2番目のボタン（Secondary：紫のガラス） */
 .btn.ghost2{border-color:rgba(175,150,255,.6);color:#d3c6ff;text-shadow:0 0 8px rgba(170,140,255,.5);
   background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 55%) padding-box,linear-gradient(180deg,rgba(120,100,220,.24),rgba(80,60,170,.18)) padding-box;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.25),var(--glow-v),4px 5px 0 -1px rgba(14,22,46,.9),4px 5px 0 0 rgba(170,150,255,.22)}
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.25),var(--glow-v),4px 5px 0 -1px rgba(15,16,20,.9),4px 5px 0 0 rgba(170,150,255,.22)}
 .btn.danger{border-color:rgba(255,160,150,.6);color:#ffd8d2;text-shadow:none;
   background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0) 55%) padding-box,rgba(255,110,100,.14) padding-box;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 14px rgba(255,120,110,.3),4px 5px 0 -1px rgba(14,22,46,.9),4px 5px 0 0 rgba(255,170,160,.2)}
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 14px rgba(255,120,110,.3),4px 5px 0 -1px rgba(15,16,20,.9),4px 5px 0 0 rgba(255,170,160,.2)}
 
 /* ---------- 丸いアイコンボタン（Icon Button） ---------- */
 .iconbtn,.info,.pmon button,.bp .mon button{border-radius:50%}
 .iconbtn,.info{border:1px solid rgba(170,210,255,.45)!important;color:#bfe0ff!important;
   background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.22),rgba(255,255,255,0) 45%),radial-gradient(circle at 50% 120%,rgba(80,150,255,.35),rgba(20,35,70,.85) 70%)!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 14px rgba(80,150,255,.4),3px 4px 0 -1px rgba(12,20,40,.9),3px 4px 0 0 rgba(150,190,255,.2)}
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 14px rgba(80,150,255,.4),3px 4px 0 -1px rgba(15,16,20,.9),3px 4px 0 0 rgba(150,190,255,.2)}
 .iconbtn svg{filter:drop-shadow(0 0 4px rgba(140,200,255,.8))}
 .add{background:conic-gradient(from 210deg,#7fb6ff 0 68%,rgba(127,182,255,.18) 68% 100%)}
 .add span{background:radial-gradient(circle at 35% 22%,rgba(255,255,255,.28),rgba(255,255,255,0) 42%),radial-gradient(circle at 50% 120%,rgba(80,150,255,.5),#101a30 72%);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 -3px 8px rgba(0,0,0,.4)}
@@ -675,58 +675,58 @@ body.calm .dscrim,body.calm .dsvg,body.calm .dk,body.calm .dlab,body.calm .wd,bo
 
 /* ---------- 入力欄（Text Field / Select） ---------- */
 .fld input,.fld select,.ren,.prow input.pd,.prow .money input,#ob .fld input{
-  border-radius:14px!important;border:1px solid rgba(170,200,255,.28)!important;color:var(--ink);
-  background:var(--gl-sheen),linear-gradient(160deg,rgba(130,165,230,.14),rgba(40,60,110,.22))!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -1px 0 rgba(110,175,255,.55),0 7px 14px -10px rgba(80,150,255,.9),4px 5px 0 -1px rgba(12,20,40,.92),4px 5px 0 0 rgba(150,185,245,.2)!important;
+  border-radius:14px!important;border:1px solid rgba(215,222,235,.28)!important;color:var(--ink);
+  background:var(--gl-sheen),linear-gradient(160deg,rgba(225,230,240,.14),rgba(46,49,56,.22))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -1px 0 rgba(110,175,255,.55),0 7px 14px -10px rgba(80,150,255,.9),4px 5px 0 -1px rgba(15,16,20,.92),4px 5px 0 0 rgba(205,210,222,.2)!important;
   transition:border-color .2s,box-shadow .2s}
 .fld input:focus,.fld select:focus,.ren:focus,.prow input:focus{outline:none;border-color:rgba(175,150,255,.75)!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -1px 0 rgba(130,185,255,.9),0 0 0 3px rgba(150,120,255,.16),0 0 16px rgba(150,120,255,.35),4px 5px 0 -1px rgba(12,20,40,.92),4px 5px 0 0 rgba(170,150,255,.3)!important}
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -1px 0 rgba(130,185,255,.9),0 0 0 3px rgba(150,120,255,.16),0 0 16px rgba(150,120,255,.35),4px 5px 0 -1px rgba(15,16,20,.92),4px 5px 0 0 rgba(170,150,255,.3)!important}
 .fld input::placeholder{color:rgba(200,215,240,.38)}
 .money::before{z-index:1;color:rgba(190,215,255,.6)}
 
 /* ---------- 選択肢・タブ（Tabs / Segmented） ---------- */
-.seg,.opts.wdg{border-radius:14px;border:1px solid rgba(170,200,255,.22);background:var(--gl-sheen),rgba(30,46,80,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),var(--stack1)}
+.seg,.opts.wdg{border-radius:14px;border:1px solid rgba(215,222,235,.22);background:var(--gl-sheen),rgba(36,38,44,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),var(--stack1)}
 .seg button{position:relative;border-radius:10px}
 .seg button[aria-pressed="true"],.seg.m button[aria-pressed="true"][data-v="sales"],.seg.m button[aria-pressed="true"][data-v="profit"]{
   background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0) 60%),rgba(80,140,255,.18);box-shadow:inset 0 0 0 1px rgba(160,200,255,.45),0 0 14px rgba(80,150,255,.35)}
 .seg button[aria-pressed="true"]::after{content:"";position:absolute;left:24%;right:24%;bottom:3px;height:2px;border-radius:2px;background:#9cc8ff;box-shadow:0 0 8px 1px rgba(100,170,255,.9)}
-.opts button,.chips button,.storebar button,.tg,.pmon,.bp .mon{border:1px solid rgba(170,200,255,.26)!important;background:var(--gl-sheen),linear-gradient(160deg,rgba(130,165,230,.14),rgba(40,60,110,.2))!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),3px 4px 0 -1px rgba(12,20,40,.9),3px 4px 0 0 rgba(150,185,245,.16)}
+.opts button,.chips button,.storebar button,.tg,.pmon,.bp .mon{border:1px solid rgba(215,222,235,.26)!important;background:var(--gl-sheen),linear-gradient(160deg,rgba(225,230,240,.14),rgba(46,49,56,.2))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),3px 4px 0 -1px rgba(15,16,20,.9),3px 4px 0 0 rgba(205,210,222,.16)}
 .opts button[aria-pressed="true"],.chips button[aria-pressed="true"],.storebar button[aria-pressed="true"],.tg[aria-pressed="true"]{
   color:#fff!important;border-color:rgba(175,215,255,.75)!important;text-shadow:0 0 8px rgba(160,210,255,.7);
   background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,0) 55%),linear-gradient(180deg,rgba(110,170,255,.5),rgba(55,105,230,.42))!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 14px rgba(80,150,255,.5),3px 4px 0 -1px rgba(12,20,40,.9),3px 4px 0 0 rgba(150,190,255,.25)}
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 14px rgba(80,150,255,.5),3px 4px 0 -1px rgba(15,16,20,.9),3px 4px 0 0 rgba(150,190,255,.25)}
 .tg.dl{color:#ffb4aa!important;border-color:rgba(255,160,150,.45)!important}
-#ob .indg button{border:1px solid rgba(170,200,255,.26);background:var(--gl-sheen),linear-gradient(160deg,rgba(130,165,230,.14),rgba(40,60,110,.2));box-shadow:inset 0 1px 0 rgba(255,255,255,.12),var(--stack1)}
+#ob .indg button{border:1px solid rgba(215,222,235,.26);background:var(--gl-sheen),linear-gradient(160deg,rgba(225,230,240,.14),rgba(46,49,56,.2));box-shadow:inset 0 1px 0 rgba(255,255,255,.12),var(--stack1)}
 #ob .indg button[aria-pressed="true"]{border-color:rgba(175,215,255,.75);background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,0) 55%),rgba(80,140,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 16px rgba(80,150,255,.45),var(--stack1)}
 
 /* ---------- スイッチ・チェック（Switch / Checkbox） ---------- */
-.sw input{width:54px;height:32px;border:1px solid rgba(170,200,255,.25);background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(40,60,100,.3));box-shadow:inset 0 2px 5px rgba(0,0,0,.5),3px 4px 0 -1px rgba(12,20,40,.9),3px 4px 0 0 rgba(150,185,245,.14)}
+.sw input{width:54px;height:32px;border:1px solid rgba(215,222,235,.25);background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(55,58,66,.3));box-shadow:inset 0 2px 5px rgba(0,0,0,.5),3px 4px 0 -1px rgba(15,16,20,.9),3px 4px 0 0 rgba(205,210,222,.14)}
 .sw input::after{top:3px;left:3px;width:24px;height:24px;background:radial-gradient(circle at 35% 30%,#ffffff,#9aa8bd 75%);box-shadow:0 2px 4px rgba(0,0,0,.5)}
-.sw input:checked{border-color:rgba(175,215,255,.7);background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%),linear-gradient(180deg,rgba(110,170,255,.6),rgba(55,105,230,.5));box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 14px rgba(80,150,255,.55),3px 4px 0 -1px rgba(12,20,40,.9),3px 4px 0 0 rgba(150,190,255,.25)}
+.sw input:checked{border-color:rgba(175,215,255,.7);background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%),linear-gradient(180deg,rgba(110,170,255,.6),rgba(55,105,230,.5));box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 14px rgba(80,150,255,.55),3px 4px 0 -1px rgba(15,16,20,.9),3px 4px 0 0 rgba(150,190,255,.25)}
 .sw input:checked::after{left:25px;background:radial-gradient(circle at 35% 30%,#ffffff,#cfe4ff 70%);box-shadow:0 0 10px rgba(160,210,255,.95)}
-.ck input{-webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:8px;border:1px solid rgba(170,200,255,.35);position:relative;cursor:pointer;
-  background:var(--gl-sheen),rgba(40,60,110,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),3px 4px 0 -1px rgba(12,20,40,.9),3px 4px 0 0 rgba(150,185,245,.18)}
-.ck input:checked{border-color:rgba(175,215,255,.8);background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%),rgba(80,140,255,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 12px rgba(80,150,255,.6),3px 4px 0 -1px rgba(12,20,40,.9),3px 4px 0 0 rgba(150,190,255,.25)}
+.ck input{-webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:8px;border:1px solid rgba(215,222,235,.35);position:relative;cursor:pointer;
+  background:var(--gl-sheen),rgba(46,49,56,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),3px 4px 0 -1px rgba(15,16,20,.9),3px 4px 0 0 rgba(205,210,222,.18)}
+.ck input:checked{border-color:rgba(175,215,255,.8);background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%),rgba(80,140,255,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 12px rgba(80,150,255,.6),3px 4px 0 -1px rgba(15,16,20,.9),3px 4px 0 0 rgba(150,190,255,.25)}
 .ck input:checked::after{content:"";position:absolute;left:8px;top:3px;width:7px;height:13px;border:solid #fff;border-width:0 2.4px 2.4px 0;transform:rotate(45deg);filter:drop-shadow(0 0 3px rgba(170,215,255,1))}
 
 /* ---------- お知らせ（Toast）・確認（Modal） ---------- */
-.toast{border-radius:16px!important;border:1px solid rgba(170,200,255,.3)!important;background:var(--gl-sheen),linear-gradient(160deg,rgba(32,48,84,.96),rgba(16,26,50,.97))!important;
+.toast{border-radius:16px!important;border:1px solid rgba(215,222,235,.3)!important;background:var(--gl-sheen),linear-gradient(160deg,rgba(38,40,46,.96),rgba(21,22,27,.97))!important;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -1px 0 rgba(110,175,255,.7),0 8px 18px -10px rgba(80,150,255,.9),var(--stack1)!important}
 .confirm{border-radius:16px;border:1px solid rgba(255,170,160,.4);background:var(--gl-sheen),rgba(60,30,50,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),var(--stack1)}
-.confirm button{border-radius:999px!important;border:1px solid rgba(170,200,255,.3)!important;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0) 55%),rgba(60,90,150,.3)!important}
+.confirm button{border-radius:999px!important;border:1px solid rgba(215,222,235,.3)!important;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0) 55%),rgba(70,74,84,.32)!important}
 .confirm button.d{border-color:rgba(255,170,160,.6)!important;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 55%),rgba(255,110,100,.28)!important;box-shadow:0 0 12px rgba(255,120,110,.35)}
-.sheet{border:1px solid rgba(170,200,255,.25)!important;border-bottom:0!important;background:linear-gradient(180deg,rgba(24,38,70,.97),rgba(11,19,38,.98))!important;
+.sheet{border:1px solid rgba(215,222,235,.25)!important;border-bottom:0!important;background:linear-gradient(180deg,rgba(32,34,40,.97),rgba(17,18,22,.98))!important;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 -6px 30px rgba(0,0,0,.55),0 -1px 14px rgba(80,150,255,.25)!important}
-.sh-hd button{border-radius:999px;border:1px solid rgba(170,200,255,.3)!important;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0) 55%),rgba(60,90,150,.25)!important;color:#d2e4ff!important}
-.notice{border-style:solid!important;border-color:rgba(170,200,255,.3)!important;background:var(--gl-sheen),rgba(60,100,180,.14)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -1px 0 rgba(110,175,255,.6)}
-.pick{border:1px solid rgba(170,200,255,.26);background:var(--gl-sheen),linear-gradient(160deg,rgba(130,165,230,.14),rgba(40,60,110,.2));box-shadow:inset 0 1px 0 rgba(255,255,255,.12),var(--stack1)}
+.sh-hd button{border-radius:999px;border:1px solid rgba(215,222,235,.3)!important;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0) 55%),rgba(70,74,84,.28)!important;color:#e4e8ef!important}
+.notice{border-style:solid!important;border-color:rgba(215,222,235,.3)!important;background:var(--gl-sheen),rgba(255,255,255,.045)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -1px 0 rgba(110,175,255,.6)}
+.pick{border:1px solid rgba(215,222,235,.26);background:var(--gl-sheen),linear-gradient(160deg,rgba(225,230,240,.14),rgba(46,49,56,.2));box-shadow:inset 0 1px 0 rgba(255,255,255,.12),var(--stack1)}
 
 /* ---------- カレンダーのマス・下のメニュー ---------- */
-.cd{border-color:rgba(170,200,255,.18);background:var(--gl-sheen),rgba(40,60,110,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}
+.cd{border-color:rgba(170,200,255,.18);background:var(--gl-sheen),rgba(46,49,56,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}
 .cd.today,.cd.sel{border-color:rgba(175,215,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 12px rgba(80,150,255,.5)}
-.dock{border:1px solid transparent!important;background:var(--gl-sheen) padding-box,linear-gradient(180deg,rgba(40,60,104,.95),rgba(22,34,64,.97)) padding-box,var(--gl-edge) border-box!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),5px 6px 0 -1px rgba(10,17,35,.92),5px 6px 0 0 rgba(150,185,245,.18),0 16px 34px rgba(0,0,0,.55)!important}
+.dock{border:1px solid transparent!important;background:var(--gl-sheen) padding-box,linear-gradient(180deg,rgba(40,42,48,.95),rgba(24,25,30,.97)) padding-box,var(--gl-edge) border-box!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),5px 6px 0 -1px rgba(15,16,20,.92),5px 6px 0 0 rgba(205,210,222,.18),0 16px 34px rgba(0,0,0,.55)!important}
 .tab.on::after{left:30%;right:30%;width:auto;height:2px;background:#a8d0ff;box-shadow:0 0 10px 2px rgba(90,160,255,.9)}
 
 /* =====================================================================
@@ -2102,9 +2102,9 @@ function bgBuild(){
   const c = document.createElement("canvas"); c.width = bg.width; c.height = bg.height; const x = c.getContext("2d"); x.scale(DPR, DPR); layer = c;
   // 基板の地（濃い紺から青へ）
   const g = x.createRadialGradient(BW / 2, BH * .5, 0, BW / 2, BH * .5, Math.hypot(BW, BH) * .62);
-  g.addColorStop(0, "#102447"); g.addColorStop(.55, "#0b1a37"); g.addColorStop(1, "#070f22"); x.fillStyle = g; x.fillRect(0, 0, BW, BH);
+  g.addColorStop(0, "#1a1c21"); g.addColorStop(.55, "#121317"); g.addColorStop(1, "#0b0c0e"); x.fillStyle = g; x.fillRect(0, 0, BW, BH);
   // 細かい点の方眼
-  x.fillStyle = "rgba(150,190,255,.05)"; for (let yy = 6; yy < BH; yy += 14) for (let xx = 6; xx < BW; xx += 14) x.fillRect(xx, yy, 1, 1);
+  x.fillStyle = "rgba(255,255,255,.035)"; for (let yy = 6; yy < BH; yy += 14) for (let xx = 6; xx < BW; xx += 14) x.fillRect(xx, yy, 1, 1);
   // 中央のチップ
   const cx = BW / 2, cy = BH * .5, h = Math.max(30, Math.min(BW, BH) * .1), sp = Math.max(4.2, Math.min(6.5, Math.min(BW, BH) / 70));
   const occ = new Set(), cell = 10, mark = (px, py) => occ.add(((px / cell) | 0) + "," + ((py / cell) | 0));
@@ -2138,28 +2138,28 @@ function bgBuild(){
   for (const t of traces) { t.seg = []; t.len = 0;
     for (let i = 1; i < t.P.length; i++) { const [a1, b1] = t.P[i - 1], [a2, b2] = t.P[i], l = Math.hypot(a2 - a1, b2 - b1); t.seg.push(l); t.len += l;
       for (let s = 0; s < l; s += cell * .7) mark(a1 + (a2 - a1) * s / l, b1 + (b2 - b1) * s / l); }
-    x.strokeStyle = "rgba(150,195,255,.17)"; x.lineWidth = 1; x.beginPath(); t.P.forEach(([px, py], i) => i ? x.lineTo(px, py) : x.moveTo(px, py)); x.stroke();
-    if (t.end) { const [ex, ey] = t.P[t.P.length - 1]; if (ex > 0 && ex < BW && ey > 0 && ey < BH) { x.strokeStyle = "rgba(170,205,255,.22)"; x.beginPath(); x.arc(ex, ey, 2.4, 0, 7); x.stroke(); } } }
+    x.strokeStyle = "rgba(205,212,225,.17)"; x.lineWidth = 1; x.beginPath(); t.P.forEach(([px, py], i) => i ? x.lineTo(px, py) : x.moveTo(px, py)); x.stroke();
+    if (t.end) { const [ex, ey] = t.P[t.P.length - 1]; if (ex > 0 && ex < BW && ey > 0 && ey < BH) { x.strokeStyle = "rgba(215,222,235,.22)"; x.beginPath(); x.arc(ex, ey, 2.4, 0, 7); x.stroke(); } } }
   // 部品（空いている場所にだけ置く）
   const free = (px, py, w, hh) => { for (let yy = py; yy < py + hh; yy += cell) for (let xx = px; xx < px + w; xx += cell) if (occ.has(((xx / cell) | 0) + "," + ((yy / cell) | 0))) return false; return true; };
   for (let n = 0; n < BW * BH / 2600; n++) { const t = rnd(), px = rnd() * BW, py = rnd() * BH;
     if (Math.abs(px - cx) < h * 1.6 && Math.abs(py - cy) < h * 1.6) continue;
     const w = t < .5 ? 10 + rnd() * 26 : 6 + rnd() * 8, hh = t < .5 ? 8 + rnd() * 18 : 4 + rnd() * 5; if (!free(px, py, w, hh)) continue;
     for (let yy = py; yy < py + hh; yy += cell) for (let xx = px; xx < px + w; xx += cell) mark(xx, yy);
-    x.strokeStyle = "rgba(150,195,255,.10)"; x.lineWidth = 1;
-    if (t < .5) { x.fillStyle = "rgba(8,18,40,.55)"; x.fillRect(px, py, w, hh); x.strokeRect(px + .5, py + .5, w, hh);
-      x.fillStyle = "rgba(150,195,255,.11)"; for (let q = px + 3; q < px + w - 1; q += 3.5) { x.fillRect(q, py - 2, 1.2, 2); x.fillRect(q, py + hh + 1, 1.2, 2); } }
-    else if (t < .8) { x.fillStyle = "rgba(150,195,255,.08)"; x.fillRect(px, py, w * .3, hh); x.fillRect(px + w * .7, py, w * .3, hh); }
+    x.strokeStyle = "rgba(205,212,225,.10)"; x.lineWidth = 1;
+    if (t < .5) { x.fillStyle = "rgba(10,11,14,.55)"; x.fillRect(px, py, w, hh); x.strokeRect(px + .5, py + .5, w, hh);
+      x.fillStyle = "rgba(205,212,225,.11)"; for (let q = px + 3; q < px + w - 1; q += 3.5) { x.fillRect(q, py - 2, 1.2, 2); x.fillRect(q, py + hh + 1, 1.2, 2); } }
+    else if (t < .8) { x.fillStyle = "rgba(205,212,225,.08)"; x.fillRect(px, py, w * .3, hh); x.fillRect(px + w * .7, py, w * .3, hh); }
     else { x.beginPath(); x.arc(px, py, 2 + rnd() * 3, 0, 7); x.stroke(); } }
   // チップ本体
-  x.save(); x.shadowColor = "rgba(0,0,0,.7)"; x.shadowBlur = 18; x.fillStyle = "#0a1020"; x.fillRect(cx - h, cy - h, h * 2, h * 2); x.restore();
-  x.strokeStyle = "rgba(170,205,255,.3)"; x.lineWidth = 1.2; x.strokeRect(cx - h + .5, cy - h + .5, h * 2 - 1, h * 2 - 1);
-  x.fillStyle = "rgba(190,215,255,.28)"; for (let q = -h + 4; q < h - 3; q += 3) { x.fillRect(cx + q, cy - h - 3, 1.2, 3); x.fillRect(cx + q, cy + h, 1.2, 3); x.fillRect(cx - h - 3, cy + q, 3, 1.2); x.fillRect(cx + h, cy + q, 3, 1.2); }
-  const d = h * .52; x.fillStyle = "rgba(200,220,255,.08)"; x.fillRect(cx - d, cy - d, d * 2, d * 2);
-  x.fillStyle = "rgba(220,235,255,.26)"; for (let q = -d + 2; q < d - 1; q += 3.2) for (let r = -d + 2; r < d - 1; r += 3.2) x.fillRect(cx + q, cy + r, 1.4, 1.4);
-  x.fillStyle = "rgba(220,235,255,.35)"; [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([a, b]) => { x.beginPath(); x.arc(cx + a * (h - 5), cy + b * (h - 5), 1.4, 0, 7); x.fill(); });
+  x.save(); x.shadowColor = "rgba(0,0,0,.7)"; x.shadowBlur = 18; x.fillStyle = "#0d0e11"; x.fillRect(cx - h, cy - h, h * 2, h * 2); x.restore();
+  x.strokeStyle = "rgba(215,222,235,.3)"; x.lineWidth = 1.2; x.strokeRect(cx - h + .5, cy - h + .5, h * 2 - 1, h * 2 - 1);
+  x.fillStyle = "rgba(220,226,236,.28)"; for (let q = -h + 4; q < h - 3; q += 3) { x.fillRect(cx + q, cy - h - 3, 1.2, 3); x.fillRect(cx + q, cy + h, 1.2, 3); x.fillRect(cx - h - 3, cy + q, 3, 1.2); x.fillRect(cx + h, cy + q, 3, 1.2); }
+  const d = h * .52; x.fillStyle = "rgba(225,230,240,.08)"; x.fillRect(cx - d, cy - d, d * 2, d * 2);
+  x.fillStyle = "rgba(230,234,242,.26)"; for (let q = -d + 2; q < d - 1; q += 3.2) for (let r = -d + 2; r < d - 1; r += 3.2) x.fillRect(cx + q, cy + r, 1.4, 1.4);
+  x.fillStyle = "rgba(230,234,242,.35)"; [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([a, b]) => { x.beginPath(); x.arc(cx + a * (h - 5), cy + b * (h - 5), 1.4, 0, 7); x.fill(); });
   // 周辺を少し暗く（文字を読みやすく）
-  const vg = x.createRadialGradient(BW / 2, BH / 2, Math.min(BW, BH) * .25, BW / 2, BH / 2, Math.hypot(BW, BH) * .6); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(2,6,16,.65)"); x.fillStyle = vg; x.fillRect(0, 0, BW, BH);
+  const vg = x.createRadialGradient(BW / 2, BH / 2, Math.min(BW, BH) * .25, BW / 2, BH / 2, Math.hypot(BW, BH) * .6); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(4,4,6,.65)"); x.fillStyle = vg; x.fillRect(0, 0, BW, BH);
   for (let i = 0; i < 8; i++) spawn(rnd());
 }
 // 配線の上の位置（先頭からの距離 s）
