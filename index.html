@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>VAULT</title>
 <meta name="description" content="売上・経費・人件費をまとめて記録し、利益がひと目で分かる経営アプリ">
-<meta name="theme-color" content="#0e1013">
+<meta name="theme-color" content="#050608">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -809,6 +809,63 @@ body.calm .dscrim,body.calm .dsvg,body.calm .dk,body.calm .dlab,body.calm .wd,bo
 .gg.l .gt .ic{color:var(--lab)}
 .gg.p .gt .ic{color:var(--gold)}
 .loc .ic{color:rgba(200,214,236,.6)}
+
+/* =====================================================================
+   NOIR：部品はほぼ黒で重く、青は背景と光だけで見せる
+   ===================================================================== */
+:root{
+  --bg:#050608;
+  --panel:rgba(8,9,11,.94); --glass:rgba(8,9,11,.9); --grid:rgba(255,255,255,.025);
+  --gl-solid:linear-gradient(165deg,rgba(17,18,21,.97),rgba(6,7,9,.98));
+  --gl-sheen:linear-gradient(118deg,rgba(255,255,255,0) 0 58%,rgba(255,255,255,.028) 58.3% 100%);
+  --gl-edge:linear-gradient(140deg,rgba(255,255,255,.2),rgba(255,255,255,.04) 40%,rgba(255,255,255,.03) 65%,rgba(110,160,255,.28));
+  --stack:5px 6px 0 -1px rgba(4,5,6,.97),5px 6px 0 0 rgba(255,255,255,.07),10px 12px 0 -1px rgba(3,4,5,.97),10px 12px 0 0 rgba(255,255,255,.045),16px 24px 40px rgba(0,0,0,.7);
+  --stack1:4px 5px 0 -1px rgba(4,5,6,.97),4px 5px 0 0 rgba(255,255,255,.07),10px 16px 26px rgba(0,0,0,.65);
+  --sub:rgba(226,230,238,.72); --muted:rgba(214,220,232,.5); --faint:rgba(214,220,232,.38);
+}
+body{background:var(--bg)}
+.bp{background:var(--gl-sheen) padding-box,linear-gradient(var(--grid) 1px,transparent 1px) 0 0/18px 18px padding-box,linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/18px 18px padding-box,var(--gl-solid) padding-box,var(--gl-edge) border-box!important}
+/* 上ふちの細い金属の線（重さを出す） */
+.card,.bp,.kpi{box-shadow:inset 0 1px 0 rgba(255,255,255,.09),inset 0 -1px 0 rgba(0,0,0,.6),var(--stack)!important}
+.kpi,.csum div,.sgroup,.cdet,#ob .feat div{box-shadow:inset 0 1px 0 rgba(255,255,255,.08),var(--stack1)!important}
+
+/* 入力欄・切り替え・選択肢：黒い凹み */
+.fld input,.fld select,.ren,.prow input.pd,.prow .money input,#ob .fld input{
+  border-color:rgba(255,255,255,.1)!important;
+  background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(14,15,18,.9))!important;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.7),inset 0 -1px 0 rgba(100,160,255,.45),0 1px 0 rgba(255,255,255,.05),4px 5px 0 -1px rgba(4,5,6,.97),4px 5px 0 0 rgba(255,255,255,.06)!important}
+.seg,.opts.wdg{border-color:rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(12,13,16,.9));box-shadow:inset 0 2px 5px rgba(0,0,0,.7),0 1px 0 rgba(255,255,255,.05)}
+.opts button,.chips button,.storebar button,.tg,.pmon,.bp .mon{border-color:rgba(255,255,255,.12)!important;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,0) 60%),rgba(12,13,16,.92)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),3px 4px 0 -1px rgba(4,5,6,.97),3px 4px 0 0 rgba(255,255,255,.06)}
+.pick,#ob .indg button{border-color:rgba(255,255,255,.1)!important;background:var(--gl-sheen),var(--gl-solid)!important}
+.cd{border-color:rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0)),rgba(10,11,13,.85)}
+.cd.missing{background:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 3px,transparent 3px 7px),rgba(10,11,13,.85)}
+.sw input{border-color:rgba(255,255,255,.12);background:linear-gradient(180deg,rgba(0,0,0,.7),rgba(20,21,25,.9))}
+.ck input{border-color:rgba(255,255,255,.16);background:rgba(10,11,13,.9)}
+
+/* 入力画面・お知らせ・メニュー */
+.sheet{border-color:rgba(255,255,255,.1)!important;background:linear-gradient(180deg,#121316,#060708)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 -10px 40px rgba(0,0,0,.8),0 -1px 18px rgba(70,130,255,.18)!important}
+.scrim{background:rgba(0,0,0,.72)!important}
+.toast{border-color:rgba(255,255,255,.12)!important;background:linear-gradient(165deg,rgba(20,21,25,.98),rgba(7,8,10,.98))!important}
+.notice{border-color:rgba(255,255,255,.1)!important;background:rgba(255,255,255,.03)!important}
+.sh-hd button,.confirm button{border-color:rgba(255,255,255,.14)!important;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,0) 60%),rgba(16,17,20,.95)!important;color:#e6e9ef!important}
+.iconbtn,.info{border-color:rgba(255,255,255,.16)!important;color:#d6e6ff!important;
+  background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.14),rgba(255,255,255,0) 45%),radial-gradient(circle at 50% 120%,rgba(70,130,255,.28),#0a0b0d 70%)!important}
+.dock{background:var(--gl-sheen) padding-box,linear-gradient(180deg,rgba(18,19,22,.97),rgba(6,7,9,.98)) padding-box,var(--gl-edge) border-box!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),5px 6px 0 -1px rgba(3,4,5,.97),5px 6px 0 0 rgba(255,255,255,.06),0 20px 40px rgba(0,0,0,.75)!important}
+nav{background:linear-gradient(180deg,rgba(5,6,8,0),rgba(5,6,8,.94) 45%)!important}
+.add{box-shadow:0 10px 26px rgba(0,0,0,.8),0 0 0 6px #08090b,0 0 22px rgba(70,130,255,.35)!important}
+.add span{background:radial-gradient(circle at 35% 22%,rgba(255,255,255,.18),rgba(255,255,255,0) 42%),radial-gradient(circle at 50% 120%,rgba(70,130,255,.35),#07080a 72%)!important}
+.dscrim{background:rgba(0,0,0,.82)!important}
+.wd{fill:rgba(16,17,21,.92)!important;stroke:rgba(255,255,255,.09)!important}
+.dring{stroke:rgba(4,5,6,.95)!important}
+body.dialon .dock{background:rgba(10,11,13,.5)!important}
+#intro{background:radial-gradient(120% 80% at 50% 40%,#0d1424,#050608 62%,#020203)!important}
+#ob{background:radial-gradient(120% 80% at 50% 0%,#101828 0%,#050608 60%)!important}
+
+/* 数字は白をしっかり、ラベルは控えめに */
+.sales{color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.8)}
+.ttl h2{color:#f2f4f8!important}
 
 body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index:95}
 
@@ -2102,9 +2159,9 @@ function bgBuild(){
   const c = document.createElement("canvas"); c.width = bg.width; c.height = bg.height; const x = c.getContext("2d"); x.scale(DPR, DPR); layer = c;
   // 基板の地（濃い紺から青へ）
   const g = x.createRadialGradient(BW / 2, BH * .5, 0, BW / 2, BH * .5, Math.hypot(BW, BH) * .62);
-  g.addColorStop(0, "#1a1c21"); g.addColorStop(.55, "#121317"); g.addColorStop(1, "#0b0c0e"); x.fillStyle = g; x.fillRect(0, 0, BW, BH);
+  g.addColorStop(0, "#0c1426"); g.addColorStop(.5, "#070b15"); g.addColorStop(1, "#020305"); x.fillStyle = g; x.fillRect(0, 0, BW, BH);
   // 細かい点の方眼
-  x.fillStyle = "rgba(255,255,255,.035)"; for (let yy = 6; yy < BH; yy += 14) for (let xx = 6; xx < BW; xx += 14) x.fillRect(xx, yy, 1, 1);
+  x.fillStyle = "rgba(120,160,240,.05)"; for (let yy = 6; yy < BH; yy += 14) for (let xx = 6; xx < BW; xx += 14) x.fillRect(xx, yy, 1, 1);
   // 中央のチップ
   const cx = BW / 2, cy = BH * .5, h = Math.max(30, Math.min(BW, BH) * .1), sp = Math.max(4.2, Math.min(6.5, Math.min(BW, BH) / 70));
   const occ = new Set(), cell = 10, mark = (px, py) => occ.add(((px / cell) | 0) + "," + ((py / cell) | 0));
@@ -2138,28 +2195,28 @@ function bgBuild(){
   for (const t of traces) { t.seg = []; t.len = 0;
     for (let i = 1; i < t.P.length; i++) { const [a1, b1] = t.P[i - 1], [a2, b2] = t.P[i], l = Math.hypot(a2 - a1, b2 - b1); t.seg.push(l); t.len += l;
       for (let s = 0; s < l; s += cell * .7) mark(a1 + (a2 - a1) * s / l, b1 + (b2 - b1) * s / l); }
-    x.strokeStyle = "rgba(205,212,225,.17)"; x.lineWidth = 1; x.beginPath(); t.P.forEach(([px, py], i) => i ? x.lineTo(px, py) : x.moveTo(px, py)); x.stroke();
-    if (t.end) { const [ex, ey] = t.P[t.P.length - 1]; if (ex > 0 && ex < BW && ey > 0 && ey < BH) { x.strokeStyle = "rgba(215,222,235,.22)"; x.beginPath(); x.arc(ex, ey, 2.4, 0, 7); x.stroke(); } } }
+    x.strokeStyle = "rgba(110,155,230,.17)"; x.lineWidth = 1; x.beginPath(); t.P.forEach(([px, py], i) => i ? x.lineTo(px, py) : x.moveTo(px, py)); x.stroke();
+    if (t.end) { const [ex, ey] = t.P[t.P.length - 1]; if (ex > 0 && ex < BW && ey > 0 && ey < BH) { x.strokeStyle = "rgba(130,170,240,.22)"; x.beginPath(); x.arc(ex, ey, 2.4, 0, 7); x.stroke(); } } }
   // 部品（空いている場所にだけ置く）
   const free = (px, py, w, hh) => { for (let yy = py; yy < py + hh; yy += cell) for (let xx = px; xx < px + w; xx += cell) if (occ.has(((xx / cell) | 0) + "," + ((yy / cell) | 0))) return false; return true; };
   for (let n = 0; n < BW * BH / 2600; n++) { const t = rnd(), px = rnd() * BW, py = rnd() * BH;
     if (Math.abs(px - cx) < h * 1.6 && Math.abs(py - cy) < h * 1.6) continue;
     const w = t < .5 ? 10 + rnd() * 26 : 6 + rnd() * 8, hh = t < .5 ? 8 + rnd() * 18 : 4 + rnd() * 5; if (!free(px, py, w, hh)) continue;
     for (let yy = py; yy < py + hh; yy += cell) for (let xx = px; xx < px + w; xx += cell) mark(xx, yy);
-    x.strokeStyle = "rgba(205,212,225,.10)"; x.lineWidth = 1;
+    x.strokeStyle = "rgba(110,155,230,.10)"; x.lineWidth = 1;
     if (t < .5) { x.fillStyle = "rgba(10,11,14,.55)"; x.fillRect(px, py, w, hh); x.strokeRect(px + .5, py + .5, w, hh);
-      x.fillStyle = "rgba(205,212,225,.11)"; for (let q = px + 3; q < px + w - 1; q += 3.5) { x.fillRect(q, py - 2, 1.2, 2); x.fillRect(q, py + hh + 1, 1.2, 2); } }
-    else if (t < .8) { x.fillStyle = "rgba(205,212,225,.08)"; x.fillRect(px, py, w * .3, hh); x.fillRect(px + w * .7, py, w * .3, hh); }
+      x.fillStyle = "rgba(110,155,230,.11)"; for (let q = px + 3; q < px + w - 1; q += 3.5) { x.fillRect(q, py - 2, 1.2, 2); x.fillRect(q, py + hh + 1, 1.2, 2); } }
+    else if (t < .8) { x.fillStyle = "rgba(110,155,230,.08)"; x.fillRect(px, py, w * .3, hh); x.fillRect(px + w * .7, py, w * .3, hh); }
     else { x.beginPath(); x.arc(px, py, 2 + rnd() * 3, 0, 7); x.stroke(); } }
   // チップ本体
-  x.save(); x.shadowColor = "rgba(0,0,0,.7)"; x.shadowBlur = 18; x.fillStyle = "#0d0e11"; x.fillRect(cx - h, cy - h, h * 2, h * 2); x.restore();
-  x.strokeStyle = "rgba(215,222,235,.3)"; x.lineWidth = 1.2; x.strokeRect(cx - h + .5, cy - h + .5, h * 2 - 1, h * 2 - 1);
-  x.fillStyle = "rgba(220,226,236,.28)"; for (let q = -h + 4; q < h - 3; q += 3) { x.fillRect(cx + q, cy - h - 3, 1.2, 3); x.fillRect(cx + q, cy + h, 1.2, 3); x.fillRect(cx - h - 3, cy + q, 3, 1.2); x.fillRect(cx + h, cy + q, 3, 1.2); }
-  const d = h * .52; x.fillStyle = "rgba(225,230,240,.08)"; x.fillRect(cx - d, cy - d, d * 2, d * 2);
-  x.fillStyle = "rgba(230,234,242,.26)"; for (let q = -d + 2; q < d - 1; q += 3.2) for (let r = -d + 2; r < d - 1; r += 3.2) x.fillRect(cx + q, cy + r, 1.4, 1.4);
-  x.fillStyle = "rgba(230,234,242,.35)"; [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([a, b]) => { x.beginPath(); x.arc(cx + a * (h - 5), cy + b * (h - 5), 1.4, 0, 7); x.fill(); });
+  x.save(); x.shadowColor = "rgba(0,0,0,.7)"; x.shadowBlur = 18; x.fillStyle = "#05070b"; x.fillRect(cx - h, cy - h, h * 2, h * 2); x.restore();
+  x.strokeStyle = "rgba(130,170,240,.3)"; x.lineWidth = 1.2; x.strokeRect(cx - h + .5, cy - h + .5, h * 2 - 1, h * 2 - 1);
+  x.fillStyle = "rgba(140,180,245,.28)"; for (let q = -h + 4; q < h - 3; q += 3) { x.fillRect(cx + q, cy - h - 3, 1.2, 3); x.fillRect(cx + q, cy + h, 1.2, 3); x.fillRect(cx - h - 3, cy + q, 3, 1.2); x.fillRect(cx + h, cy + q, 3, 1.2); }
+  const d = h * .52; x.fillStyle = "rgba(150,185,250,.08)"; x.fillRect(cx - d, cy - d, d * 2, d * 2);
+  x.fillStyle = "rgba(170,200,255,.26)"; for (let q = -d + 2; q < d - 1; q += 3.2) for (let r = -d + 2; r < d - 1; r += 3.2) x.fillRect(cx + q, cy + r, 1.4, 1.4);
+  x.fillStyle = "rgba(170,200,255,.35)"; [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([a, b]) => { x.beginPath(); x.arc(cx + a * (h - 5), cy + b * (h - 5), 1.4, 0, 7); x.fill(); });
   // 周辺を少し暗く（文字を読みやすく）
-  const vg = x.createRadialGradient(BW / 2, BH / 2, Math.min(BW, BH) * .25, BW / 2, BH / 2, Math.hypot(BW, BH) * .6); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(4,4,6,.65)"); x.fillStyle = vg; x.fillRect(0, 0, BW, BH);
+  const vg = x.createRadialGradient(BW / 2, BH / 2, Math.min(BW, BH) * .25, BW / 2, BH / 2, Math.hypot(BW, BH) * .6); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,.78)"); x.fillStyle = vg; x.fillRect(0, 0, BW, BH);
   for (let i = 0; i < 8; i++) spawn(rnd());
 }
 // 配線の上の位置（先頭からの距離 s）
