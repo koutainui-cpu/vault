@@ -573,16 +573,24 @@ body.dialon nav{z-index:62;background:none}
 body.dialon .dock{background:rgba(29,41,70,.35);border-color:transparent;box-shadow:none}
 body.dialon .tab{opacity:.25;pointer-events:none}
 .dfan{position:absolute;inset:0;z-index:63;pointer-events:none}
-.dsvg{position:absolute;left:0;top:0;opacity:0;transform:scale(.88);transform-origin:50% 100%;transition:opacity .22s,transform .3s cubic-bezier(.2,.8,.2,1)}
-.dial.on .dsvg{opacity:1;transform:none}
-.wd{fill:rgba(30,50,90,.6);stroke:rgba(150,180,230,.12);stroke-width:1;pointer-events:auto;cursor:pointer;transition:fill .2s}
-.wd.lit{fill:url(#dwg)}
-.dring{fill:none;stroke:rgba(10,13,20,.9);stroke-width:16}
+.dsvg{position:absolute;left:0;top:0;opacity:0;transition:opacity .18s}
+.dial.on .dsvg{opacity:1}
+.wd{fill:rgba(30,50,90,.62);stroke:rgba(150,180,230,.16);stroke-width:1;pointer-events:auto;cursor:pointer;transition:fill .2s,transform .28s cubic-bezier(.3,1.4,.5,1)}
+.wd.lit{fill:url(#dwg);stroke:rgba(150,190,255,.5)}
+.wedge-edge{fill:rgba(120,170,255,.18);pointer-events:none;transition:transform .28s cubic-bezier(.3,1.4,.5,1),fill .2s}
+.wgrp.lit .wedge-edge{fill:#7fb0ff;filter:drop-shadow(0 0 5px rgba(93,155,255,.95))}
+.dticks line{stroke:rgba(160,195,255,.35);stroke-width:1}
+.dticks line.tb{stroke:rgba(190,215,255,.7);stroke-width:1.4}
+.dgear rect{fill:rgba(140,175,235,.32)}
+.dring{fill:none;stroke:rgba(8,14,30,.92);stroke-width:14}
+.dneedle path{fill:#cfe0ff;filter:drop-shadow(0 0 4px rgba(93,155,255,.9))}
+.dneedle .tip{fill:#fff;filter:drop-shadow(0 0 5px rgba(140,190,255,1))}
 .darc{fill:#5d9bff;filter:drop-shadow(0 0 6px rgba(93,155,255,.9))}
+.dslots{position:absolute;width:0;height:0}
+.dslot{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0}
 .dk{position:absolute;z-index:1;width:64px;height:64px;margin:0;padding:0;border:0;border-radius:50%;background:none;pointer-events:auto;color:rgba(214,226,244,.55);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:500 11.5px var(--body);
-  opacity:0;transform:translate(-50%,-30%) scale(.7);transition:opacity .25s var(--d),transform .35s cubic-bezier(.2,.8,.2,1.2) var(--d),color .2s}
-.dial.on .dk{opacity:1;transform:translate(-50%,-50%)}
+  transform:translate(-50%,-50%);transition:color .2s,translate .28s cubic-bezier(.3,1.4,.5,1)}
+.dic{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:100%;height:100%;font:500 11.5px var(--body)}
 .dk svg{width:26px;height:26px}
 .dk.lit{color:#fff}
 .dk.lit svg{color:#a8c9ff;filter:drop-shadow(0 0 7px rgba(93,155,255,.9))}
@@ -591,7 +599,7 @@ body.dialon .tab{opacity:.25;pointer-events:none}
 .dial.on .dlab{opacity:1}
 .dlab b{display:block;font:300 30px/1.1 var(--body);color:#fff;letter-spacing:.04em}
 .dlab span{display:block;margin-top:6px;font-size:14px;color:#6aa6ff}
-body.calm .dscrim,body.calm .dsvg,body.calm .dk,body.calm .dlab{transition:none}
+body.calm .dscrim,body.calm .dsvg,body.calm .dk,body.calm .dlab,body.calm .wd,body.calm .wedge-edge{transition:none}
 
 /* ---------- 起動演出・案内（クロームと青） ---------- */
 #intro{background:radial-gradient(120% 80% at 50% 40%,#16305c,#0b1630 60%,#060c1c)}
@@ -609,6 +617,117 @@ body.calm .dscrim,body.calm .dsvg,body.calm .dk,body.calm .dlab{transition:none}
 
 .loc,.hd{text-shadow:0 1px 3px rgba(0,0,0,.8)}
 .foot{color:rgba(200,215,240,.5)}
+
+/* =====================================================================
+   GLASS 部品：重なったガラス板・斜めの光沢・下ふちの青い光
+   ===================================================================== */
+:root{
+  --gl:linear-gradient(160deg,rgba(130,165,230,.17),rgba(60,85,140,.10));
+  --gl-solid:linear-gradient(160deg,rgba(28,42,74,.94),rgba(15,24,46,.95));
+  --gl-sheen:linear-gradient(118deg,rgba(255,255,255,0) 0 56%,rgba(255,255,255,.05) 56.3% 100%);
+  --gl-bd:rgba(170,200,255,.30);
+  --gl-edge:linear-gradient(135deg,rgba(130,190,255,.75),rgba(120,140,255,.25) 45%,rgba(170,130,255,.6));
+  --gl-in:inset 0 1px 0 rgba(255,255,255,.16),inset 0 -1px 0 rgba(120,180,255,.10);
+  /* 後ろに2枚重なったガラス板 */
+  --stack:5px 6px 0 -1px rgba(12,20,40,.93),5px 6px 0 0 rgba(150,185,245,.22),10px 12px 0 -1px rgba(10,17,35,.92),10px 12px 0 0 rgba(150,185,245,.13),14px 20px 30px rgba(0,0,0,.42);
+  --stack1:4px 5px 0 -1px rgba(12,20,40,.93),4px 5px 0 0 rgba(150,185,245,.22),8px 12px 22px rgba(0,0,0,.4);
+  --glow-b:0 0 18px rgba(80,150,255,.45);
+  --glow-v:0 0 16px rgba(160,120,255,.38);
+}
+
+/* ---------- カード・パネル（Card / Modal） ---------- */
+.card,.kpi,.bp,.pcard,.sgroup,.cdet,.empty,.csum div,.ownbox,#ob .feat div{
+  border:1px solid transparent!important;
+  background:var(--gl-sheen) padding-box,var(--gl-solid) padding-box,var(--gl-edge) border-box!important;
+  box-shadow:var(--gl-in),var(--stack)!important}
+.bp{background:var(--gl-sheen) padding-box,linear-gradient(var(--grid) 1px,transparent 1px) 0 0/18px 18px padding-box,linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/18px 18px padding-box,var(--gl-solid) padding-box,var(--gl-edge) border-box!important}
+.kpi,.csum div,.sgroup,.cdet,#ob .feat div{box-shadow:var(--gl-in),var(--stack1)!important}
+.card.lit::after{display:none}
+/* 下ふちの光の線 */
+.card::before,.kpi::before,.bp::after,.pcard::before{content:"";position:absolute;left:18%;right:18%;bottom:-1px;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(120,185,255,.95),transparent);box-shadow:0 0 10px 1px rgba(80,150,255,.55);border-radius:1px}
+.kpi,.pcard{position:relative}
+.bp::before{display:none}
+
+/* ---------- 主なボタン（Primary） ---------- */
+.btn{position:relative;border-radius:999px;border:1px solid rgba(175,215,255,.75);color:#fff;font-weight:500;letter-spacing:.02em;text-shadow:0 0 8px rgba(160,210,255,.6);
+  background:linear-gradient(180deg,rgba(255,255,255,.36),rgba(255,255,255,.04) 50%,rgba(255,255,255,0) 52%) padding-box,linear-gradient(180deg,rgba(140,195,255,.72),rgba(70,130,245,.64)) padding-box;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 6px rgba(20,60,160,.35),0 0 20px rgba(80,150,255,.5),4px 5px 0 -1px rgba(14,24,48,.9),4px 5px 0 0 rgba(150,190,255,.25)}
+.btn:active{transform:translateY(1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 12px rgba(80,150,255,.45),2px 3px 0 -1px rgba(14,24,48,.9),2px 3px 0 0 rgba(150,190,255,.25)}
+.btn:disabled{opacity:.42;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),4px 5px 0 -1px rgba(14,24,48,.9),4px 5px 0 0 rgba(150,190,255,.15)}
+/* 2番目のボタン（Secondary：紫のガラス） */
+.btn.ghost2{border-color:rgba(175,150,255,.6);color:#d3c6ff;text-shadow:0 0 8px rgba(170,140,255,.5);
+  background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 55%) padding-box,linear-gradient(180deg,rgba(120,100,220,.24),rgba(80,60,170,.18)) padding-box;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.25),var(--glow-v),4px 5px 0 -1px rgba(14,22,46,.9),4px 5px 0 0 rgba(170,150,255,.22)}
+.btn.danger{border-color:rgba(255,160,150,.6);color:#ffd8d2;text-shadow:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0) 55%) padding-box,rgba(255,110,100,.14) padding-box;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 14px rgba(255,120,110,.3),4px 5px 0 -1px rgba(14,22,46,.9),4px 5px 0 0 rgba(255,170,160,.2)}
+
+/* ---------- 丸いアイコンボタン（Icon Button） ---------- */
+.iconbtn,.info,.pmon button,.bp .mon button{border-radius:50%}
+.iconbtn,.info{border:1px solid rgba(170,210,255,.45)!important;color:#bfe0ff!important;
+  background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.22),rgba(255,255,255,0) 45%),radial-gradient(circle at 50% 120%,rgba(80,150,255,.35),rgba(20,35,70,.85) 70%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 14px rgba(80,150,255,.4),3px 4px 0 -1px rgba(12,20,40,.9),3px 4px 0 0 rgba(150,190,255,.2)}
+.iconbtn svg{filter:drop-shadow(0 0 4px rgba(140,200,255,.8))}
+.add{background:conic-gradient(from 210deg,#7fb6ff 0 68%,rgba(127,182,255,.18) 68% 100%)}
+.add span{background:radial-gradient(circle at 35% 22%,rgba(255,255,255,.28),rgba(255,255,255,0) 42%),radial-gradient(circle at 50% 120%,rgba(80,150,255,.5),#101a30 72%);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 -3px 8px rgba(0,0,0,.4)}
+.add svg{color:#d6ecff;filter:drop-shadow(0 0 7px rgba(130,195,255,1))}
+
+/* ---------- 入力欄（Text Field / Select） ---------- */
+.fld input,.fld select,.ren,.prow input.pd,.prow .money input,#ob .fld input{
+  border-radius:14px!important;border:1px solid rgba(170,200,255,.28)!important;color:var(--ink);
+  background:var(--gl-sheen),linear-gradient(160deg,rgba(130,165,230,.14),rgba(40,60,110,.22))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -1px 0 rgba(110,175,255,.55),0 7px 14px -10px rgba(80,150,255,.9),4px 5px 0 -1px rgba(12,20,40,.92),4px 5px 0 0 rgba(150,185,245,.2)!important;
+  transition:border-color .2s,box-shadow .2s}
+.fld input:focus,.fld select:focus,.ren:focus,.prow input:focus{outline:none;border-color:rgba(175,150,255,.75)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -1px 0 rgba(130,185,255,.9),0 0 0 3px rgba(150,120,255,.16),0 0 16px rgba(150,120,255,.35),4px 5px 0 -1px rgba(12,20,40,.92),4px 5px 0 0 rgba(170,150,255,.3)!important}
+.fld input::placeholder{color:rgba(200,215,240,.38)}
+.money::before{z-index:1;color:rgba(190,215,255,.6)}
+
+/* ---------- 選択肢・タブ（Tabs / Segmented） ---------- */
+.seg,.opts.wdg{border-radius:14px;border:1px solid rgba(170,200,255,.22);background:var(--gl-sheen),rgba(30,46,80,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),var(--stack1)}
+.seg button{position:relative;border-radius:10px}
+.seg button[aria-pressed="true"],.seg.m button[aria-pressed="true"][data-v="sales"],.seg.m button[aria-pressed="true"][data-v="profit"]{
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0) 60%),rgba(80,140,255,.18);box-shadow:inset 0 0 0 1px rgba(160,200,255,.45),0 0 14px rgba(80,150,255,.35)}
+.seg button[aria-pressed="true"]::after{content:"";position:absolute;left:24%;right:24%;bottom:3px;height:2px;border-radius:2px;background:#9cc8ff;box-shadow:0 0 8px 1px rgba(100,170,255,.9)}
+.opts button,.chips button,.storebar button,.tg,.pmon,.bp .mon{border:1px solid rgba(170,200,255,.26)!important;background:var(--gl-sheen),linear-gradient(160deg,rgba(130,165,230,.14),rgba(40,60,110,.2))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),3px 4px 0 -1px rgba(12,20,40,.9),3px 4px 0 0 rgba(150,185,245,.16)}
+.opts button[aria-pressed="true"],.chips button[aria-pressed="true"],.storebar button[aria-pressed="true"],.tg[aria-pressed="true"]{
+  color:#fff!important;border-color:rgba(175,215,255,.75)!important;text-shadow:0 0 8px rgba(160,210,255,.7);
+  background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,0) 55%),linear-gradient(180deg,rgba(110,170,255,.5),rgba(55,105,230,.42))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 14px rgba(80,150,255,.5),3px 4px 0 -1px rgba(12,20,40,.9),3px 4px 0 0 rgba(150,190,255,.25)}
+.tg.dl{color:#ffb4aa!important;border-color:rgba(255,160,150,.45)!important}
+#ob .indg button{border:1px solid rgba(170,200,255,.26);background:var(--gl-sheen),linear-gradient(160deg,rgba(130,165,230,.14),rgba(40,60,110,.2));box-shadow:inset 0 1px 0 rgba(255,255,255,.12),var(--stack1)}
+#ob .indg button[aria-pressed="true"]{border-color:rgba(175,215,255,.75);background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,0) 55%),rgba(80,140,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 16px rgba(80,150,255,.45),var(--stack1)}
+
+/* ---------- スイッチ・チェック（Switch / Checkbox） ---------- */
+.sw input{width:54px;height:32px;border:1px solid rgba(170,200,255,.25);background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(40,60,100,.3));box-shadow:inset 0 2px 5px rgba(0,0,0,.5),3px 4px 0 -1px rgba(12,20,40,.9),3px 4px 0 0 rgba(150,185,245,.14)}
+.sw input::after{top:3px;left:3px;width:24px;height:24px;background:radial-gradient(circle at 35% 30%,#ffffff,#9aa8bd 75%);box-shadow:0 2px 4px rgba(0,0,0,.5)}
+.sw input:checked{border-color:rgba(175,215,255,.7);background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%),linear-gradient(180deg,rgba(110,170,255,.6),rgba(55,105,230,.5));box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 14px rgba(80,150,255,.55),3px 4px 0 -1px rgba(12,20,40,.9),3px 4px 0 0 rgba(150,190,255,.25)}
+.sw input:checked::after{left:25px;background:radial-gradient(circle at 35% 30%,#ffffff,#cfe4ff 70%);box-shadow:0 0 10px rgba(160,210,255,.95)}
+.ck input{-webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:8px;border:1px solid rgba(170,200,255,.35);position:relative;cursor:pointer;
+  background:var(--gl-sheen),rgba(40,60,110,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),3px 4px 0 -1px rgba(12,20,40,.9),3px 4px 0 0 rgba(150,185,245,.18)}
+.ck input:checked{border-color:rgba(175,215,255,.8);background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 55%),rgba(80,140,255,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 12px rgba(80,150,255,.6),3px 4px 0 -1px rgba(12,20,40,.9),3px 4px 0 0 rgba(150,190,255,.25)}
+.ck input:checked::after{content:"";position:absolute;left:8px;top:3px;width:7px;height:13px;border:solid #fff;border-width:0 2.4px 2.4px 0;transform:rotate(45deg);filter:drop-shadow(0 0 3px rgba(170,215,255,1))}
+
+/* ---------- お知らせ（Toast）・確認（Modal） ---------- */
+.toast{border-radius:16px!important;border:1px solid rgba(170,200,255,.3)!important;background:var(--gl-sheen),linear-gradient(160deg,rgba(32,48,84,.96),rgba(16,26,50,.97))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -1px 0 rgba(110,175,255,.7),0 8px 18px -10px rgba(80,150,255,.9),var(--stack1)!important}
+.confirm{border-radius:16px;border:1px solid rgba(255,170,160,.4);background:var(--gl-sheen),rgba(60,30,50,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),var(--stack1)}
+.confirm button{border-radius:999px!important;border:1px solid rgba(170,200,255,.3)!important;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0) 55%),rgba(60,90,150,.3)!important}
+.confirm button.d{border-color:rgba(255,170,160,.6)!important;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 55%),rgba(255,110,100,.28)!important;box-shadow:0 0 12px rgba(255,120,110,.35)}
+.sheet{border:1px solid rgba(170,200,255,.25)!important;border-bottom:0!important;background:linear-gradient(180deg,rgba(24,38,70,.97),rgba(11,19,38,.98))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 -6px 30px rgba(0,0,0,.55),0 -1px 14px rgba(80,150,255,.25)!important}
+.sh-hd button{border-radius:999px;border:1px solid rgba(170,200,255,.3)!important;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0) 55%),rgba(60,90,150,.25)!important;color:#d2e4ff!important}
+.notice{border-style:solid!important;border-color:rgba(170,200,255,.3)!important;background:var(--gl-sheen),rgba(60,100,180,.14)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -1px 0 rgba(110,175,255,.6)}
+.pick{border:1px solid rgba(170,200,255,.26);background:var(--gl-sheen),linear-gradient(160deg,rgba(130,165,230,.14),rgba(40,60,110,.2));box-shadow:inset 0 1px 0 rgba(255,255,255,.12),var(--stack1)}
+
+/* ---------- カレンダーのマス・下のメニュー ---------- */
+.cd{border-color:rgba(170,200,255,.18);background:var(--gl-sheen),rgba(40,60,110,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}
+.cd.today,.cd.sel{border-color:rgba(175,215,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 12px rgba(80,150,255,.5)}
+.dock{border:1px solid transparent!important;background:var(--gl-sheen) padding-box,linear-gradient(180deg,rgba(40,60,104,.95),rgba(22,34,64,.97)) padding-box,var(--gl-edge) border-box!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),5px 6px 0 -1px rgba(10,17,35,.92),5px 6px 0 0 rgba(150,185,245,.18),0 16px 34px rgba(0,0,0,.55)!important}
+.tab.on::after{left:30%;right:30%;width:auto;height:2px;background:#a8d0ff;box-shadow:0 0 10px 2px rgba(90,160,255,.9)}
 
 body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index:95}
 
@@ -1871,7 +1990,7 @@ function enterApp(){
 
 /* ================= 背景：中央のチップから回路が広がり、青い電気の光が配線を走る ================= */
 const bg = $("bg"), bx = bg.getContext("2d");
-let BW, BH, DPR, layer, traces = [], pulses = [], braf = 0, last = 0, nextSurge = 0, seed = 7;
+let BW, BH, DPR, layer, traces = [], pulses = [], braf = 0, last = 0, nextSurge = 12, seed = 7;
 const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
 function bgBuild(){
   DPR = Math.min(1.5, devicePixelRatio || 1); BW = innerWidth; BH = innerHeight; bg.width = Math.round(BW * DPR); bg.height = Math.round(BH * DPR);
@@ -1879,9 +1998,9 @@ function bgBuild(){
   const c = document.createElement("canvas"); c.width = bg.width; c.height = bg.height; const x = c.getContext("2d"); x.scale(DPR, DPR); layer = c;
   // 基板の地（濃い紺から青へ）
   const g = x.createRadialGradient(BW / 2, BH * .5, 0, BW / 2, BH * .5, Math.hypot(BW, BH) * .62);
-  g.addColorStop(0, "#15305e"); g.addColorStop(.55, "#0e2146"); g.addColorStop(1, "#08132b"); x.fillStyle = g; x.fillRect(0, 0, BW, BH);
+  g.addColorStop(0, "#102447"); g.addColorStop(.55, "#0b1a37"); g.addColorStop(1, "#070f22"); x.fillStyle = g; x.fillRect(0, 0, BW, BH);
   // 細かい点の方眼
-  x.fillStyle = "rgba(150,190,255,.10)"; for (let yy = 6; yy < BH; yy += 14) for (let xx = 6; xx < BW; xx += 14) x.fillRect(xx, yy, 1, 1);
+  x.fillStyle = "rgba(150,190,255,.05)"; for (let yy = 6; yy < BH; yy += 14) for (let xx = 6; xx < BW; xx += 14) x.fillRect(xx, yy, 1, 1);
   // 中央のチップ
   const cx = BW / 2, cy = BH * .5, h = Math.max(30, Math.min(BW, BH) * .1), sp = Math.max(4.2, Math.min(6.5, Math.min(BW, BH) / 70));
   const occ = new Set(), cell = 10, mark = (px, py) => occ.add(((px / cell) | 0) + "," + ((py / cell) | 0));
@@ -1915,48 +2034,48 @@ function bgBuild(){
   for (const t of traces) { t.seg = []; t.len = 0;
     for (let i = 1; i < t.P.length; i++) { const [a1, b1] = t.P[i - 1], [a2, b2] = t.P[i], l = Math.hypot(a2 - a1, b2 - b1); t.seg.push(l); t.len += l;
       for (let s = 0; s < l; s += cell * .7) mark(a1 + (a2 - a1) * s / l, b1 + (b2 - b1) * s / l); }
-    x.strokeStyle = "rgba(150,195,255,.36)"; x.lineWidth = 1.1; x.beginPath(); t.P.forEach(([px, py], i) => i ? x.lineTo(px, py) : x.moveTo(px, py)); x.stroke();
-    if (t.end) { const [ex, ey] = t.P[t.P.length - 1]; if (ex > 0 && ex < BW && ey > 0 && ey < BH) { x.strokeStyle = "rgba(170,205,255,.45)"; x.beginPath(); x.arc(ex, ey, 2.4, 0, 7); x.stroke(); } } }
+    x.strokeStyle = "rgba(150,195,255,.17)"; x.lineWidth = 1; x.beginPath(); t.P.forEach(([px, py], i) => i ? x.lineTo(px, py) : x.moveTo(px, py)); x.stroke();
+    if (t.end) { const [ex, ey] = t.P[t.P.length - 1]; if (ex > 0 && ex < BW && ey > 0 && ey < BH) { x.strokeStyle = "rgba(170,205,255,.22)"; x.beginPath(); x.arc(ex, ey, 2.4, 0, 7); x.stroke(); } } }
   // 部品（空いている場所にだけ置く）
   const free = (px, py, w, hh) => { for (let yy = py; yy < py + hh; yy += cell) for (let xx = px; xx < px + w; xx += cell) if (occ.has(((xx / cell) | 0) + "," + ((yy / cell) | 0))) return false; return true; };
   for (let n = 0; n < BW * BH / 2600; n++) { const t = rnd(), px = rnd() * BW, py = rnd() * BH;
     if (Math.abs(px - cx) < h * 1.6 && Math.abs(py - cy) < h * 1.6) continue;
     const w = t < .5 ? 10 + rnd() * 26 : 6 + rnd() * 8, hh = t < .5 ? 8 + rnd() * 18 : 4 + rnd() * 5; if (!free(px, py, w, hh)) continue;
     for (let yy = py; yy < py + hh; yy += cell) for (let xx = px; xx < px + w; xx += cell) mark(xx, yy);
-    x.strokeStyle = "rgba(150,195,255,.20)"; x.lineWidth = 1;
+    x.strokeStyle = "rgba(150,195,255,.10)"; x.lineWidth = 1;
     if (t < .5) { x.fillStyle = "rgba(8,18,40,.55)"; x.fillRect(px, py, w, hh); x.strokeRect(px + .5, py + .5, w, hh);
-      x.fillStyle = "rgba(150,195,255,.22)"; for (let q = px + 3; q < px + w - 1; q += 3.5) { x.fillRect(q, py - 2, 1.2, 2); x.fillRect(q, py + hh + 1, 1.2, 2); } }
-    else if (t < .8) { x.fillStyle = "rgba(150,195,255,.16)"; x.fillRect(px, py, w * .3, hh); x.fillRect(px + w * .7, py, w * .3, hh); }
+      x.fillStyle = "rgba(150,195,255,.11)"; for (let q = px + 3; q < px + w - 1; q += 3.5) { x.fillRect(q, py - 2, 1.2, 2); x.fillRect(q, py + hh + 1, 1.2, 2); } }
+    else if (t < .8) { x.fillStyle = "rgba(150,195,255,.08)"; x.fillRect(px, py, w * .3, hh); x.fillRect(px + w * .7, py, w * .3, hh); }
     else { x.beginPath(); x.arc(px, py, 2 + rnd() * 3, 0, 7); x.stroke(); } }
   // チップ本体
   x.save(); x.shadowColor = "rgba(0,0,0,.7)"; x.shadowBlur = 18; x.fillStyle = "#0a1020"; x.fillRect(cx - h, cy - h, h * 2, h * 2); x.restore();
-  x.strokeStyle = "rgba(170,205,255,.55)"; x.lineWidth = 1.2; x.strokeRect(cx - h + .5, cy - h + .5, h * 2 - 1, h * 2 - 1);
-  x.fillStyle = "rgba(190,215,255,.55)"; for (let q = -h + 4; q < h - 3; q += 3) { x.fillRect(cx + q, cy - h - 3, 1.2, 3); x.fillRect(cx + q, cy + h, 1.2, 3); x.fillRect(cx - h - 3, cy + q, 3, 1.2); x.fillRect(cx + h, cy + q, 3, 1.2); }
-  const d = h * .52; x.fillStyle = "rgba(200,220,255,.18)"; x.fillRect(cx - d, cy - d, d * 2, d * 2);
-  x.fillStyle = "rgba(220,235,255,.55)"; for (let q = -d + 2; q < d - 1; q += 3.2) for (let r = -d + 2; r < d - 1; r += 3.2) x.fillRect(cx + q, cy + r, 1.4, 1.4);
-  x.fillStyle = "rgba(220,235,255,.7)"; [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([a, b]) => { x.beginPath(); x.arc(cx + a * (h - 5), cy + b * (h - 5), 1.4, 0, 7); x.fill(); });
+  x.strokeStyle = "rgba(170,205,255,.3)"; x.lineWidth = 1.2; x.strokeRect(cx - h + .5, cy - h + .5, h * 2 - 1, h * 2 - 1);
+  x.fillStyle = "rgba(190,215,255,.28)"; for (let q = -h + 4; q < h - 3; q += 3) { x.fillRect(cx + q, cy - h - 3, 1.2, 3); x.fillRect(cx + q, cy + h, 1.2, 3); x.fillRect(cx - h - 3, cy + q, 3, 1.2); x.fillRect(cx + h, cy + q, 3, 1.2); }
+  const d = h * .52; x.fillStyle = "rgba(200,220,255,.08)"; x.fillRect(cx - d, cy - d, d * 2, d * 2);
+  x.fillStyle = "rgba(220,235,255,.26)"; for (let q = -d + 2; q < d - 1; q += 3.2) for (let r = -d + 2; r < d - 1; r += 3.2) x.fillRect(cx + q, cy + r, 1.4, 1.4);
+  x.fillStyle = "rgba(220,235,255,.35)"; [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([a, b]) => { x.beginPath(); x.arc(cx + a * (h - 5), cy + b * (h - 5), 1.4, 0, 7); x.fill(); });
   // 周辺を少し暗く（文字を読みやすく）
-  const vg = x.createRadialGradient(BW / 2, BH / 2, Math.min(BW, BH) * .25, BW / 2, BH / 2, Math.hypot(BW, BH) * .6); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(2,6,16,.55)"); x.fillStyle = vg; x.fillRect(0, 0, BW, BH);
-  for (let i = 0; i < 26; i++) spawn(rnd());
+  const vg = x.createRadialGradient(BW / 2, BH / 2, Math.min(BW, BH) * .25, BW / 2, BH / 2, Math.hypot(BW, BH) * .6); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(2,6,16,.65)"); x.fillStyle = vg; x.fillRect(0, 0, BW, BH);
+  for (let i = 0; i < 8; i++) spawn(rnd());
 }
 // 配線の上の位置（先頭からの距離 s）
 function at(t, s){ for (let i = 0; i < t.seg.length; i++) { if (s <= t.seg[i]) { const [a1, b1] = t.P[i], [a2, b2] = t.P[i + 1], f = s / t.seg[i]; return [a1 + (a2 - a1) * f, b1 + (b2 - b1) * f]; } s -= t.seg[i]; } return t.P[t.P.length - 1]; }
 function spawn(head, strong){ if (!traces.length) return; const t = traces[Math.floor(Math.random() * traces.length)];
-  pulses.push({ t, s: (head || 0) * t.len, v: (strong ? 260 : 120) + Math.random() * 180, tail: (strong ? 120 : 50) + Math.random() * 90, a: strong ? 1 : .55 + Math.random() * .35 }); }
+  pulses.push({ t, s: (head || 0) * t.len, v: (strong ? 150 : 70) + Math.random() * 80, tail: (strong ? 90 : 40) + Math.random() * 60, a: strong ? .6 : .3 + Math.random() * .25 }); }
 function bgDraw(time, dt){
   bx.setTransform(1, 0, 0, 1, 0, 0); bx.drawImage(layer, 0, 0); bx.setTransform(DPR, 0, 0, DPR, 0, 0);
   bx.globalCompositeOperation = "lighter"; bx.lineCap = "round"; bx.lineJoin = "round";
   for (const p of pulses) { p.s += p.v * dt;
     const n = 9, pts = []; for (let i = 0; i <= n; i++) { const s = p.s - p.tail * i / n; if (s < 0) break; pts.push(at(p.t, Math.min(s, p.t.len))); }
     for (let i = 1; i < pts.length; i++) { const f = 1 - i / n;
-      bx.strokeStyle = `rgba(60,140,255,${.2 * f * p.a})`; bx.lineWidth = 8; bx.beginPath(); bx.moveTo(...pts[i - 1]); bx.lineTo(...pts[i]); bx.stroke();
-      bx.strokeStyle = `rgba(170,215,255,${.85 * f * p.a})`; bx.lineWidth = 1.6; bx.beginPath(); bx.moveTo(...pts[i - 1]); bx.lineTo(...pts[i]); bx.stroke(); }
-    if (pts.length) { const [hx, hy] = pts[0], gr = bx.createRadialGradient(hx, hy, 0, hx, hy, 9); gr.addColorStop(0, `rgba(235,245,255,${.9 * p.a})`); gr.addColorStop(1, "rgba(80,150,255,0)"); bx.fillStyle = gr; bx.fillRect(hx - 9, hy - 9, 18, 18); } }
+      bx.strokeStyle = `rgba(60,140,255,${.12 * f * p.a})`; bx.lineWidth = 6; bx.beginPath(); bx.moveTo(...pts[i - 1]); bx.lineTo(...pts[i]); bx.stroke();
+      bx.strokeStyle = `rgba(170,215,255,${.7 * f * p.a})`; bx.lineWidth = 1.3; bx.beginPath(); bx.moveTo(...pts[i - 1]); bx.lineTo(...pts[i]); bx.stroke(); }
+    if (pts.length) { const [hx, hy] = pts[0], gr = bx.createRadialGradient(hx, hy, 0, hx, hy, 7); gr.addColorStop(0, `rgba(225,240,255,${.7 * p.a})`); gr.addColorStop(1, "rgba(80,150,255,0)"); bx.fillStyle = gr; bx.fillRect(hx - 7, hy - 7, 14, 14); } }
   bx.globalCompositeOperation = "source-over";
   pulses = pulses.filter(p => p.s - p.tail < p.t.len);
-  while (pulses.length < 26) spawn(Math.random() < .2 ? Math.random() * .5 : 0);
+  while (pulses.length < 8) spawn(Math.random() < .2 ? Math.random() * .5 : 0);
   // ときどき、チップから一斉に光が走る
-  if (time > nextSurge) { nextSurge = time + 7 + Math.random() * 5; for (let i = 0; i < 18; i++) spawn(0, true); }
+  if (time > nextSurge) { nextSurge = time + 16 + Math.random() * 10; for (let i = 0; i < 6; i++) spawn(0, true); }
 }
 function bgLoop(now){ braf = requestAnimationFrame(bgLoop); if (now - last < 33) return; const dt = last ? Math.min(.08, (now - last) / 1000) : .033; last = now; bgDraw(now / 1000, dt); }
 function bgStart(){ cancelAnimationFrame(braf); braf = 0; last = 0;
@@ -1967,7 +2086,7 @@ document.addEventListener("visibilitychange", bgStart);
 let rT; addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(() => { bgBuild(); bgStart(); }, 200); });
 
 /* =====================================================================
-   記録ボタンの円形メニュー（＋を押すと、扇形に5つの記録が開く）
+   記録ボタンの円形メニュー（＋を押すと、機械の羽根のように扇形が展開する）
    ===================================================================== */
 const DIAL = [
   { f: "sale", t: "売上", s: "その日の売上を入れる", ic: '<path d="M5 20V12M10 20V6M15 20V10M20 20V4"/>' },
@@ -1976,42 +2095,97 @@ const DIAL = [
   { f: "bonus", t: "歩合", s: "歩合・日当を金額で入れる", ic: '<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.8-3 3-4.6 5.5-4.6s4.7 1.6 5.5 4.6"/><path d="M18 8v6M15 11h6"/>' },
   { f: "pdf", t: "PDF", s: "レジの日報をまとめて読み込む", ic: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>' }
 ];
-let dialFocus = 0;
+let dialFocus = 0, DG = null, needleA = 0, dialAnims = [];
+const RAD = a => a * Math.PI / 180;
 function dialGeom(){
   const k = $("bAdd").querySelector(".add").getBoundingClientRect(), cx = k.left + k.width / 2, cy = k.top + k.height / 2;
-  const R = Math.min(156, innerWidth / 2 - 8), r = 40, a0 = 196, a1 = 344;
-  return { cx, cy, R, r, a0, a1, step: (a1 - a0) / DIAL.length };
+  const R = Math.min(150, innerWidth / 2 - 20), r = 40, a0 = 196, a1 = 344;
+  return { cx, cy, R, r, a0, a1, step: (a1 - a0) / DIAL.length, mid: i => a0 + (a1 - a0) / DIAL.length * (i + .5) };
 }
-function arcPath(cx, cy, r1, r2, s, e){
-  const p = (r, a) => [cx + r * Math.cos(a * Math.PI / 180), cy + r * Math.sin(a * Math.PI / 180)], [a, b] = [p(r2, s), p(r2, e)], [c, d] = [p(r1, e), p(r1, s)];
-  return `M${a[0]} ${a[1]}A${r2} ${r2} 0 0 1 ${b[0]} ${b[1]}L${c[0]} ${c[1]}A${r1} ${r1} 0 0 0 ${d[0]} ${d[1]}Z`;
+// 扇形（中心0,0基準）
+function arcPath(r1, r2, s, e){
+  const p = (r, a) => [r * Math.cos(RAD(a)), r * Math.sin(RAD(a))], [a, b] = [p(r2, s), p(r2, e)], [c, d] = [p(r1, e), p(r1, s)];
+  return `M${a[0].toFixed(2)} ${a[1].toFixed(2)}A${r2} ${r2} 0 0 1 ${b[0].toFixed(2)} ${b[1].toFixed(2)}L${c[0].toFixed(2)} ${c[1].toFixed(2)}A${r1} ${r1} 0 0 0 ${d[0].toFixed(2)} ${d[1].toFixed(2)}Z`;
 }
 function openDial(){
-  const G = dialGeom(), box = $("dial"), fan = $("dFan"), W = innerWidth, H = innerHeight;
-  let wedges = "", btns = "";
-  DIAL.forEach((it, i) => { const s = G.a0 + G.step * i + 1.2, e = G.a0 + G.step * (i + 1) - 1.2, m = (s + e) / 2, rm = G.r + (G.R - G.r) * .58;
-    wedges += `<path class="wd" data-i="${i}" d="${arcPath(G.cx, G.cy, G.r + 14, G.R, s, e)}"/>`;
-    const bx = G.cx + rm * Math.cos(m * Math.PI / 180), by = G.cy + rm * Math.sin(m * Math.PI / 180);
-    btns += `<button type="button" class="dk" data-i="${i}" data-f="${it.f}" style="left:${bx}px;top:${by}px;--d:${i * 35}ms" aria-label="${it.t}を記録（${it.s}）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${it.ic}</svg><span>${it.t}</span></button>`; });
-  const ring = `<circle cx="${G.cx}" cy="${G.cy}" r="${G.r + 8}" class="dring"/><path class="darc" d="${arcPath(G.cx, G.cy, G.r + 6, G.r + 10, G.a0 - 18, G.a1 + 18)}"/>`;
-  fan.innerHTML = `<svg class="dsvg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true"><defs><radialGradient id="dwg" gradientUnits="userSpaceOnUse" cx="${G.cx}" cy="${G.cy}" r="${G.R}"><stop offset=".25" stop-color="#3d7dff" stop-opacity=".05"/><stop offset="1" stop-color="#3d7dff" stop-opacity=".55"/></radialGradient></defs>${wedges}${ring}</svg>${btns}`;
-  const lab = box.querySelector(".dlab"); lab.style.top = Math.max(16, G.cy - G.R - 74) + "px";
+  const G = DG = dialGeom(), box = $("dial"), fan = $("dFan"), W = innerWidth, H = innerHeight;
+  // 目盛りの輪（外側）
+  let ticks = ""; for (let a = G.a0 - 8; a <= G.a1 + 8; a += 4) { const big = Math.round(a - G.a0) % 20 === 0, r1 = G.R + 7, r2 = G.R + (big ? 15 : 11);
+    ticks += `<line x1="${(r1 * Math.cos(RAD(a))).toFixed(1)}" y1="${(r1 * Math.sin(RAD(a))).toFixed(1)}" x2="${(r2 * Math.cos(RAD(a))).toFixed(1)}" y2="${(r2 * Math.sin(RAD(a))).toFixed(1)}" class="${big ? "tb" : ""}"/>`; }
+  // 歯車の歯（つまみの周り）
+  let gear = ""; for (let a = 0; a < 360; a += 12) gear += `<rect x="${G.r + 13}" y="-1.6" width="5" height="3.2" rx=".8" transform="rotate(${a})"/>`;
+  let wedges = "", slots = "";
+  DIAL.forEach((it, i) => { const s = G.a0 + G.step * i + 1.4, e = G.a0 + G.step * (i + 1) - 1.4, m = G.mid(i), rm = G.r + (G.R - G.r) * .6;
+    wedges += `<g class="wgrp" data-i="${i}"><path class="wd" data-i="${i}" d="${arcPath(G.r + 22, G.R, s, e)}"/><path class="wedge-edge" d="${arcPath(G.R - 3, G.R, s, e)}"/></g>`;
+    slots += `<div class="dslot" data-i="${i}"><button type="button" class="dk" data-i="${i}" data-f="${it.f}" style="left:${(rm * Math.cos(RAD(m))).toFixed(1)}px;top:${(rm * Math.sin(RAD(m))).toFixed(1)}px" aria-label="${it.t}を記録（${it.s}）"><span class="dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${it.ic}</svg><span>${it.t}</span></span></button></div>`; });
+  fan.innerHTML = `<svg class="dsvg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">
+    <defs><radialGradient id="dwg" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="${G.R}"><stop offset=".3" stop-color="#3d7dff" stop-opacity=".06"/><stop offset="1" stop-color="#3d7dff" stop-opacity=".6"/></radialGradient></defs>
+    <g transform="translate(${G.cx} ${G.cy})">
+      <g class="dticks" id="dTicks">${ticks}</g>
+      <g id="dWedges">${wedges}</g>
+      <g class="dgear" id="dGear">${gear}</g>
+      <circle r="${G.r + 10}" class="dring"/>
+      <g id="dNeedle" class="dneedle"><path d="M${G.r + 12} -3.2L${G.r + 30} 0L${G.r + 12} 3.2Z"/><circle cx="${G.r + 30}" cy="0" r="2.2" class="tip"/></g>
+      <path class="darc" id="dArc" d="${arcPath(G.r + 6, G.r + 10, -60, 60)}"/>
+    </g></svg><div class="dslots" style="left:${G.cx}px;top:${G.cy}px">${slots}</div>`;
+  const lab = box.querySelector(".dlab"); lab.style.top = Math.max(16, G.cy - G.R - 92) + "px";
   box.hidden = false; document.body.classList.add("dialon"); bgPause();
   requestAnimationFrame(() => box.classList.add("on"));
   fan.querySelectorAll(".dk").forEach(b => { b.onclick = () => pickDial(+b.dataset.i); b.onfocus = b.onpointerenter = () => litDial(+b.dataset.i); });
   fan.querySelectorAll(".wd").forEach(p => { p.onclick = () => pickDial(+p.dataset.i); p.onpointerenter = () => litDial(+p.dataset.i); });
-  litDial(0); setTimeout(() => fan.querySelector(".dk")?.focus({ preventScroll: true }), CALM ? 0 : 180);
+  needleA = G.a0 - 20; setNeedle(needleA, false);
+  if (!CALM) {
+    const ease = "cubic-bezier(.25,1.35,.45,1)";
+    dialAnims = [];
+    // 羽根：左端にたたまれた状態から、順番に回転して所定の位置で止まる
+    DIAL.forEach((_, i) => { const from = -(G.mid(i) - G.a0 + 14), d = 70 * i;
+      dialAnims.push($("dWedges").children[i].animate([{ transform: `rotate(${from}deg)`, opacity: 0 }, { opacity: 1, offset: .25 }, { transform: "rotate(0deg)", opacity: 1 }], { duration: 520, delay: d, easing: ease, fill: "backwards" }));
+      const slot = fan.querySelector(`.dslot[data-i="${i}"]`), ic = slot.querySelector(".dic");
+      dialAnims.push(slot.animate([{ transform: `rotate(${from}deg)`, opacity: 0 }, { opacity: 1, offset: .3 }, { transform: "rotate(0deg)", opacity: 1 }], { duration: 520, delay: d, easing: ease, fill: "backwards" }));
+      dialAnims.push(ic.animate([{ transform: `rotate(${-from}deg)` }, { transform: "rotate(0deg)" }], { duration: 520, delay: d, easing: ease, fill: "backwards" })); });
+    // 目盛り：ラチェットのようにカチカチと回り込む
+    dialAnims.push($("dTicks").animate([{ transform: "rotate(-36deg)", opacity: 0 }, { transform: "rotate(0deg)", opacity: 1 }], { duration: 560, easing: "steps(9, end)", fill: "backwards" }));
+    // つまみの青い弧：1回転して止まる
+    dialAnims.push($("dArc").animate([{ transform: "rotate(-300deg)" }, { transform: "rotate(0deg)" }], { duration: 640, easing: "cubic-bezier(.2,.9,.25,1.1)" }));
+  }
+  setTimeout(() => { litDial(0); fan.querySelector(".dk")?.focus({ preventScroll: true }); }, CALM ? 0 : 380);
 }
-function litDial(i){ dialFocus = i; $("dFan").querySelectorAll("[data-i]").forEach(el => el.classList.toggle("lit", +el.dataset.i === i)); $("dT").textContent = DIAL[i].t; $("dS").textContent = DIAL[i].s; }
+// 指針（針）を回す：行き過ぎてから戻る、機械らしい止まり方
+function setNeedle(a, anim){
+  const n = $("dNeedle"), arc = $("dArc"); if (!n) return;
+  const from = needleA; needleA = a;
+  n.style.transform = `rotate(${a}deg)`; arc.style.transform = `rotate(${a}deg)`;
+  if (anim && !CALM) { const kf = [{ transform: `rotate(${from}deg)` }, { transform: `rotate(${a + (a - from) * .12}deg)`, offset: .7 }, { transform: `rotate(${a}deg)` }];
+    n.animate(kf, { duration: 380, easing: "cubic-bezier(.3,.8,.3,1)" }); arc.animate(kf, { duration: 460, easing: "cubic-bezier(.3,.8,.3,1)" });
+    $("dGear").animate([{ transform: `rotate(${from * 1.5}deg)` }, { transform: `rotate(${a * 1.5}deg)` }], { duration: 380, easing: "cubic-bezier(.3,.8,.3,1)", fill: "forwards" }); }
+}
+function litDial(i){
+  if (!DG || $("dial").hidden) return;
+  const changed = dialFocus !== i || !$("dFan").querySelector(".lit"); dialFocus = i;
+  $("dFan").querySelectorAll("[data-i]").forEach(el => el.classList.toggle("lit", +el.dataset.i === i));
+  // 選ばれた羽根を少し外へ押し出す
+  $("dFan").querySelectorAll(".wgrp").forEach(g => { const k = +g.dataset.i, m = DG.mid(k), on = k === i; g.querySelector(".wd").style.transform = on ? `translate(${(Math.cos(RAD(m)) * 7).toFixed(1)}px,${(Math.sin(RAD(m)) * 7).toFixed(1)}px)` : ""; g.querySelector(".wedge-edge").style.transform = g.querySelector(".wd").style.transform; });
+  $("dFan").querySelectorAll(".dk").forEach(b => { const k = +b.dataset.i, m = DG.mid(k); b.style.translate = k === i ? `${(Math.cos(RAD(m)) * 7).toFixed(1)}px ${(Math.sin(RAD(m)) * 7).toFixed(1)}px` : ""; });
+  if (changed) { setNeedle(DG.mid(i), true); const lab = $("dial").querySelector(".dlab"); if (!CALM) lab.animate([{ transform: "translateY(6px)", opacity: .2 }, { transform: "none", opacity: 1 }], { duration: 220, easing: "ease-out" }); }
+  $("dT").textContent = DIAL[i].t; $("dS").textContent = DIAL[i].s;
+}
 function closeDial(then){
   const box = $("dial"); if (box.hidden) { then && then(); return; }
   box.classList.remove("on"); document.body.classList.remove("dialon");
-  setTimeout(() => { box.hidden = true; $("dFan").innerHTML = ""; if (!then) { bgStart(); $("bAdd").focus({ preventScroll: true }); } }, CALM ? 0 : 160);
+  if (!CALM && DG) { DIAL.forEach((_, i) => { const to = -(DG.mid(i) - DG.a0 + 14), g = $("dWedges")?.children[i], s = $("dFan").querySelector(`.dslot[data-i="${i}"]`);
+      const o = { duration: 200, delay: (DIAL.length - 1 - i) * 25, easing: "cubic-bezier(.5,0,.8,.4)", fill: "forwards" };
+      g && g.animate([{ transform: "rotate(0)", opacity: 1 }, { transform: `rotate(${to}deg)`, opacity: 0 }], o); s && s.animate([{ transform: "rotate(0)", opacity: 1 }, { transform: `rotate(${to}deg)`, opacity: 0 }], o); }); }
+  setTimeout(() => { box.hidden = true; $("dFan").innerHTML = ""; DG = null; if (!then) { bgStart(); $("bAdd").focus({ preventScroll: true }); } }, CALM ? 0 : 260);
   then && then();
 }
 function pickDial(i){
-  const f = DIAL[i].f;
-  closeDial(() => { if (f === "pdf") return $("fPdf").click(); if ((f === "shift" || f === "bonus") && !D.staff.length) return needStaff(); openForm(f, { dial: true }); });
+  const f = DIAL[i].f; litDial(i);
+  const go = () => closeDial(() => { if (f === "pdf") return $("fPdf").click(); if ((f === "shift" || f === "bonus") && !D.staff.length) return needStaff(); openForm(f, { dial: true }); });
+  if (CALM) return go();
+  // 押した羽根がカチッと沈んでから開く
+  const g = $("dWedges")?.children[i]; g && g.animate([{ filter: "brightness(1)" }, { filter: "brightness(1.9)" }, { filter: "brightness(1)" }], { duration: 160 });
+  const b = $("dFan").querySelector(`.dk[data-i="${i}"] .dic`); b && b.animate([{ transform: "scale(1)" }, { transform: "scale(.86)" }, { transform: "scale(1)" }], { duration: 160 });
+  setTimeout(go, 150);
 }
 $("dScrim").onclick = () => closeDial();
 $("dial").addEventListener("keydown", e => {
