@@ -1437,7 +1437,9 @@ $("sheet").addEventListener("keydown", e => { if (e.key !== "Tab") return; const
 const head = (t, back) => `<div class="sh-hd"><h3 id="shTtl">${t}</h3><button data-close>${back ? "戻る" : "閉じる"}</button></div>`;
 const wire = back => { dirty = false; $("shBody").querySelector("[data-close]").onclick = () => askClose(back || closeSheet); };
 let tT = 0, undoFn = null;
-function toast(msg, undo){ $("tMsg").textContent = msg; undoFn = undo || null; $("tUndo").hidden = !undo; $("toast").classList.add("on"); clearTimeout(tT); tT = setTimeout(() => $("toast").classList.remove("on"), undo ? 7000 : 2600); }
+function toast(msg, undo){ $("tMsg").textContent = msg; undoFn = undo || null; $("tUndo").hidden = !undo; $("toast").classList.add("on"); clearTimeout(tT); tT = setTimeout(() => $("toast").classList.remove("on"), undo ? 4000 : 2000); }
+// お知らせは押すとすぐ消える
+$("tMsg").onclick = () => { clearTimeout(tT); $("toast").classList.remove("on"); };
 $("tUndo").onclick = () => { const f = undoFn; undoFn = null; $("toast").classList.remove("on"); if (f) { f(); renderAll(true); refreshPage(); toast("元に戻しました"); } };
 // 開いている一覧系の画面があれば描き直す
 let pageRefresh = null;
