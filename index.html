@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>VAULT</title>
 <meta name="description" content="売上・経費・人件費をまとめて記録し、利益がひと目で分かる経営アプリ">
-<meta name="theme-color" content="#05070b">
+<meta name="theme-color" content="#0b1630">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -463,6 +463,153 @@ body.pg .sheet{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 100px);max-
 body.obon .page,body.obon nav{visibility:hidden}
 .cdet .recs{display:block;padding:0}.cdet .recs .rec{display:flex}.cdet .rec span{flex:1}
 
+/* =====================================================================
+   COCKPIT テーマ：スレートの地に設計図の方眼、青い光の線だけで見せる
+   ===================================================================== */
+:root{
+  --bg:#0b1630; --char:#1b1f27; --navy:#1a2233;
+  --ink:#f2f5fa; --sub:rgba(222,230,242,.74); --muted:rgba(210,220,236,.56); --faint:rgba(210,220,236,.42);
+  --gold:#5b9bff; --gold-rgb:91,155,255;          /* 利益・強調（青） */
+  --ice:#b3cdff; --ice-rgb:179,205,255;           /* 売上（淡い青） */
+  --vio:#7f8cff; --vio-rgb:127,140,255;
+  --exp:#a48bff; --exp-rgb:164,139,255; --lab:#3fc7d4; --lab-rgb:63,199,212;
+  --blue:#3d7dff; --blue-rgb:61,125,255;
+  --glass:rgba(12,22,44,.8); --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.12);
+  --panel:rgba(11,20,40,.84); --grid:rgba(140,170,220,.06);
+}
+body{background:var(--bg)}
+
+/* ---------- ヘッダー：ロゴを中央に ---------- */
+.hd{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;min-height:62px}
+.hd-l{width:44px}
+.brand{justify-self:center;flex-direction:column;gap:4px}
+.brand svg{width:40px;height:40px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6)) drop-shadow(0 0 10px rgba(var(--blue-rgb),.18))}
+.brand b{display:block;font:600 9.5px/1 var(--disp);letter-spacing:.55em;margin-right:-.55em;background:linear-gradient(180deg,#ffffff,#b8c3d2 55%,#7d899b);-webkit-background-clip:text;background-clip:text;color:transparent}
+.iconbtn{background:rgba(12,22,44,.8);border-color:var(--line)}
+
+/* ---------- 設計図パネル ---------- */
+.bp{position:relative;padding:14px 16px 14px;border-radius:18px;border:1px solid rgba(140,170,220,.12);overflow:hidden;
+  background:
+    linear-gradient(var(--grid) 1px,transparent 1px) 0 0/18px 18px,
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/18px 18px,
+    linear-gradient(180deg,rgba(16,28,56,.88),rgba(9,17,36,.9));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 14px 30px rgba(0,0,0,.35)}
+.bp::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(80% 60% at 70% 30%,rgba(var(--blue-rgb),.08),transparent 70%)}
+.bp>*{position:relative}
+.ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.ptop .lab{flex-direction:column;align-items:flex-start;gap:1px}
+.ptop .lab em{font-size:11px}
+.bp .mon{background:rgba(10,13,18,.45);border-color:rgba(140,170,220,.14);backdrop-filter:none;-webkit-backdrop-filter:none;flex:none}
+.bp .mon button{width:34px;height:36px}
+.bp .mon span{font:400 13px var(--num);min-width:76px;color:var(--ink)}
+.flow{display:block;width:calc(100% + 8px);height:92px;margin:4px -4px 0;overflow:visible}
+.sales{font:300 clamp(40px,13vw,54px)/1.02 var(--num);letter-spacing:-.035em;color:#fff;text-shadow:none;margin:2px 0 8px}
+.sales .yen{font-weight:300;opacity:.7}
+.cmp{font-size:12px}
+.info{border-color:rgba(140,170,220,.25)!important;color:var(--sub)!important}
+
+.gauges{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:12px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(140,170,220,.1)}
+.gg{display:flex;flex-direction:column;align-items:flex-start;min-width:0;padding:0;border:0;background:none;color:inherit;text-align:left;font:inherit}
+.gt{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);white-space:nowrap}
+.gt svg{width:16px;height:16px;opacity:.75}
+.gb{display:block;width:100%;height:4px;border-radius:2px;background:rgba(255,255,255,.08);margin:7px 0 8px;overflow:hidden}
+.gb i{display:block;height:100%;border-radius:2px;background:linear-gradient(90deg,#2557d6,#6aa6ff);box-shadow:0 0 8px rgba(var(--blue-rgb),.7);transition:width .7s cubic-bezier(.2,.7,.2,1)}
+.gg.e .gb i{background:linear-gradient(90deg,#6c55d6,var(--exp));box-shadow:0 0 8px rgba(var(--exp-rgb),.5)}
+.gg.l .gb i{background:linear-gradient(90deg,#1f8f9c,var(--lab));box-shadow:0 0 8px rgba(var(--lab-rgb),.5)}
+.gg .v{font:300 19px/1.15 var(--num);letter-spacing:-.02em;color:#fff;white-space:nowrap;max-width:100%}
+.gg.p .v{font-size:24px;color:var(--gold)}
+.gg.neg .v{color:var(--bad)}
+.gg .gs{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap}
+.gg .chg{margin-top:5px;font-size:11px;padding:1px 6px 1px 4px}
+.gg .chg svg{width:11px;height:11px}
+.gg:active{opacity:.75}
+.bp .notice{border-color:rgba(var(--blue-rgb),.4);background:rgba(var(--blue-rgb),.07)}
+
+/* ---------- 場所（事業名と店舗） ---------- */
+.loc{display:flex;align-items:center;gap:12px;padding:4px 8px;color:var(--muted)}
+.loc svg{width:22px;height:22px;flex:none;color:rgba(200,214,236,.5)}
+.loc span{display:flex;flex-direction:column;font-size:12px;line-height:1.45;min-width:0}
+.loc b{font-size:14px;font-weight:400;color:var(--sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.storebar button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* ---------- カード ---------- */
+.card,.kpi{background:var(--panel);border-color:var(--line);backdrop-filter:none;-webkit-backdrop-filter:none;border-radius:18px}
+.card.lit::after{background:linear-gradient(90deg,transparent,rgba(var(--blue-rgb),.8),transparent)}
+.seg{background:rgba(8,10,14,.5)}
+.seg button[aria-pressed="true"]{background:rgba(var(--blue-rgb),.16);box-shadow:inset 0 0 0 1px rgba(var(--blue-rgb),.4);color:#fff}
+.seg.m button[aria-pressed="true"][data-v="sales"]{color:var(--ice);box-shadow:inset 0 0 0 1px rgba(var(--ice-rgb),.4);background:rgba(var(--ice-rgb),.1)}
+.seg.m button[aria-pressed="true"][data-v="profit"]{color:var(--gold);box-shadow:inset 0 0 0 1px rgba(var(--gold-rgb),.45);background:rgba(var(--gold-rgb),.12)}
+.chips button[aria-pressed="true"]{border-color:rgba(var(--blue-rgb),.5);background:rgba(var(--blue-rgb),.12)}
+.kpi .top svg{color:#7fb0ff}
+.kpi .v{font-weight:300;font-size:clamp(18px,5.8vw,23px)}
+.wg b{font-weight:300}
+.empty{border-color:rgba(var(--blue-rgb),.4);background:linear-gradient(160deg,rgba(var(--blue-rgb),.1),rgba(255,255,255,.02))}
+.empty h2{color:#cfe0ff}
+.btn{background:linear-gradient(180deg,#5d9bff,#3570f0);color:#fff;box-shadow:0 6px 18px rgba(var(--blue-rgb),.3)}
+.btn.ghost2{background:rgba(255,255,255,.04);color:var(--ink);box-shadow:none}
+.opts button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.toast button{background:rgba(var(--blue-rgb),.18);color:#cfe0ff}
+.sheet{background:linear-gradient(180deg,#13213f,#0c162d)!important;border-color:rgba(140,170,220,.12)!important}
+
+/* ---------- 下のメニュー：青いパネルを並べたバー ---------- */
+nav{background:linear-gradient(180deg,rgba(8,16,34,0),rgba(8,16,34,.9) 45%)}
+.dock{border-radius:18px;background:linear-gradient(180deg,rgba(40,56,92,.94),rgba(29,41,70,.96));border:1px solid rgba(140,175,235,.18);box-shadow:0 14px 34px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.06)}
+.tab{color:rgba(205,218,240,.6)}
+.tab+.tab,.addw+.tab{border-left:1px solid rgba(0,0,0,.25);box-shadow:-1px 0 0 rgba(255,255,255,.04)}
+.tab.on{color:#fff}
+.tab.on svg{color:#9cc4ff;filter:drop-shadow(0 0 6px rgba(var(--blue-rgb),.8))}
+.tab.on::after{background:#7fb0ff;box-shadow:0 0 8px rgba(var(--blue-rgb),.9);bottom:5px}
+.add{width:62px;height:62px;margin-top:-32px;background:conic-gradient(from 210deg,#5d9bff 0 68%,rgba(93,155,255,.14) 68% 100%);box-shadow:0 10px 26px rgba(0,0,0,.65),0 0 0 6px #1b2338,0 0 22px rgba(var(--blue-rgb),.35)}
+.add span{width:54px;height:54px;background:radial-gradient(circle at 50% 50%,#2b3446 0 46%,#151a24 47% 100%);box-shadow:inset 0 2px 6px rgba(0,0,0,.6)}
+.add svg{width:24px;height:24px;color:#fff;filter:drop-shadow(0 0 6px rgba(160,200,255,.9));transition:transform .25s cubic-bezier(.3,.7,.2,1)}
+.add-l{color:rgba(205,218,240,.75)}
+body.dialon .add svg{transform:rotate(45deg)}
+
+/* ---------- 円形メニュー ---------- */
+.dial{position:fixed;inset:0;z-index:60}
+.dscrim{position:absolute;inset:0;background:rgba(5,10,24,.8);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;transition:opacity .2s}
+.dial.on .dscrim{opacity:1}
+body.dialon nav{z-index:62;background:none}
+body.dialon .dock{background:rgba(29,41,70,.35);border-color:transparent;box-shadow:none}
+body.dialon .tab{opacity:.25;pointer-events:none}
+.dfan{position:absolute;inset:0;z-index:63;pointer-events:none}
+.dsvg{position:absolute;left:0;top:0;opacity:0;transform:scale(.88);transform-origin:50% 100%;transition:opacity .22s,transform .3s cubic-bezier(.2,.8,.2,1)}
+.dial.on .dsvg{opacity:1;transform:none}
+.wd{fill:rgba(30,50,90,.6);stroke:rgba(150,180,230,.12);stroke-width:1;pointer-events:auto;cursor:pointer;transition:fill .2s}
+.wd.lit{fill:url(#dwg)}
+.dring{fill:none;stroke:rgba(10,13,20,.9);stroke-width:16}
+.darc{fill:#5d9bff;filter:drop-shadow(0 0 6px rgba(93,155,255,.9))}
+.dk{position:absolute;z-index:1;width:64px;height:64px;margin:0;padding:0;border:0;border-radius:50%;background:none;pointer-events:auto;color:rgba(214,226,244,.55);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:500 11.5px var(--body);
+  opacity:0;transform:translate(-50%,-30%) scale(.7);transition:opacity .25s var(--d),transform .35s cubic-bezier(.2,.8,.2,1.2) var(--d),color .2s}
+.dial.on .dk{opacity:1;transform:translate(-50%,-50%)}
+.dk svg{width:26px;height:26px}
+.dk.lit{color:#fff}
+.dk.lit svg{color:#a8c9ff;filter:drop-shadow(0 0 7px rgba(93,155,255,.9))}
+.dk:focus-visible{outline:2px solid #7fb0ff;outline-offset:2px}
+.dlab{position:absolute;left:0;right:0;z-index:63;text-align:center;pointer-events:none;opacity:0;transition:opacity .25s .08s}
+.dial.on .dlab{opacity:1}
+.dlab b{display:block;font:300 30px/1.1 var(--body);color:#fff;letter-spacing:.04em}
+.dlab span{display:block;margin-top:6px;font-size:14px;color:#6aa6ff}
+body.calm .dscrim,body.calm .dsvg,body.calm .dk,body.calm .dlab{transition:none}
+
+/* ---------- 起動演出・案内（クロームと青） ---------- */
+#intro{background:radial-gradient(120% 80% at 50% 40%,#16305c,#0b1630 60%,#060c1c)}
+#intro .em{filter:drop-shadow(0 0 24px rgba(var(--blue-rgb),.3))}
+.wm{filter:drop-shadow(0 1px 0 rgba(0,0,0,.75)) drop-shadow(0 0 12px rgba(120,170,255,.2))}
+.wm .ltr{background:linear-gradient(180deg,#ffffff 0%,#dfe6ef 30%,#9aa6b6 48%,#4a5466 53%,#a7b3c3 66%,#eef3f8 100%);-webkit-background-clip:text;background-clip:text}
+#intro .wm{filter:drop-shadow(0 2px 0 rgba(0,0,0,.8)) drop-shadow(0 0 26px rgba(120,170,255,.35))}
+#intro .rule i{background:linear-gradient(90deg,transparent,#5d9bff)}
+#intro .rule i:last-child{background:linear-gradient(270deg,transparent,#5d9bff)}
+#intro .rule small{color:#9cc4ff}
+#intro .skip{color:rgba(200,215,240,.3)}
+#ob{background:radial-gradient(120% 80% at 50% 0%,#1a3263 0%,#0b1630 60%)}
+#ob .obtop .brand{flex-direction:row}
+#ob .obtop .brand b{color:#dfe7f2;background:none;-webkit-text-fill-color:currentColor;font-size:15px;letter-spacing:.2em;margin:0}
+
+.loc,.hd{text-shadow:0 1px 3px rgba(0,0,0,.8)}
+.foot{color:rgba(200,215,240,.5)}
+
 body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index:95}
 
 </style>
@@ -474,22 +621,15 @@ body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index
 
 <div class="page" id="page">
   <header class="hd fade">
+    <span class="hd-l" aria-hidden="true"></span>
     <div class="brand" aria-label="VAULT">
-      <svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="eg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3d6"/><stop offset=".5" stop-color="#b48a52"/><stop offset="1" stop-color="#e3c48f"/></linearGradient></defs>
-        <circle cx="50" cy="50" r="46" fill="none" stroke="url(#eg)" stroke-width="3.6"/><circle cx="50" cy="50" r="31" fill="#07090d" stroke="url(#eg)" stroke-width="2.2"/>
-        <path d="M26 30H46V32H43.5L52.6 60L63.5 32H60.5V30H73V32H66.5L53.6 72H50.4L36 32H26Z" fill="url(#eg)" transform="translate(50 51) scale(.8) translate(-49.5 -51)"/></svg>
+      <svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="eg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#5d6a7c"/><stop offset="1" stop-color="#dfe7f2"/></linearGradient><linearGradient id="ev" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8f1ff"/><stop offset=".45" stop-color="#7fb0ff"/><stop offset=".55" stop-color="#2b5fd9"/><stop offset="1" stop-color="#9cc2ff"/></linearGradient><radialGradient id="ed" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="#26324a"/><stop offset="1" stop-color="#0a0f19"/></radialGradient></defs>
+        <circle cx="50" cy="50" r="46" fill="none" stroke="url(#eg)" stroke-width="3.6"/><circle cx="50" cy="50" r="31" fill="url(#ed)" stroke="url(#eg)" stroke-width="2.2"/>
+        <path d="M26 30H46V32H43.5L52.6 60L63.5 32H60.5V30H73V32H66.5L53.6 72H50.4L36 32H26Z" fill="url(#ev)" transform="translate(50 51) scale(.8) translate(-49.5 -51)"/></svg>
       <b>VAULT</b>
     </div>
-    <div class="hd-r">
-      <div class="mon" role="group" aria-label="対象の月">
-        <button id="mPrev" aria-label="前の月"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button>
-        <span id="mLab" class="n"></span>
-        <button id="mNext" aria-label="次の月"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>
-      </div>
       <button class="iconbtn" id="bSet" aria-label="設定"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></button>
-    </div>
   </header>
-  <div class="storebar fade" id="storeBar" role="group" aria-label="店舗の切り替え" hidden></div>
 
   <section class="empty fade" id="empty" hidden aria-label="はじめかた">
     <h2>最初の記録を入れてみましょう</h2>
@@ -498,16 +638,26 @@ body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index
     <button class="btn ghost2" id="ePdf">PDFから読み込む</button>
   </section>
 
-  <section class="sum fade" style="animation-delay:.05s" aria-label="今月のまとめ">
-    <div class="lab"><span id="sLab">今月の売上</span><em id="sRange"></em></div>
+  <section class="sum bp fade" style="animation-delay:.05s" aria-label="今月のまとめ">
+    <div class="ptop"><div class="lab"><span id="sLab">今月の売上</span><em id="sRange"></em></div>
+      <div class="mon" role="group" aria-label="対象の月">
+        <button id="mPrev" aria-label="前の月"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <span id="mLab" class="n"></span>
+        <button id="mNext" aria-label="次の月"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+    <svg class="flow" id="flow" aria-hidden="true"></svg>
     <div class="sales n" id="sSales"></div>
     <div class="cmp"><span class="chg" id="sChg"></span><span id="sCmp"></span><button class="info" id="bInfo" aria-label="前月比の計算方法">i</button></div>
-    <div class="profitrow">
+    <div class="gauges" id="gauges"></div>
+    <div class="profitrow" hidden>
       <div><div class="lab"><span id="pLab">今月の利益</span></div><div class="profit n" id="sProfit"></div></div>
-      <div class="rate">利益率<b class="n" id="sRate"></b><span class="chg" id="pChg" style="margin-top:4px"></span></div>
+      <div class="rate">利益率<b class="n" id="sRate"></b><span class="chg" id="pChg"></span></div>
     </div>
     <button class="notice" id="notice" hidden></button>
   </section>
+  <div class="loc fade" id="loc" style="animation-delay:.08s"></div>
+  <div class="storebar fade" id="storeBar" role="group" aria-label="店舗の切り替え" hidden></div>
 
   <section class="card lit trend fade" style="animation-delay:.1s" aria-label="推移">
     <div class="ttl"><h2 id="tTtl">売上の推移</h2><small id="tRange"></small></div>
@@ -523,7 +673,7 @@ body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index
     <div class="hint" id="hint">グラフを押すと、その日の詳細が出ます</div>
   </section>
 
-  <section class="card split fade" style="animation-delay:.15s" aria-label="売上の使い道">
+  <section class="card split fade" hidden style="animation-delay:.15s" aria-label="売上の使い道">
     <div class="ttl"><h2>売上の使い道</h2><small id="spRange"></small></div>
     <div class="bar" id="spBar"></div>
     <div class="bar-leg" id="spLeg"></div>
@@ -552,6 +702,12 @@ body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index
 <div class="toast" id="toast" role="status"><span id="tMsg"></span><button id="tUndo">取り消す</button></div>
 
 
+<div class="dial" id="dial" hidden role="dialog" aria-modal="true" aria-label="記録する内容を選ぶ">
+  <div class="dscrim" id="dScrim"></div>
+  <div class="dlab" aria-live="polite"><b id="dT">記録</b><span id="dS">記録するものを選んでください</span></div>
+  <div class="dfan" id="dFan"></div>
+</div>
+
 <script>
 (() => {
 "use strict";
@@ -560,7 +716,7 @@ body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index
    ===================================================================== */
 const $ = id => document.getElementById(id);
 document.documentElement.lang = "ja";
-const APP_VER = "1.0.0";
+const APP_VER = "1.1.0";
 const KEY = "vault-data-v1", UIKEY = "vault-ui-v1";
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const pad2 = n => String(n).padStart(2, "0");
@@ -768,7 +924,7 @@ let S = [], geom = null, cumV = [];
 function renderChart(animate){
   const svg = $("chart"), W = Math.max(260, Math.round(svg.getBoundingClientRect().width) || 340), H = 168, L = 2, R = W - 40, T = 12, B = H - 22;
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
-  S = series(); const col = metric === "sales" ? "var(--ice)" : "var(--gold)", rgb = metric === "sales" ? "168,220,255" : "227,196,143";
+  S = series(); const col = metric === "sales" ? "var(--ice)" : "var(--gold)", rgb = metric === "sales" ? "179,205,255" : "91,155,255";
   const cum = per === "d" && cmode === "cum";
   let vals = S.map(s => s.v);
   if (cum) { let a = 0; vals = S.map(s => { if (s.fut || s.none) return null; if (s.v !== null) a += s.v; return a; }); }
@@ -790,7 +946,7 @@ function renderChart(animate){
         if (metric === "profit" && s.v < 0) { const y0 = y(0), y1 = y(s.v); h += `<rect x="${cx - bw / 2}" y="${y0}" width="${bw}" height="${Math.max(1.5, y1 - y0)}" rx="2" fill="rgba(255,157,143,.35)" stroke="rgba(255,157,143,.6)" stroke-dasharray="2 2"/>`; }
         return; }
       if (s.v === null) return;
-      if (s.v === 0) { h += `<circle cx="${cx}" cy="${y(0)}" r="2.6" fill="#05070b" stroke="rgba(226,233,245,.6)" stroke-width="1.3"/>`; return; }
+      if (s.v === 0) { h += `<circle cx="${cx}" cy="${y(0)}" r="2.6" fill="#14171e" stroke="rgba(226,233,245,.6)" stroke-width="1.3"/>`; return; }
       const v = s.v, y0 = y(0), y1 = y(v), top = Math.min(y0, y1), hh = Math.max(1.5, Math.abs(y0 - y1));
       h += `<rect class="b" data-y0="${y0}" x="${cx - bw / 2}" y="${top}" width="${bw}" height="${hh}" rx="${Math.min(3, bw / 3)}" fill="${v < 0 ? "rgba(255,157,143,.75)" : "url(#gb)"}" ${s.part ? 'opacity=".55"' : ""}/>`;
       if (s.part) h += `<rect x="${cx - bw / 2}" y="${top}" width="${bw}" height="${hh}" rx="2" fill="url(#hatch)" opacity=".7"/>`;
@@ -813,7 +969,7 @@ function renderChart(animate){
     }
   }
   if (per === "d" && !cum && metric === "sales") { const ok = S.filter(s => s.v > 0), av = ok.length ? sum(ok, s => s.v) / ok.length : 0;
-    if (av) h += `<line x1="${L}" x2="${R}" y1="${y(av)}" y2="${y(av)}" stroke="rgba(227,196,143,.55)" stroke-width="1" stroke-dasharray="1 3"/><text class="ax" x="${R + 6}" y="${y(av) - 3}" style="fill:var(--gold)">平均</text>`; }
+    if (av) h += `<line x1="${L}" x2="${R}" y1="${y(av)}" y2="${y(av)}" stroke="rgba(91,155,255,.6)" stroke-width="1" stroke-dasharray="1 3"/><text class="ax" x="${R + 6}" y="${y(av) - 3}" style="fill:var(--gold)">平均</text>`; }
   if (per === "d" && isCur(cur.y, cur.m)) { const ti = TODAY.d - 1; h += `<text class="ax" x="${x(ti)}" y="${T - 2}" text-anchor="middle" style="fill:var(--ice)">今日</text><circle cx="${x(ti)}" cy="${B + 6}" r="1.6" fill="var(--ice)"/>`; }
   if (!real.length) h += `<text x="${(L + R) / 2}" y="${(T + B) / 2}" text-anchor="middle" style="font:400 12px var(--body);fill:var(--muted)">記録が入ると、ここにグラフが出ます</text>`;
   if (sel !== null && S[sel] && !S[sel].fut && !S[sel].none) { const cx = x(sel); h += `<line x1="${cx}" x2="${cx}" y1="${T - 4}" y2="${B}" stroke="rgba(255,255,255,.35)" stroke-width="1"/>`;
@@ -858,14 +1014,15 @@ const IC = {
   guest: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c.9-3.6 3.6-5.4 7-5.4s6.1 1.8 7 5.4"/></svg>',
   unit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 7.5l3.5 4.5 3.5-4.5M8.5 12.5h7M8.5 15.5h7M12 12v5.5"/></svg>'
 };
-const TEMPL = { std: ["exp", "lab", "rate", "avg"], food: ["cost", "lab", "unit", "guest"], retail: ["cost", "unit", "avg", "exp"], service: ["unit", "guest", "lab", "rate"], beauty: ["unit", "guest", "lab", "rate"] };
+// 経費・人件費・利益（率）は上のパネルに出しているので、ここでは重ならない指標だけを出す
+const TEMPL = { std: ["avg", "unit", "guest", "cost"], food: ["cost", "unit", "guest", "avg"], retail: ["cost", "unit", "avg", "guest"], service: ["unit", "guest", "avg", "cost"], beauty: ["unit", "guest", "avg", "cost"] };
 const NAMES = { exp: "経費", lab: "人件費", rate: "利益率", avg: "1日平均売上", cost: "原価率", unit: "客単価", guest: "客数" };
 function renderKpis(){
   const now = isCur(cur.y, cur.m), T = curTot(), c = compare();
   const pm = cur.m === 1 ? 12 : cur.m - 1, py = cur.m === 1 ? cur.y - 1 : cur.y, P = monthTot(py, pm, now ? TODAY.d : 0);
   const S0 = Math.max(1, T.sales), pe = T.sales ? T.exp / S0 * 100 : 0, pl = T.sales ? T.lab / S0 * 100 : 0, pp = T.sales ? T.profit / S0 * 100 : 0;
   $("spRange").textContent = `${cur.m}月${now ? "（" + TODAY.d + "日まで）" : ""}`;
-  $("spBar").innerHTML = T.sales ? `<i style="width:${Math.max(0, Math.min(100, pe))}%;background:var(--exp)"></i><i style="width:${Math.max(0, Math.min(100 - pe, pl))}%;background:var(--lab)"></i><i style="width:${Math.max(0, pp)}%;background:linear-gradient(90deg,#c9a46e,var(--gold))"></i>` : "";
+  $("spBar").innerHTML = T.sales ? `<i style="width:${Math.max(0, Math.min(100, pe))}%;background:var(--exp)"></i><i style="width:${Math.max(0, Math.min(100 - pe, pl))}%;background:var(--lab)"></i><i style="width:${Math.max(0, pp)}%;background:linear-gradient(90deg,#2b5fd9,var(--gold))"></i>` : "";
   $("spLeg").innerHTML = `<div><i style="background:var(--exp)"></i>経費 ${T.sales ? pe.toFixed(1) + "%" : ""}<b class="n">${yenT(T.exp)}</b></div><div><i style="background:var(--lab)"></i>人件費 ${T.sales ? pl.toFixed(1) + "%" : ""}<b class="n">${yenT(T.lab)}</b></div><div><i style="background:var(--gold)"></i>利益 ${T.sales ? pp.toFixed(1) + "%" : ""}<b class="n" style="color:${T.profit < 0 ? "var(--bad)" : "var(--gold)"}">${yenT(T.profit)}</b></div>`;
   $("spEq").textContent = T.profit < 0 ? `売上 ${yenT(T.sales)} より費用が ${yenT(-T.profit)} 多く、赤字です` : `売上 ${yenT(T.sales)} ＝ 経費 ＋ 人件費 ＋ 利益`;
   const costOf = X => sum(D.costCats.map(cn => X.cats[cn] || 0)), cost = costOf(T), pcost = costOf(P), pct = (a, b) => b ? (a - b) / Math.abs(b) * 100 : null;
@@ -886,6 +1043,55 @@ function renderKpis(){
   document.querySelectorAll(".kpi").forEach(b => b.onclick = () => openDetail(b.dataset.k));
 }
 
+/* ---------------- 上のパネル：今月の流れ（累計の線）と3つのゲージ ---------------- */
+function smoothPath(P){ if (!P.length) return ""; let d = `M${P[0][0].toFixed(1)} ${P[0][1].toFixed(1)}`;
+  for (let i = 1; i < P.length; i++) { const [x0, y0] = P[i - 1], [x1, y1] = P[i], m = (x1 - x0) / 2; d += `C${(x0 + m).toFixed(1)} ${y0.toFixed(1)} ${(x1 - m).toFixed(1)} ${y1.toFixed(1)} ${x1.toFixed(1)} ${y1.toFixed(1)}`; }
+  return d; }
+function renderFlow(animate){
+  const svg = $("flow"), W = Math.max(240, Math.round(svg.getBoundingClientRect().width) || 320), H = 92, L = 4, R = W - 4, T = 10, B = H - 12;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  const y0 = cur.y, m0 = cur.m, n = dim(y0, m0), upto = isCur(y0, m0) ? TODAY.d : n, pm = m0 === 1 ? 12 : m0 - 1, py = m0 === 1 ? y0 - 1 : y0, pn = dim(py, pm);
+  const now = [], prev = [], miss = []; let a = 0, b = 0, started = false;
+  for (let d = 1; d <= upto; d++) { const i = dayInfo(y0, m0, d); if (i.state === "before") continue; if (!started) { started = true; now.push([d - 1, 0]); }
+    if (i.state === "missing") miss.push(d); a += i.sales || 0; now.push([d, a]); }
+  for (let d = 1; d <= pn; d++) { const j = dayInfo(py, pm, d); b += j.sales || 0; prev.push([d, b]); }
+  const hasPrev = b > 0, mx = Math.max(1, a, hasPrev ? b : 0) * 1.08;
+  const X = d => L + (R - L) * d / n, Y = v => B - (B - T) * v / mx;
+  let h = `<defs><linearGradient id="fl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2557d6"/><stop offset=".7" stop-color="#4f8dff"/><stop offset="1" stop-color="#9cc4ff"/></linearGradient>
+    <linearGradient id="fa" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d7dff" stop-opacity=".22"/><stop offset="1" stop-color="#3d7dff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="fs" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9cc4ff" stop-opacity="0"/><stop offset=".75" stop-color="#ffffff" stop-opacity=".95"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <radialGradient id="fh"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".25" stop-color="#8fbaff" stop-opacity=".55"/><stop offset="1" stop-color="#3d7dff" stop-opacity="0"/></radialGradient>
+    <filter id="fg" x="-10%" y="-60%" width="120%" height="220%"><feGaussianBlur stdDeviation="3.2"/></filter>
+    <pattern id="fhatch" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="4" stroke="rgba(160,190,240,.45)" stroke-width="1.2"/></pattern></defs>
+    <line x1="${L}" x2="${R}" y1="${B}" y2="${B}" stroke="rgba(160,190,240,.16)"/>`;
+  if (hasPrev) h += `<path d="${smoothPath(prev.map(([d, v]) => [X(d), Y(v)]))}" fill="none" stroke="rgba(190,205,230,.28)" stroke-width="1.2" stroke-dasharray="2 4"/>`;
+  miss.forEach(d => { h += `<rect x="${X(d - 1) + .5}" y="${B + 3}" width="${Math.max(1, X(d) - X(d - 1) - 1)}" height="5" fill="url(#fhatch)"/>`; });
+  if (now.length > 1) { const P = now.map(([d, v]) => [X(d), Y(v)]), path = smoothPath(P), [hx, hy] = P[P.length - 1];
+    h += `<path d="${path}L${hx} ${B}L${P[0][0]} ${B}Z" fill="url(#fa)"/>
+      <path d="${path}" fill="none" stroke="#3d7dff" stroke-width="5" opacity=".55" filter="url(#fg)"/>
+      <path id="flp" d="${path}" fill="none" stroke="url(#fl)" stroke-width="2.4" stroke-linecap="round"/>
+      <g class="fhead"><circle cx="${hx}" cy="${hy}" r="16" fill="url(#fh)"/><rect x="${hx - 64}" y="${hy - .9}" width="80" height="1.8" rx=".9" fill="url(#fs)"/><circle cx="${hx}" cy="${hy}" r="2.6" fill="#fff"/></g>`; }
+  if (hasPrev) h += `<text class="ax" x="${L}" y="${T - 1}" style="fill:rgba(200,214,236,.5)">┄ ${pm}月</text>`;
+  svg.innerHTML = h;
+  if (animate && !CALM) { const p = $("flp"); if (p) { const len = p.getTotalLength(); p.style.strokeDasharray = len; p.animate([{ strokeDashoffset: len }, { strokeDashoffset: 0 }], { duration: 1100, easing: "cubic-bezier(.3,.7,.2,1)" });
+    svg.querySelector(".fhead").animate([{ opacity: 0 }, { opacity: 0, offset: .7 }, { opacity: 1 }], { duration: 1300 }); } }
+}
+const GIC = { profit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17l5-5 4 3 7-8"/><path d="M15 7h5v5"/></svg>' };
+function renderGauges(){
+  const T = curTot(), c = compare(), S0 = Math.max(1, T.sales), pct = v => T.sales ? v / S0 * 100 : 0;
+  const g = [
+    { k: "rate", nm: "利益", ic: GIC.profit, v: T.profit, w: Math.max(0, pct(T.profit)), sub: T.sales ? `利益率 ${pct(T.profit).toFixed(1)}%` : "利益率 —", cls: "p", cp: c.profit, up: true },
+    { k: "exp", nm: "経費", ic: IC.exp, v: T.exp, w: pct(T.exp), sub: T.sales ? `売上の${pct(T.exp).toFixed(1)}%` : "売上の —", cls: "e", cp: c.exp, up: false },
+    { k: "lab", nm: "人件費", ic: IC.lab, v: T.lab, w: pct(T.lab), sub: T.sales ? `売上の${pct(T.lab).toFixed(1)}%` : "売上の —", cls: "l", cp: c.lab, up: false } ];
+  $("gauges").innerHTML = g.map(x => `<button type="button" class="gg ${x.cls}${x.v < 0 ? " neg" : ""}" data-k="${x.k}" aria-label="${x.nm} ${yenT(x.v)}、${x.sub}。詳細を開く"><span class="gt">${x.ic}${x.nm}</span><span class="gb"><i style="width:${Math.min(100, x.w).toFixed(1)}%"></i></span><span class="v n">${yenT(x.v)}</span><span class="gs">${x.sub}</span><span class="chg" data-g="${x.k}"></span></button>`).join("");
+  g.forEach(x => chg(document.querySelector(`[data-g="${x.k}"]`), x.cp, x.up));
+  document.querySelectorAll(".gg").forEach(b => b.onclick = () => openDetail(b.dataset.k));
+}
+function renderLoc(){
+  const nm = D.biz.name || "VAULT", st = STORE !== "all" ? storeName(STORE) : D.stores.length > 1 ? `全店舗（${D.stores.length}店）` : (D.stores[0]?.name || "");
+  $("loc").innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5a7 7 0 0 0-7 7c0 5.2 7 12 7 12s7-6.8 7-12a7 7 0 0 0-7-7zm0 9.6a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2z"/></svg><span><b>${esc(nm)}</b>${esc([st, IND[D.biz.industry]].filter(Boolean).join("・"))}</span>`;
+}
+
 /* ---------------- 時給換算 ---------------- */
 const ownerDefault = T => T.open * 9;
 function wageCalc(T){
@@ -903,7 +1109,7 @@ function renderWage(){
     </div><span class="more">スタッフ別・稼働時間の変更 ›</span>`;
 }
 
-function fitText(){ document.querySelectorAll(".sales,.profit,.kpi .v,.wg b").forEach(el => { el.style.fontSize = ""; let fs = parseFloat(getComputedStyle(el).fontSize), n = 0; while (el.scrollWidth > el.clientWidth + 1 && fs > 12 && n++ < 30) { fs -= 1; el.style.fontSize = fs + "px"; } }); }
+function fitText(){ document.querySelectorAll(".sales,.profit,.kpi .v,.wg b,.gg .v").forEach(el => { el.style.fontSize = ""; let fs = parseFloat(getComputedStyle(el).fontSize), n = 0; while (el.scrollWidth > el.clientWidth + 1 && fs > 12 && n++ < 30) { fs -= 1; el.style.fontSize = fs + "px"; } }); }
 function renderStoreBar(){
   const bar = $("storeBar");
   if (D.stores.length < 2) { bar.hidden = true; return; }
@@ -915,7 +1121,7 @@ function renderAll(anim){
   const T0 = todayObj(); if (T0.d !== TODAY.d || T0.m !== TODAY.m || T0.y !== TODAY.y) { const wasCur = isCur(cur.y, cur.m); TODAY = T0; if (wasCur) cur = { y: TODAY.y, m: TODAY.m }; }
   fixStore();
   $("mNext").disabled = isCur(cur.y, cur.m); $("mPrev").disabled = key(cur.y, cur.m) <= firstKey();
-  renderStoreBar(); renderSummary(); renderChart(anim); renderKpis(); renderWage();
+  renderStoreBar(); renderSummary(); renderFlow(anim); renderGauges(); renderLoc(); renderChart(anim); renderKpis(); renderWage();
   requestAnimationFrame(fitText); setTimeout(fitText, 700);
 }
 
@@ -1017,7 +1223,7 @@ function openForm(kind, pre, rec){
   const title = editing ? `${kind === "bonus" ? (rec.kind === "bonus" ? "歩合" : "人件費") : KIND[kind]}を修正` : kind === "shift" ? "勤務を記録" : kind === "bonus" ? "歩合・人件費を記録" : `${KIND[kind]}を記録`;
   const back = editing ? editFrom : null; editFrom = null;
   openSheet(head(title, !editing || !!back) + body + `<div id="fWarn"></div><p class="err" id="fErr" role="alert" hidden></p><button class="btn" id="fSave" disabled>保存する</button>${editing ? `<button class="btn danger" id="fDel">この記録を削除する</button>` : ""}`, () => {
-    wire(editing ? (back || closeSheet) : () => openAdd(pre)); let mode = "add", saving = false;
+    wire(editing ? (back || closeSheet) : pre.dial ? () => { closeSheet(); openDial(); } : () => openAdd(pre)); let mode = "add", saving = false;
     const calcShift = () => { const sid = pickVal("oP"), st = staffOf(sid) || {}; return shiftCalc({ staff: sid, start: $("fS").value, end: $("fE").value, brk: numOf($("fB").value), wage: rec && rec.staff === sid ? rec.wage : st.wage, transit: rec && rec.staff === sid ? rec.transit : st.transit }); };
     const amt = () => kind === "shift" ? calcShift().pay : numOf($("fA")?.value);
     function upd(){
@@ -1519,7 +1725,7 @@ function openOnboarding(){
       <div><svg viewBox="0 0 24 24" fill="none" stroke="var(--ice)" stroke-width="1.6" stroke-linecap="round"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/></svg><span><b>ときどきバックアップを保存</b>設定 →「バックアップを保存」。機種変更や故障のときに、そのファイルからデータを戻せます。2週間ごとにホームでお知らせします。</span></div></div>
       ${nav(0, "VAULTを使い始める")}`;
     box.innerHTML = `<div class="obin">${top()}${h}</div>`; box.scrollTop = 0;
-    wireStep(); setTimeout(() => (box.querySelector("input,#obN") || box).focus({ preventScroll: true }), 30);
+    wireStep(); setTimeout(() => { if (!box.contains(document.activeElement) || document.activeElement === box) (box.querySelector("input,#obN") || box).focus({ preventScroll: true }); }, 30);
   };
   const keep = () => {
     if (st.step === 1) st.name = $("obNm").value.trim();
@@ -1573,10 +1779,10 @@ function emblem(id, big){
   const n = 60, ticks = Array.from({ length: n }, (_, i) => { const a = i / n * Math.PI * 2 - Math.PI / 2, L = i % 15 === 0 ? 7 : i % 5 === 0 ? 5 : 2.6, r2 = 41.2, r1 = r2 - L, o = i % 5 ? .55 : 1;
     return `<line class="tk" style="--i:${i};--o:${o}" x1="${(50 + Math.cos(a) * r1).toFixed(2)}" y1="${(50 + Math.sin(a) * r1).toFixed(2)}" x2="${(50 + Math.cos(a) * r2).toFixed(2)}" y2="${(50 + Math.sin(a) * r2).toFixed(2)}" stroke="url(#${id}g)" stroke-width="${i % 15 === 0 ? 1.6 : i % 5 === 0 ? 1.1 : .55}" opacity="${o}"/>`; }).join("");
   return `<svg class="em" viewBox="0 0 100 100" aria-hidden="true"><defs>
-    <linearGradient id="${id}g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3d6"/><stop offset=".28" stop-color="#d9b77c"/><stop offset=".5" stop-color="#8c6633"/><stop offset=".72" stop-color="#f3dcae"/><stop offset="1" stop-color="#9c7440"/></linearGradient>
-    <linearGradient id="${id}v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6de"/><stop offset=".42" stop-color="#e2c088"/><stop offset=".52" stop-color="#8a6430"/><stop offset=".64" stop-color="#c49a5c"/><stop offset="1" stop-color="#f2d9a6"/></linearGradient>
-    <radialGradient id="${id}d" cx=".42" cy=".38" r=".7"><stop offset="0" stop-color="#2a231b"/><stop offset=".7" stop-color="#0c0a08"/><stop offset="1" stop-color="#050403"/></radialGradient>
-    <linearGradient id="${id}s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff8e6" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="${id}g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".28" stop-color="#c3ccd8"/><stop offset=".5" stop-color="#58647a"/><stop offset=".72" stop-color="#eef3f9"/><stop offset="1" stop-color="#7b889c"/></linearGradient>
+    <linearGradient id="${id}v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef5ff"/><stop offset=".42" stop-color="#86b4ff"/><stop offset=".52" stop-color="#2554cc"/><stop offset=".64" stop-color="#4f8dff"/><stop offset="1" stop-color="#cfe1ff"/></linearGradient>
+    <radialGradient id="${id}d" cx=".42" cy=".38" r=".7"><stop offset="0" stop-color="#25324c"/><stop offset=".7" stop-color="#0d1320"/><stop offset="1" stop-color="#060910"/></radialGradient>
+    <linearGradient id="${id}s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#f2f7ff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
     <clipPath id="${id}c"><circle cx="50" cy="50" r="48"/></clipPath></defs>
     <circle class="dr" pathLength="1" cx="50" cy="50" r="47" fill="none" stroke="url(#${id}g)" stroke-width="${big ? 2.2 : 3.4}" transform="rotate(-90 50 50)"/>
     <circle class="dr d2" pathLength="1" cx="50" cy="50" r="44" fill="none" stroke="url(#${id}g)" stroke-width="${big ? .6 : 1}" opacity=".7" transform="rotate(90 50 50)"/>
@@ -1619,11 +1825,11 @@ function playIntro(force, mOver){
     cx.clearRect(0, 0, W, H);
     // 中心の光の筋
     if (T < 1.4) { const w = ease(T / .55) * W * .95, al = T < .25 ? T / .25 : Math.max(0, 1 - (T - .25) / 1.1);
-      const lg = cx.createLinearGradient(OX - w / 2, 0, OX + w / 2, 0); lg.addColorStop(0, "rgba(255,210,150,0)"); lg.addColorStop(.5, `rgba(255,236,200,${al})`); lg.addColorStop(1, "rgba(255,210,150,0)");
+      const lg = cx.createLinearGradient(OX - w / 2, 0, OX + w / 2, 0); lg.addColorStop(0, "rgba(120,170,255,0)"); lg.addColorStop(.5, `rgba(225,238,255,${al})`); lg.addColorStop(1, "rgba(120,170,255,0)");
       cx.fillStyle = lg; cx.fillRect(OX - w / 2, OY - .6, w, 1.2);
-      const cg = cx.createRadialGradient(OX, OY, 0, OX, OY, 70); cg.addColorStop(0, `rgba(255,225,170,${.55 * al})`); cg.addColorStop(1, "rgba(255,200,120,0)"); cx.fillStyle = cg; cx.fillRect(OX - 70, OY - 70, 140, 140); }
+      const cg = cx.createRadialGradient(OX, OY, 0, OX, OY, 70); cg.addColorStop(0, `rgba(170,205,255,${.55 * al})`); cg.addColorStop(1, "rgba(90,140,255,0)"); cx.fillStyle = cg; cx.fillRect(OX - 70, OY - 70, 140, 140); }
     const appear = ease((T - .4) / 1.4), core = cx.createRadialGradient(OX, OY, 0, OX, OY, R * 1.3);
-    core.addColorStop(0, `rgba(150,190,255,${.12 * appear * (1 - eE)})`); core.addColorStop(.6, `rgba(90,80,170,${.05 * appear})`); core.addColorStop(1, "rgba(0,0,0,0)");
+    core.addColorStop(0, `rgba(150,190,255,${.12 * appear * (1 - eE)})`); core.addColorStop(.6, `rgba(40,90,200,${.06 * appear})`); core.addColorStop(1, "rgba(0,0,0,0)");
     cx.fillStyle = core; cx.fillRect(0, 0, W, H);
     cx.globalCompositeOperation = "lighter";
     const boost = T > 2.07 ? 1 + 1.6 * Math.exp(-(T - 2.07) * 5) : 1, rot = T * .22;
@@ -1635,7 +1841,7 @@ function playIntro(force, mOver){
       let al = p.k === 9 ? (.16 + .22 * Math.sin(T * 2 + p.tw)) : (.3 + hi * 1.2);
       al *= Math.min(1, (T - p.ts) * 2.5) * boost * (1 - eE);
       if (al <= .01) continue;
-      cx.fillStyle = (p.k === 9 || p.k % 2) ? `rgba(${170 + Math.round(hi * 60)},${215 + Math.round(hi * 30)},255,${Math.min(1, al)})` : `rgba(255,${190 + Math.round(hi * 45)},${125 + Math.round(hi * 60)},${Math.min(1, al)})`;
+      cx.fillStyle = (p.k === 9 || p.k % 2) ? `rgba(${170 + Math.round(hi * 60)},${215 + Math.round(hi * 30)},255,${Math.min(1, al)})` : `rgba(${60 + Math.round(hi * 120)},${125 + Math.round(hi * 90)},255,${Math.min(1, al)})`;
       cx.beginPath(); cx.arc(OX + Math.cos(a) * rad, OY + Math.sin(a) * rad, Math.max(.3, p.s * (p.k === 9 ? .8 : 1)), 0, 7); cx.fill();
     }
     // カチッと止まった瞬間の衝撃波
@@ -1663,104 +1869,157 @@ function enterApp(){
 }
 
 
-/* ================= 背景：文字盤・回路・粒子をベースに、精密機械のような細部と奥行きを加える ================= */
-const bg = $("bg"), bx = bg.getContext("2d"); let BW, BH, DPR, layer, dial, dial2, traces = [], chips = [], parts = [], pulses = [], braf = 0, last = 0, scrollY0 = 0;
-const EXTRA = 140;   // スクロールで少しずらすための余白
+/* ================= 背景：中央のチップから回路が広がり、青い電気の光が配線を走る ================= */
+const bg = $("bg"), bx = bg.getContext("2d");
+let BW, BH, DPR, layer, traces = [], pulses = [], braf = 0, last = 0, nextSurge = 0, seed = 7;
+const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
 function bgBuild(){
   DPR = Math.min(1.5, devicePixelRatio || 1); BW = innerWidth; BH = innerHeight; bg.width = Math.round(BW * DPR); bg.height = Math.round(BH * DPR);
-  const mk = (w, h) => { const c = document.createElement("canvas"); c.width = Math.round(w * DPR); c.height = Math.round(h * DPR); const x = c.getContext("2d"); x.scale(DPR, DPR); return [c, x]; };
-  const LH = BH + EXTRA, [L0, x] = mk(BW, LH); layer = L0;
-  const g = x.createLinearGradient(0, 0, 0, LH); g.addColorStop(0, "#0b1426"); g.addColorStop(.42, "#070b14"); g.addColorStop(1, "#040508"); x.fillStyle = g; x.fillRect(0, 0, BW, LH);
-  const rg = x.createRadialGradient(BW * .85, BH * .12, 0, BW * .85, BH * .12, BW * 1.15); rg.addColorStop(0, "rgba(95,135,210,.18)"); rg.addColorStop(.5, "rgba(85,70,170,.06)"); rg.addColorStop(1, "rgba(0,0,0,0)"); x.fillStyle = rg; x.fillRect(0, 0, BW, LH);
-  const rg2 = x.createRadialGradient(BW * .05, LH * .82, 0, BW * .05, LH * .82, BW * .9); rg2.addColorStop(0, "rgba(227,196,143,.06)"); rg2.addColorStop(1, "rgba(0,0,0,0)"); x.fillStyle = rg2; x.fillRect(0, 0, BW, LH);
-  // 金属のヘアライン
-  for (let i = 0; i < LH; i += 2) { x.fillStyle = `rgba(255,255,255,${Math.random() * .012})`; x.fillRect(0, i, BW, 1); }
-  // 精密プレートの点の格子（中段にだけ、端に向かって消える）
-  for (let yy = BH * .28; yy < BH * .72; yy += 12) for (let xx = 6; xx < BW; xx += 12) { const f = Math.sin((yy - BH * .28) / (BH * .44) * Math.PI) * (1 - Math.abs(xx / BW - .5) * 1.4); if (f <= 0) continue; x.fillStyle = `rgba(170,205,255,${.06 * f})`; x.fillRect(xx, yy, 1, 1); }
-  // 回路（下半分）：バス配線・ICの足跡・ビア
-  const cell = 12, gw = Math.ceil(BW / cell), gh = Math.ceil(LH / cell), occ = new Uint8Array(gw * gh), D8 = [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]];
-  traces = []; chips = [];
-  for (let i = 0; i < 4; i++) { const w = 4 + (Math.random() * 4 | 0), h = 3 + (Math.random() * 3 | 0), cx0 = 1 + (Math.random() * (gw - w - 2) | 0), cy0 = Math.floor(gh * .55 + Math.random() * (gh * .4 - h)); let ok = true;
-    for (let yy = cy0 - 1; yy <= cy0 + h + 1; yy++) for (let xx = cx0 - 1; xx <= cx0 + w + 1; xx++) if (yy < 0 || xx < 0 || yy >= gh || xx >= gw || occ[yy * gw + xx]) ok = false; if (!ok) continue;
-    for (let yy = cy0 - 1; yy <= cy0 + h + 1; yy++) for (let xx = cx0 - 1; xx <= cx0 + w + 1; xx++) occ[yy * gw + xx] = 1; chips.push({ x: cx0 * cell, y: cy0 * cell, w: w * cell, h: h * cell }); }
-  for (let b = 0; b < 95; b++) { const gx = Math.random() * gw | 0, gy = Math.floor(gh * .4 + Math.random() * gh * .6); let d = (Math.random() * 4 | 0) * 2; const n = 1 + (Math.random() < .55 ? 2 + (Math.random() * 4 | 0) : 0), pp = D8[(d + 2) % 8], turns = [];
-    for (let s = 0; s < 10 + Math.random() * 30; s++) { if (Math.random() < .12) d = (d + (Math.random() < .5 ? 1 : 7)) % 8; else if (d % 2 && Math.random() < .4) d = (d + (Math.random() < .5 ? 1 : 7)) % 8; turns.push(d); }
-    for (let k = 0; k < n; k++) { let X = gx + pp[0] * k, Y = gy + pp[1] * k; if (X < 0 || Y < 0 || X >= gw || Y >= gh || occ[Y * gw + X]) continue; const pts = [[X * cell, Y * cell]]; occ[Y * gw + X] = 1;
-      for (const t of turns) { const nx = X + D8[t][0], ny = Y + D8[t][1]; if (nx < 0 || ny < 0 || nx >= gw || ny >= gh || occ[ny * gw + nx]) break; X = nx; Y = ny; occ[Y * gw + X] = 1; pts.push([X * cell, Y * cell]); }
-      if (pts.length > 4) traces.push(pts); } }
-  const fadeY = yy => Math.min(1, Math.max(0, (yy / BH - .36) * 2.4));
+  seed = 7; traces = []; pulses = [];
+  const c = document.createElement("canvas"); c.width = bg.width; c.height = bg.height; const x = c.getContext("2d"); x.scale(DPR, DPR); layer = c;
+  // 基板の地（濃い紺から青へ）
+  const g = x.createRadialGradient(BW / 2, BH * .5, 0, BW / 2, BH * .5, Math.hypot(BW, BH) * .62);
+  g.addColorStop(0, "#15305e"); g.addColorStop(.55, "#0e2146"); g.addColorStop(1, "#08132b"); x.fillStyle = g; x.fillRect(0, 0, BW, BH);
+  // 細かい点の方眼
+  x.fillStyle = "rgba(150,190,255,.10)"; for (let yy = 6; yy < BH; yy += 14) for (let xx = 6; xx < BW; xx += 14) x.fillRect(xx, yy, 1, 1);
+  // 中央のチップ
+  const cx = BW / 2, cy = BH * .5, h = Math.max(30, Math.min(BW, BH) * .1), sp = Math.max(4.2, Math.min(6.5, Math.min(BW, BH) / 70));
+  const occ = new Set(), cell = 10, mark = (px, py) => occ.add(((px / cell) | 0) + "," + ((py / cell) | 0));
+  // 4つの辺から配線をだんだん広げながら外へ伸ばす
+  const sides = [[1, 0], [-1, 0], [0, 1], [0, -1]], k = Math.floor(h / sp) - 1;
+  sides.forEach(([ux, uy]) => { const vx = -uy, vy = ux;
+    for (let i = -k; i <= k; i++) { if (rnd() < .18) continue;
+      const a = Math.abs(i), sg = Math.sign(i) || (rnd() < .5 ? 1 : -1), P = [];
+      let px = cx + ux * (h + 4) + vx * i * sp, py = cy + uy * (h + 4) + vy * i * sp; P.push([px, py]);
+      const L1 = 8 + (k - a) * sp * .8 + rnd() * 6; px += ux * L1; py += uy * L1; P.push([px, py]);
+      const dg = a * (sp * 1.35) + rnd() * 10; px += (ux + vx * sg) * dg; py += (uy + vy * sg) * dg; P.push([px, py]);
+      let len = 30 + rnd() * Math.max(BW, BH) * .7;
+      if (rnd() < .5) { px += ux * len * .5; py += uy * len * .5; P.push([px, py]); const d2 = 10 + rnd() * 40, s2 = rnd() < .5 ? 1 : -1; px += (ux + vx * s2) * d2; py += (uy + vy * s2) * d2; P.push([px, py]); len *= .6; }
+      px += ux * len; py += uy * len; P.push([px, py]);
+      traces.push({ P, end: rnd() < .45 }); } });
+  // 角から斜めに出る配線の束
+  [[1, 1], [-1, 1], [1, -1], [-1, -1]].forEach(([dx, dy]) => { const n = 4 + Math.floor(rnd() * 4);
+    for (let j = 0; j < n; j++) { const off = (j - n / 2) * sp * 1.1, P = [];
+      let px = cx + dx * (h * .78) + off * dx, py = cy + dy * (h * .78) - off * dy; P.push([px, py]);
+      const d = 40 + j * 6 + rnd() * Math.min(BW, BH) * .35; px += dx * d; py += dy * d; P.push([px, py]);
+      if (rnd() < .5) { px += dx * (BW + BH); } else { py += dy * (BW + BH); } P.push([px, py]);
+      traces.push({ P, end: false }); } });
+  // 画面の外に出た部分は切り落とす（光が見えないところを走らないように）
+  const inB = ([px, py]) => px > -12 && px < BW + 12 && py > -12 && py < BH + 12;
+  traces = traces.map(t => { const P = [t.P[0]]; for (let i = 1; i < t.P.length; i++) { const a = t.P[i - 1], b = t.P[i];
+      if (inB(b)) { P.push(b); continue; } let lo = 0, hi = 1; for (let k2 = 0; k2 < 14; k2++) { const m = (lo + hi) / 2; inB([a[0] + (b[0] - a[0]) * m, a[1] + (b[1] - a[1]) * m]) ? lo = m : hi = m; }
+      P.push([a[0] + (b[0] - a[0]) * lo, a[1] + (b[1] - a[1]) * lo]); return { P, end: false }; }
+    return { P, end: t.end }; }).filter(t => t.P.length > 1);
+  // 配線を描く
   x.lineJoin = "round"; x.lineCap = "round";
-  traces.forEach((t, i) => { const gold = i % 8 === 0, f = fadeY(t[0][1]);
-    x.strokeStyle = gold ? `rgba(227,196,143,${.11 * f})` : `rgba(150,190,255,${.08 * f})`; x.lineWidth = 1; x.beginPath(); t.forEach(([a, b2], k) => k ? x.lineTo(a, b2) : x.moveTo(a, b2)); x.stroke();
-    [t[0], t[t.length - 1]].forEach(([a, b2]) => { x.beginPath(); x.arc(a, b2, 2.2, 0, 7); x.strokeStyle = `rgba(170,205,255,${.14 * f})`; x.stroke(); x.fillStyle = `rgba(5,7,11,1)`; x.beginPath(); x.arc(a, b2, .9, 0, 7); x.fill(); }); });
-  chips.forEach(c => { const f = fadeY(c.y); x.strokeStyle = `rgba(170,205,255,${.13 * f})`; x.lineWidth = .8; x.strokeRect(c.x + .5, c.y + .5, c.w, c.h); x.fillStyle = `rgba(150,190,255,${.025 * f})`; x.fillRect(c.x, c.y, c.w, c.h);
-    x.beginPath(); for (let i = 6; i < c.w - 3; i += 6) { x.moveTo(c.x + i, c.y); x.lineTo(c.x + i, c.y - 5); x.moveTo(c.x + i, c.y + c.h); x.lineTo(c.x + i, c.y + c.h + 5); } x.stroke();
-    x.fillStyle = `rgba(190,215,255,${.16 * f})`; x.font = "7px Inter, sans-serif"; x.fillText("VX-" + (100 + Math.random() * 899 | 0), c.x + 5, c.y + 11); x.beginPath(); x.arc(c.x + c.w - 6, c.y + 6, 1.6, 0, 7); x.fill(); });
-  // メインの文字盤（回転するので別レイヤー）
-  const R = Math.max(BW, 360) * .62, [Dc, dx] = mk(R * 2 + 4, R * 2 + 4); dial = { c: Dc, R };
-  dx.translate(R + 2, R + 2);
-  [1, .93, .78, .64, .5, .36].forEach((k, i) => { dx.beginPath(); dx.arc(0, 0, R * k, 0, 7); dx.strokeStyle = i === 1 ? "rgba(227,196,143,.14)" : `rgba(170,205,255,${i % 2 ? .07 : .1})`; dx.lineWidth = i === 1 ? .8 : .6; dx.stroke(); });
-  for (let i = 0; i < 240; i++) { const a = i / 240 * Math.PI * 2, L2 = i % 20 === 0 ? 12 : i % 5 === 0 ? 7 : 3.5, r1 = R * .93 - 2, r0 = r1 - L2; dx.beginPath(); dx.moveTo(Math.cos(a) * r0, Math.sin(a) * r0); dx.lineTo(Math.cos(a) * r1, Math.sin(a) * r1); dx.strokeStyle = i % 20 === 0 ? "rgba(227,196,143,.34)" : `rgba(190,215,255,${i % 5 ? .1 : .2})`; dx.lineWidth = i % 20 === 0 ? 1 : .6; dx.stroke(); }
-  // 外周の細かい数字（5きざみ）
-  dx.font = "500 8px Inter, sans-serif"; dx.textAlign = "center"; dx.textBaseline = "middle"; dx.fillStyle = "rgba(200,220,255,.2)";
-  for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2 - Math.PI / 2, rr = R * .93 - 24; dx.save(); dx.translate(Math.cos(a) * rr, Math.sin(a) * rr); dx.rotate(a + Math.PI / 2); dx.fillText(String(i * 5).padStart(2, "0"), 0, 0); dx.restore(); }
-  // 外側の細いリング：細かい目盛りとギザ（ベゼル）
-  for (let i = 0; i < 360; i++) { const a = i / 360 * Math.PI * 2; dx.beginPath(); dx.moveTo(Math.cos(a) * R * .995, Math.sin(a) * R * .995); dx.lineTo(Math.cos(a) * R * 1.0, Math.sin(a) * R * 1.0); dx.strokeStyle = "rgba(190,215,255,.06)"; dx.lineWidth = .5; dx.stroke(); }
-  for (let i = 0; i < 60; i++) { const a = i / 60 * Math.PI * 2; dx.beginPath(); dx.moveTo(Math.cos(a) * R * .64, Math.sin(a) * R * .64); dx.lineTo(Math.cos(a) * R * .66, Math.sin(a) * R * .66); dx.strokeStyle = "rgba(190,215,255,.12)"; dx.lineWidth = .6; dx.stroke(); }
-  dx.beginPath(); dx.arc(0, 0, R * .78, -1.1, .4); dx.strokeStyle = "rgba(155,140,255,.22)"; dx.lineWidth = 1.2; dx.stroke();
-  dx.beginPath(); dx.arc(0, 0, R * .5, 2.2, 3.4); dx.strokeStyle = "rgba(227,196,143,.16)"; dx.lineWidth = 1; dx.stroke();
-  // 小さなサブダイヤル（クロノグラフ風）を2つ
-  dial.subs = [[-.42, .28], [-.18, .5]].map(([ux, uy], i) => ({ x: ux * R, y: uy * R, r: R * (i ? .12 : .15) }));
-  dial.subs.forEach(s => { dx.beginPath(); dx.arc(s.x, s.y, s.r, 0, 7); dx.strokeStyle = "rgba(190,215,255,.13)"; dx.lineWidth = .7; dx.stroke(); dx.beginPath(); dx.arc(s.x, s.y, s.r * .72, 0, 7); dx.strokeStyle = "rgba(190,215,255,.06)"; dx.stroke();
-    for (let i = 0; i < 30; i++) { const a = i / 30 * Math.PI * 2, l = i % 5 ? 2.5 : 5; dx.beginPath(); dx.moveTo(s.x + Math.cos(a) * (s.r - l), s.y + Math.sin(a) * (s.r - l)); dx.lineTo(s.x + Math.cos(a) * s.r, s.y + Math.sin(a) * s.r); dx.strokeStyle = i % 5 ? "rgba(190,215,255,.1)" : "rgba(227,196,143,.26)"; dx.lineWidth = .6; dx.stroke(); } });
-  // 左下の大きな文字盤（奥のレイヤー・逆回転）
-  const R2 = Math.max(BW, 360) * .5, [D2, d2] = mk(R2 * 2 + 4, R2 * 2 + 4); dial2 = { c: D2, R: R2 }; d2.translate(R2 + 2, R2 + 2);
-  [1, .86, .7].forEach((k, i) => { d2.beginPath(); d2.arc(0, 0, R2 * k, 0, 7); d2.strokeStyle = `rgba(170,205,255,${i ? .04 : .06})`; d2.lineWidth = .6; d2.stroke(); });
-  for (let i = 0; i < 120; i++) { const a = i / 120 * Math.PI * 2, l = i % 10 ? 4 : 9; d2.beginPath(); d2.moveTo(Math.cos(a) * (R2 * .86), Math.sin(a) * (R2 * .86)); d2.lineTo(Math.cos(a) * (R2 * .86 + l), Math.sin(a) * (R2 * .86 + l)); d2.strokeStyle = i % 10 ? "rgba(190,215,255,.05)" : "rgba(227,196,143,.12)"; d2.lineWidth = .6; d2.stroke(); }
-  parts = Array.from({ length: 46 }, () => { const z = Math.random(); return { x: Math.random() * BW, y: Math.random() * BH, z, v: 2 + z * 8, s: .35 + z * 1.1, a: .08 + z * .3, ph: Math.random() * 7 }; });
-  pulses = Array.from({ length: 6 }, (_, i) => ({ i: Math.random() * traces.length | 0, s: Math.random() * 10, gold: i === 0, v: 2.5 + Math.random() * 2 }));
+  for (const t of traces) { t.seg = []; t.len = 0;
+    for (let i = 1; i < t.P.length; i++) { const [a1, b1] = t.P[i - 1], [a2, b2] = t.P[i], l = Math.hypot(a2 - a1, b2 - b1); t.seg.push(l); t.len += l;
+      for (let s = 0; s < l; s += cell * .7) mark(a1 + (a2 - a1) * s / l, b1 + (b2 - b1) * s / l); }
+    x.strokeStyle = "rgba(150,195,255,.36)"; x.lineWidth = 1.1; x.beginPath(); t.P.forEach(([px, py], i) => i ? x.lineTo(px, py) : x.moveTo(px, py)); x.stroke();
+    if (t.end) { const [ex, ey] = t.P[t.P.length - 1]; if (ex > 0 && ex < BW && ey > 0 && ey < BH) { x.strokeStyle = "rgba(170,205,255,.45)"; x.beginPath(); x.arc(ex, ey, 2.4, 0, 7); x.stroke(); } } }
+  // 部品（空いている場所にだけ置く）
+  const free = (px, py, w, hh) => { for (let yy = py; yy < py + hh; yy += cell) for (let xx = px; xx < px + w; xx += cell) if (occ.has(((xx / cell) | 0) + "," + ((yy / cell) | 0))) return false; return true; };
+  for (let n = 0; n < BW * BH / 2600; n++) { const t = rnd(), px = rnd() * BW, py = rnd() * BH;
+    if (Math.abs(px - cx) < h * 1.6 && Math.abs(py - cy) < h * 1.6) continue;
+    const w = t < .5 ? 10 + rnd() * 26 : 6 + rnd() * 8, hh = t < .5 ? 8 + rnd() * 18 : 4 + rnd() * 5; if (!free(px, py, w, hh)) continue;
+    for (let yy = py; yy < py + hh; yy += cell) for (let xx = px; xx < px + w; xx += cell) mark(xx, yy);
+    x.strokeStyle = "rgba(150,195,255,.20)"; x.lineWidth = 1;
+    if (t < .5) { x.fillStyle = "rgba(8,18,40,.55)"; x.fillRect(px, py, w, hh); x.strokeRect(px + .5, py + .5, w, hh);
+      x.fillStyle = "rgba(150,195,255,.22)"; for (let q = px + 3; q < px + w - 1; q += 3.5) { x.fillRect(q, py - 2, 1.2, 2); x.fillRect(q, py + hh + 1, 1.2, 2); } }
+    else if (t < .8) { x.fillStyle = "rgba(150,195,255,.16)"; x.fillRect(px, py, w * .3, hh); x.fillRect(px + w * .7, py, w * .3, hh); }
+    else { x.beginPath(); x.arc(px, py, 2 + rnd() * 3, 0, 7); x.stroke(); } }
+  // チップ本体
+  x.save(); x.shadowColor = "rgba(0,0,0,.7)"; x.shadowBlur = 18; x.fillStyle = "#0a1020"; x.fillRect(cx - h, cy - h, h * 2, h * 2); x.restore();
+  x.strokeStyle = "rgba(170,205,255,.55)"; x.lineWidth = 1.2; x.strokeRect(cx - h + .5, cy - h + .5, h * 2 - 1, h * 2 - 1);
+  x.fillStyle = "rgba(190,215,255,.55)"; for (let q = -h + 4; q < h - 3; q += 3) { x.fillRect(cx + q, cy - h - 3, 1.2, 3); x.fillRect(cx + q, cy + h, 1.2, 3); x.fillRect(cx - h - 3, cy + q, 3, 1.2); x.fillRect(cx + h, cy + q, 3, 1.2); }
+  const d = h * .52; x.fillStyle = "rgba(200,220,255,.18)"; x.fillRect(cx - d, cy - d, d * 2, d * 2);
+  x.fillStyle = "rgba(220,235,255,.55)"; for (let q = -d + 2; q < d - 1; q += 3.2) for (let r = -d + 2; r < d - 1; r += 3.2) x.fillRect(cx + q, cy + r, 1.4, 1.4);
+  x.fillStyle = "rgba(220,235,255,.7)"; [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([a, b]) => { x.beginPath(); x.arc(cx + a * (h - 5), cy + b * (h - 5), 1.4, 0, 7); x.fill(); });
+  // 周辺を少し暗く（文字を読みやすく）
+  const vg = x.createRadialGradient(BW / 2, BH / 2, Math.min(BW, BH) * .25, BW / 2, BH / 2, Math.hypot(BW, BH) * .6); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(2,6,16,.55)"); x.fillStyle = vg; x.fillRect(0, 0, BW, BH);
+  for (let i = 0; i < 26; i++) spawn(rnd());
 }
-function bgDraw(t, dt){
-  const sy = Math.min(EXTRA, scrollY0 * .06);
-  bx.setTransform(1, 0, 0, 1, 0, 0); bx.drawImage(layer, 0, -sy * DPR); bx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  // 左下の文字盤（ゆっくり逆回転）
-  const c2x = BW * .02, c2y = BH * .9 - sy * .6; bx.save(); bx.translate(c2x, c2y); bx.rotate(-t * .004); bx.drawImage(dial2.c, -dial2.R - 2, -dial2.R - 2, dial2.R * 2 + 4, dial2.R * 2 + 4); bx.restore();
-  // メインの文字盤
-  const cx = BW * .9, cy = Math.min(150, BH * .2) - scrollY0 * .12, rot = t * .006;
-  bx.save(); bx.translate(cx, cy); bx.rotate(rot); bx.drawImage(dial.c, -dial.R - 2, -dial.R - 2, dial.R * 2 + 4, dial.R * 2 + 4);
-  // サブダイヤルの針
-  dial.subs.forEach((s, i) => { const a = t * (i ? .05 : .2) + i * 2; bx.strokeStyle = i ? "rgba(227,196,143,.4)" : "rgba(190,225,255,.45)"; bx.lineWidth = .8; bx.beginPath(); bx.moveTo(s.x, s.y); bx.lineTo(s.x + Math.cos(a) * s.r * .82, s.y + Math.sin(a) * s.r * .82); bx.stroke(); bx.fillStyle = "rgba(190,225,255,.5)"; bx.beginPath(); bx.arc(s.x, s.y, 1.4, 0, 7); bx.fill(); });
-  bx.restore();
-  // 秒針のように一周する光（残光つき）
-  const R = dial.R * .93, sa = (t / 60) * Math.PI * 2 - Math.PI / 2;
-  bx.save(); bx.translate(cx, cy);
-  bx.strokeStyle = "rgba(200,230,255,.2)"; bx.lineWidth = .8; bx.beginPath(); bx.moveTo(Math.cos(sa) * R * .36, Math.sin(sa) * R * .36); bx.lineTo(Math.cos(sa) * R, Math.sin(sa) * R); bx.stroke();
-  bx.beginPath(); bx.arc(0, 0, R, sa - .5, sa); const ag = bx.createLinearGradient(Math.cos(sa - .5) * R, Math.sin(sa - .5) * R, Math.cos(sa) * R, Math.sin(sa) * R); ag.addColorStop(0, "rgba(200,230,255,0)"); ag.addColorStop(1, "rgba(200,230,255,.35)"); bx.strokeStyle = ag; bx.lineWidth = 1.2; bx.stroke();
-  const tx = Math.cos(sa) * R, ty = Math.sin(sa) * R, tg = bx.createRadialGradient(tx, ty, 0, tx, ty, 14); tg.addColorStop(0, "rgba(220,240,255,.55)"); tg.addColorStop(1, "rgba(220,240,255,0)"); bx.fillStyle = tg; bx.fillRect(tx - 14, ty - 14, 28, 28);
-  bx.fillStyle = "rgba(227,196,143,.6)"; bx.beginPath(); bx.arc(0, 0, 2.2, 0, 7); bx.fill();
-  bx.restore();
-  bx.globalCompositeOperation = "lighter";
-  // 粒子（奥と手前で速さと大きさが違う）＋近い粒子どうしを細い線で結ぶ
-  for (const p of parts) { p.y -= p.v * dt; p.x += Math.sin(t * .3 + p.ph) * .05; if (p.y < -4) { p.y = BH + 4; p.x = Math.random() * BW; } }
-  bx.lineWidth = .5;
-  for (let i = 0; i < parts.length; i++) for (let j = i + 1; j < parts.length; j++) { const a = parts[i], b2 = parts[j], d = Math.hypot(a.x - b2.x, a.y - b2.y); if (d < 70 && a.z > .4 && b2.z > .4) { bx.strokeStyle = `rgba(170,210,255,${.07 * (1 - d / 70)})`; bx.beginPath(); bx.moveTo(a.x, a.y - sy * a.z); bx.lineTo(b2.x, b2.y - sy * b2.z); bx.stroke(); } }
-  for (const p of parts) { bx.fillStyle = `rgba(200,225,255,${p.a * (.6 + .4 * Math.sin(t * .8 + p.ph))})`; bx.beginPath(); bx.arc(p.x, p.y - sy * p.z, p.s, 0, 7); bx.fill(); }
-  // 回路を流れる光（尾を引く）
-  for (const q of pulses) { const tr = traces[q.i]; if (!tr) continue; q.s += q.v * dt; if (q.s > tr.length + 6) { q.i = Math.random() * traces.length | 0; q.s = 0; continue; }
-    const col = q.gold ? "227,196,143" : "190,230,255";
-    for (let k = 0; k < 8; k++) { const s = q.s - k * .35; if (s < 0 || s > tr.length - 1) continue; const i = Math.min(tr.length - 2, Math.floor(s)), f = s - i, px = tr[i][0] + (tr[i + 1][0] - tr[i][0]) * f, py = tr[i][1] + (tr[i + 1][1] - tr[i][1]) * f - sy, r = k ? 5 : 9, al = (k ? .3 : .6) * (1 - k / 8);
-      const g2 = bx.createRadialGradient(px, py, 0, px, py, r); g2.addColorStop(0, `rgba(${col},${al})`); g2.addColorStop(1, `rgba(${col},0)`); bx.fillStyle = g2; bx.beginPath(); bx.arc(px, py, r, 0, 7); bx.fill(); } }
-  // ガラスの反射（十数秒に一度、斜めにゆっくり横切る）
-  const cyc = (t % 16) / 16; if (cyc < .45) { const p = cyc / .45, x0 = -BW * .6 + p * BW * 2.2, gr = bx.createLinearGradient(x0, 0, x0 + BW * .5, BH * .35);
-    gr.addColorStop(0, "rgba(255,255,255,0)"); gr.addColorStop(.5, `rgba(210,230,255,${.035 * Math.sin(p * Math.PI)})`); gr.addColorStop(1, "rgba(255,255,255,0)"); bx.fillStyle = gr; bx.fillRect(0, 0, BW, BH); }
+// 配線の上の位置（先頭からの距離 s）
+function at(t, s){ for (let i = 0; i < t.seg.length; i++) { if (s <= t.seg[i]) { const [a1, b1] = t.P[i], [a2, b2] = t.P[i + 1], f = s / t.seg[i]; return [a1 + (a2 - a1) * f, b1 + (b2 - b1) * f]; } s -= t.seg[i]; } return t.P[t.P.length - 1]; }
+function spawn(head, strong){ if (!traces.length) return; const t = traces[Math.floor(Math.random() * traces.length)];
+  pulses.push({ t, s: (head || 0) * t.len, v: (strong ? 260 : 120) + Math.random() * 180, tail: (strong ? 120 : 50) + Math.random() * 90, a: strong ? 1 : .55 + Math.random() * .35 }); }
+function bgDraw(time, dt){
+  bx.setTransform(1, 0, 0, 1, 0, 0); bx.drawImage(layer, 0, 0); bx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  bx.globalCompositeOperation = "lighter"; bx.lineCap = "round"; bx.lineJoin = "round";
+  for (const p of pulses) { p.s += p.v * dt;
+    const n = 9, pts = []; for (let i = 0; i <= n; i++) { const s = p.s - p.tail * i / n; if (s < 0) break; pts.push(at(p.t, Math.min(s, p.t.len))); }
+    for (let i = 1; i < pts.length; i++) { const f = 1 - i / n;
+      bx.strokeStyle = `rgba(60,140,255,${.2 * f * p.a})`; bx.lineWidth = 8; bx.beginPath(); bx.moveTo(...pts[i - 1]); bx.lineTo(...pts[i]); bx.stroke();
+      bx.strokeStyle = `rgba(170,215,255,${.85 * f * p.a})`; bx.lineWidth = 1.6; bx.beginPath(); bx.moveTo(...pts[i - 1]); bx.lineTo(...pts[i]); bx.stroke(); }
+    if (pts.length) { const [hx, hy] = pts[0], gr = bx.createRadialGradient(hx, hy, 0, hx, hy, 9); gr.addColorStop(0, `rgba(235,245,255,${.9 * p.a})`); gr.addColorStop(1, "rgba(80,150,255,0)"); bx.fillStyle = gr; bx.fillRect(hx - 9, hy - 9, 18, 18); } }
   bx.globalCompositeOperation = "source-over";
+  pulses = pulses.filter(p => p.s - p.tail < p.t.len);
+  while (pulses.length < 26) spawn(Math.random() < .2 ? Math.random() * .5 : 0);
+  // ときどき、チップから一斉に光が走る
+  if (time > nextSurge) { nextSurge = time + 7 + Math.random() * 5; for (let i = 0; i < 18; i++) spawn(0, true); }
 }
-function bgLoop(now){ braf = requestAnimationFrame(bgLoop); if (now - last < 33) return; const dt = last ? Math.min(.1, (now - last) / 1000) : .033; last = now; bgDraw(now / 1000, dt); }
-function bgStart(){ cancelAnimationFrame(braf); braf = 0; last = 0; if (UI.bgm && !CALM && !document.hidden && !$("sheet").classList.contains("on")) braf = requestAnimationFrame(bgLoop); else bgDraw(12, 0); }
-addEventListener("scroll", () => { scrollY0 = scrollY; if (!braf) bgDraw(12, 0); }, { passive: true });
+function bgLoop(now){ braf = requestAnimationFrame(bgLoop); if (now - last < 33) return; const dt = last ? Math.min(.08, (now - last) / 1000) : .033; last = now; bgDraw(now / 1000, dt); }
+function bgStart(){ cancelAnimationFrame(braf); braf = 0; last = 0;
+  if (UI.bgm && !CALM && !document.hidden && !$("sheet").classList.contains("on") && $("dial").hidden) braf = requestAnimationFrame(bgLoop);
+  else bgDraw(0, 0); }
+function bgPause(){ cancelAnimationFrame(braf); braf = 0; }
 document.addEventListener("visibilitychange", bgStart);
 let rT; addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(() => { bgBuild(); bgStart(); }, 200); });
-function bgPause(){ cancelAnimationFrame(braf); braf = 0; }
+
+/* =====================================================================
+   記録ボタンの円形メニュー（＋を押すと、扇形に5つの記録が開く）
+   ===================================================================== */
+const DIAL = [
+  { f: "sale", t: "売上", s: "その日の売上を入れる", ic: '<path d="M5 20V12M10 20V6M15 20V10M20 20V4"/>' },
+  { f: "exp", t: "経費", s: "仕入れ・家賃・消耗品など", ic: '<rect x="3.5" y="6" width="17" height="13" rx="2.5"/><path d="M3.5 10h17M15.5 15h2"/>' },
+  { f: "shift", t: "勤務", s: "時間から人件費を自動計算", ic: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>' },
+  { f: "bonus", t: "歩合", s: "歩合・日当を金額で入れる", ic: '<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.8-3 3-4.6 5.5-4.6s4.7 1.6 5.5 4.6"/><path d="M18 8v6M15 11h6"/>' },
+  { f: "pdf", t: "PDF", s: "レジの日報をまとめて読み込む", ic: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>' }
+];
+let dialFocus = 0;
+function dialGeom(){
+  const k = $("bAdd").querySelector(".add").getBoundingClientRect(), cx = k.left + k.width / 2, cy = k.top + k.height / 2;
+  const R = Math.min(156, innerWidth / 2 - 8), r = 40, a0 = 196, a1 = 344;
+  return { cx, cy, R, r, a0, a1, step: (a1 - a0) / DIAL.length };
+}
+function arcPath(cx, cy, r1, r2, s, e){
+  const p = (r, a) => [cx + r * Math.cos(a * Math.PI / 180), cy + r * Math.sin(a * Math.PI / 180)], [a, b] = [p(r2, s), p(r2, e)], [c, d] = [p(r1, e), p(r1, s)];
+  return `M${a[0]} ${a[1]}A${r2} ${r2} 0 0 1 ${b[0]} ${b[1]}L${c[0]} ${c[1]}A${r1} ${r1} 0 0 0 ${d[0]} ${d[1]}Z`;
+}
+function openDial(){
+  const G = dialGeom(), box = $("dial"), fan = $("dFan"), W = innerWidth, H = innerHeight;
+  let wedges = "", btns = "";
+  DIAL.forEach((it, i) => { const s = G.a0 + G.step * i + 1.2, e = G.a0 + G.step * (i + 1) - 1.2, m = (s + e) / 2, rm = G.r + (G.R - G.r) * .58;
+    wedges += `<path class="wd" data-i="${i}" d="${arcPath(G.cx, G.cy, G.r + 14, G.R, s, e)}"/>`;
+    const bx = G.cx + rm * Math.cos(m * Math.PI / 180), by = G.cy + rm * Math.sin(m * Math.PI / 180);
+    btns += `<button type="button" class="dk" data-i="${i}" data-f="${it.f}" style="left:${bx}px;top:${by}px;--d:${i * 35}ms" aria-label="${it.t}を記録（${it.s}）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${it.ic}</svg><span>${it.t}</span></button>`; });
+  const ring = `<circle cx="${G.cx}" cy="${G.cy}" r="${G.r + 8}" class="dring"/><path class="darc" d="${arcPath(G.cx, G.cy, G.r + 6, G.r + 10, G.a0 - 18, G.a1 + 18)}"/>`;
+  fan.innerHTML = `<svg class="dsvg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true"><defs><radialGradient id="dwg" gradientUnits="userSpaceOnUse" cx="${G.cx}" cy="${G.cy}" r="${G.R}"><stop offset=".25" stop-color="#3d7dff" stop-opacity=".05"/><stop offset="1" stop-color="#3d7dff" stop-opacity=".55"/></radialGradient></defs>${wedges}${ring}</svg>${btns}`;
+  const lab = box.querySelector(".dlab"); lab.style.top = Math.max(16, G.cy - G.R - 74) + "px";
+  box.hidden = false; document.body.classList.add("dialon"); bgPause();
+  requestAnimationFrame(() => box.classList.add("on"));
+  fan.querySelectorAll(".dk").forEach(b => { b.onclick = () => pickDial(+b.dataset.i); b.onfocus = b.onpointerenter = () => litDial(+b.dataset.i); });
+  fan.querySelectorAll(".wd").forEach(p => { p.onclick = () => pickDial(+p.dataset.i); p.onpointerenter = () => litDial(+p.dataset.i); });
+  litDial(0); setTimeout(() => fan.querySelector(".dk")?.focus({ preventScroll: true }), CALM ? 0 : 180);
+}
+function litDial(i){ dialFocus = i; $("dFan").querySelectorAll("[data-i]").forEach(el => el.classList.toggle("lit", +el.dataset.i === i)); $("dT").textContent = DIAL[i].t; $("dS").textContent = DIAL[i].s; }
+function closeDial(then){
+  const box = $("dial"); if (box.hidden) { then && then(); return; }
+  box.classList.remove("on"); document.body.classList.remove("dialon");
+  setTimeout(() => { box.hidden = true; $("dFan").innerHTML = ""; if (!then) { bgStart(); $("bAdd").focus({ preventScroll: true }); } }, CALM ? 0 : 160);
+  then && then();
+}
+function pickDial(i){
+  const f = DIAL[i].f;
+  closeDial(() => { if (f === "pdf") return $("fPdf").click(); if ((f === "shift" || f === "bonus") && !D.staff.length) return needStaff(); openForm(f, { dial: true }); });
+}
+$("dScrim").onclick = () => closeDial();
+$("dial").addEventListener("keydown", e => {
+  if (e.key === "Escape") { e.preventDefault(); closeDial(); }
+  if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); const n = (dialFocus + (e.key === "ArrowRight" ? 1 : -1) + DIAL.length) % DIAL.length; $("dFan").querySelector(`.dk[data-i="${n}"]`).focus(); }
+  if (e.key === "Tab") { const f = [...$("dFan").querySelectorAll(".dk")]; if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); } else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); } }
+});
+addEventListener("resize", () => { if (!$("dial").hidden) closeDial(); });
 
 /* =====================================================================
    起動・操作の割り当て
@@ -1775,7 +2034,7 @@ setGroup(".seg.m button", b => metric = b.dataset.v); setGroup("#segP button", b
 
 const moveMonth = dir => { let { y, m } = cur; m += dir; if (m < 1) { m = 12; y--; } if (m > 12) { m = 1; y++; } if (key(y, m) > key(TODAY.y, TODAY.m) || key(y, m) < firstKey()) return; cur = { y, m }; sel = null; renderAll(true); };
 $("mPrev").onclick = () => moveMonth(-1); $("mNext").onclick = () => moveMonth(1);
-$("bAdd").onclick = () => D.stores.length ? openAdd() : openOnboarding();
+$("bAdd").onclick = () => { if (!$("dial").hidden) return closeDial(); if (!D.stores.length) return openOnboarding(); if ($("sheet").classList.contains("on")) askClose(() => { closeSheet(); openDial(); }); else openDial(); };
 $("bSet").onclick = openSettings;
 $("wage").onclick = () => openWage();
 $("bInfo").onclick = openCmpInfo;
@@ -1787,7 +2046,7 @@ document.querySelectorAll(".tab").forEach(t => t.onclick = () => { const i = +t.
   el.addEventListener("pointerdown", e => { sx = e.clientX; sy = e.clientY; });
   el.addEventListener("pointerup", e => { if (sx === null) return; const dx = e.clientX - sx, dy = e.clientY - sy; sx = null; if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) moveMonth(dx < 0 ? 1 : -1); });
   el.addEventListener("pointercancel", () => sx = null); })();
-let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { renderChart(false); fitText(); }, 120); });
+let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { renderChart(false); renderFlow(false); fitText(); }, 120); });
 // 日付が変わったまま開きっぱなしでも、戻ってきたら今日に合わせる
 document.addEventListener("visibilitychange", () => { if (!document.hidden) { const t = todayObj(); if (t.d !== TODAY.d || t.m !== TODAY.m || t.y !== TODAY.y) { renderAll(false); refreshPage(); } } });
 // ほかのタブ・ウインドウで変更されたら読み直す
