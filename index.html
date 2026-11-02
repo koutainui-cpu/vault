@@ -729,6 +729,87 @@ body.calm .dscrim,body.calm .dsvg,body.calm .dk,body.calm .dlab,body.calm .wd,bo
   box-shadow:inset 0 1px 0 rgba(255,255,255,.14),5px 6px 0 -1px rgba(10,17,35,.92),5px 6px 0 0 rgba(150,185,245,.18),0 16px 34px rgba(0,0,0,.55)!important}
 .tab.on::after{left:30%;right:30%;width:auto;height:2px;background:#a8d0ff;box-shadow:0 0 10px 2px rgba(90,160,255,.9)}
 
+/* =====================================================================
+   部品の決まり（デザインシステム）
+   角の丸み・余白・文字の大きさ・アイコンの大きさを、すべてここで統一する
+   ===================================================================== */
+:root{
+  /* 角の丸み：大＝画面の区切り／中＝中の小さな箱／小＝入力欄／丸＝ボタン類 */
+  --r-lg:20px; --r-md:16px; --r-sm:12px; --r-pill:999px;
+  /* 余白：4の倍数だけを使う */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px;
+  /* 文字：注釈・ラベル・本文・見出し・大見出し */
+  --t-xs:11px; --t-sm:12px; --t-md:14px; --t-lg:17px; --t-xl:22px;
+  /* アイコン：小＝文字の横／中＝一覧・カード／大＝メニュー */
+  --i-sm:16px; --i-md:20px; --i-lg:24px;
+}
+
+/* ---------- アイコン ---------- */
+.ic{width:var(--i-md);height:var(--i-md);flex:none;display:block}
+.tab .ic{width:var(--i-lg);height:var(--i-lg)}
+.add .ic,.pick .ic,.dk .ic,#ob .feat .ic{width:var(--i-lg);height:var(--i-lg)}
+.gt .ic,.kpi .top .ic,.chg .ic,.cmp .ic{width:var(--i-sm);height:var(--i-sm)}
+.chg .ic{width:12px;height:12px}
+.iconbtn .ic,.notice .ic,.loc .ic{width:var(--i-md);height:var(--i-md)}
+.mon .ic{width:18px;height:18px}
+.ic.chev{width:var(--i-sm);height:var(--i-sm);color:var(--muted)}
+.kpi .top .ic,.gt .ic{opacity:.85}
+
+/* ---------- 角の丸み ---------- */
+.bp,.card,.dock{border-radius:var(--r-lg)!important}
+.kpi,.csum div,.cdet,.sgroup,.pcard,.empty,.toast,.notice,.confirm,.pick,.ownbox,.warn,#ob .feat div,#ob .indg button,.prow{border-radius:var(--r-md)!important}
+.fld input,.fld select,.ren,.prow input.pd,.prow .money input,.seg,.cd,.ck input{border-radius:var(--r-sm)!important}
+.seg button{border-radius:calc(var(--r-sm) - 3px)!important}
+.btn,.opts button,.chips button,.storebar button,.tg,.mon,.pmon,.sh-hd button,.confirm button,.toast button{border-radius:var(--r-pill)!important}
+.sheet{border-radius:var(--r-lg) var(--r-lg) 0 0!important}
+
+/* ---------- 余白 ---------- */
+.page{gap:var(--s3)}
+.card,.trend,.split,.wage{padding:var(--s4)!important}
+.bp{padding:var(--s4)!important}
+.kpis{gap:var(--s3)!important}
+.kpi{padding:var(--s3) var(--s3) var(--s3) var(--s4)!important;gap:var(--s1)!important}
+.gauges{gap:var(--s3);margin-top:var(--s4);padding-top:var(--s3)}
+.ttl{margin-bottom:var(--s3)}
+.ctrls,.sub2{gap:var(--s2)}
+.sub2{margin-top:var(--s2)}
+.fld{margin-bottom:var(--s4)!important}
+.fld>span{margin-bottom:var(--s2)!important}
+.opts{gap:var(--s2)!important}
+.sh-hd{margin-bottom:var(--s4)!important}
+.sitem{padding:var(--s3) var(--s4)!important;gap:var(--s3)!important}
+.srow{padding:var(--s3) var(--s4)!important}
+.sgroup{margin-bottom:var(--s2)}
+.h4{margin:var(--s5) 0 var(--s2)!important}
+.picks{gap:var(--s3)!important}
+.pick{padding:var(--s4)!important;gap:var(--s2)!important}
+.loc{padding:var(--s1) var(--s2)!important;gap:var(--s3)!important}
+
+/* ---------- 文字 ---------- */
+.ttl h2,.h4{font-size:var(--t-md)!important;font-weight:500!important;letter-spacing:.02em;color:var(--ink)!important}
+.h4{color:var(--sub)!important;font-size:var(--t-sm)!important}
+.ttl small,.sum .lab em,.kpi .s,.gg .gs,.wg small,.sitem small,.hint,.hint2,.legend,.bar-leg div,.foot,.csum small,.pcard .pgr small,.lrow .sb,.loc span{font-size:var(--t-xs)!important}
+.sum .lab,.gt,.kpi .top,.fld>span,.wg span,.cmp,.ltot,.pf,.notice{font-size:var(--t-sm)!important}
+.sitem b,.rec,.lrow .nm,.pick b,.sw span,.srow,.cdet div,.tip,.def{font-size:var(--t-md)!important}
+.sw span small{font-size:var(--t-xs)!important}
+.sh-hd h3{font-size:var(--t-lg)!important;font-weight:500!important}
+#ob h2{font-size:var(--t-xl)!important;font-weight:500!important}
+.btn{font-size:15px!important}
+.opts button,.chips button,.storebar button,.tg,.seg button{font-size:13px!important}
+.tab,.add-l{font-size:10.5px!important;letter-spacing:.02em!important}
+.dk .dic>span{font-size:var(--t-xs)}
+/* 数字：大きいものは細く、小さいものは標準 */
+.sales{font-weight:300!important}
+.gg .v,.kpi .v,.wg b,.csum b,.pcard .ph span{font-weight:300!important}
+.lrow b,.rec b,.cdet .n,.pgr span,.ltot b{font-weight:400!important}
+
+/* ---------- 色の役割（同じ意味には同じ色） ---------- */
+.kpi .top .ic,.gt .ic{color:#9cc4ff}
+.gg.e .gt .ic{color:var(--exp)}
+.gg.l .gt .ic{color:var(--lab)}
+.gg.p .gt .ic{color:var(--gold)}
+.loc .ic{color:rgba(200,214,236,.6)}
+
 body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index:95}
 
 </style>
@@ -747,7 +828,7 @@ body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index
         <path d="M26 30H46V32H43.5L52.6 60L63.5 32H60.5V30H73V32H66.5L53.6 72H50.4L36 32H26Z" fill="url(#ev)" transform="translate(50 51) scale(.8) translate(-49.5 -51)"/></svg>
       <b>VAULT</b>
     </div>
-      <button class="iconbtn" id="bSet" aria-label="設定"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></button>
+      <button class="iconbtn" id="bSet" aria-label="設定"><svg data-ic="sliders"></svg></button>
   </header>
 
   <section class="empty fade" id="empty" hidden aria-label="はじめかた">
@@ -760,9 +841,9 @@ body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index
   <section class="sum bp fade" style="animation-delay:.05s" aria-label="今月のまとめ">
     <div class="ptop"><div class="lab"><span id="sLab">今月の売上</span><em id="sRange"></em></div>
       <div class="mon" role="group" aria-label="対象の月">
-        <button id="mPrev" aria-label="前の月"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button id="mPrev" aria-label="前の月"><svg data-ic="chevL"></svg></button>
         <span id="mLab" class="n"></span>
-        <button id="mNext" aria-label="次の月"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>
+        <button id="mNext" aria-label="次の月"><svg data-ic="chevR"></svg></button>
       </div>
     </div>
     <svg class="flow" id="flow" aria-hidden="true"></svg>
@@ -807,11 +888,11 @@ body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index
 </div>
 
 <nav aria-label="メニュー"><div class="dock">
-  <button class="tab on" data-t="0" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 10.2 12 4.5l7.5 5.7V19a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 19z"/><path d="M9.5 20.5v-5.5h5v5.5"/></svg>ホーム</button>
-  <button class="tab" data-t="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 9.8h17M8 3v4M16 3v4"/></svg>カレンダー</button>
-  <button class="addw" id="bAdd" aria-label="記録を追加"><span class="add"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5.5v13M5.5 12h13"/></svg></span></span><span class="add-l">記録</span></button>
-  <button class="tab" data-t="3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h8l4 4v12a1.5 1.5 0 0 1-1.5 1.5h-10.5A1.5 1.5 0 0 1 5 19.5v-14.5A1.5 1.5 0 0 1 6.5 3.5z"/><path d="M14.5 3.5v4h4M8.5 12h7M8.5 15.5h7"/></svg>明細</button>
-  <button class="tab" data-t="4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.4"/><path d="M3 19.5c.7-3.2 3.1-5 6-5s5.3 1.8 6 5"/><circle cx="17.2" cy="9" r="2.5"/><path d="M15.8 14.6c2.4-.4 4.5 1 5.2 3.9"/></svg>給与</button>
+  <button class="tab on" data-t="0" aria-current="page"><svg data-ic="home"></svg>ホーム</button>
+  <button class="tab" data-t="1"><svg data-ic="calendar"></svg>カレンダー</button>
+  <button class="addw" id="bAdd" aria-label="記録を追加"><span class="add"><span><svg data-ic="plus"></svg></span></span><span class="add-l">記録</span></button>
+  <button class="tab" data-t="3"><svg data-ic="list"></svg>明細</button>
+  <button class="tab" data-t="4"><svg data-ic="staff"></svg>給与</button>
 </div></nav>
 
 <div class="scrim" id="scrim"></div>
@@ -835,7 +916,7 @@ body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index
    ===================================================================== */
 const $ = id => document.getElementById(id);
 document.documentElement.lang = "ja";
-const APP_VER = "1.1.0";
+const APP_VER = "1.2.0";
 const KEY = "vault-data-v1", UIKEY = "vault-ui-v1";
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const pad2 = n => String(n).padStart(2, "0");
@@ -969,6 +1050,37 @@ function compare(){
 // いちばん古い月（使い始めた月か、それより前に入れた記録の月）
 function firstKey(){ let m = D.meta.start; for (const t of ["sales", "exps", "shifts", "pays"]) for (const r of D[t]) if (r.date < m) m = r.date; return m.slice(0, 7); }
 
+/* ---------------- アイコン（すべて同じ決まりで描く：24マス・線の太さ1.7・角は丸く） ---------------- */
+const ICP = {
+  home: '<path d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19z"/><path d="M9.5 20.5V14.5h5v6"/>',
+  calendar: '<rect x="4" y="5.5" width="16" height="15" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/>',
+  list: '<rect x="5" y="3.5" width="14" height="17" rx="2.5"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4"/>',
+  staff: '<circle cx="9.5" cy="8.5" r="3.2"/><path d="M4 19.5c.8-3.2 3-5 5.5-5s4.7 1.8 5.5 5"/><circle cx="17" cy="9.5" r="2.4"/><path d="M16 14.6c2.2-.2 3.8 1.3 4.4 4.4"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  sliders: '<path d="M4 8h9M17 8h3M4 16h3M11 16h9"/><circle cx="15" cy="8" r="2"/><circle cx="9" cy="16" r="2"/>',
+  chevL: '<path d="M14.5 6 8.5 12l6 6"/>', chevR: '<path d="M9.5 6l6 6-6 6"/>',
+  bars: '<path d="M5 20v-6M10 20V9M15 20v-8M20 20V5"/>',
+  card: '<rect x="3.5" y="6" width="17" height="13" rx="2.5"/><path d="M3.5 10.5h17M15 15h2.5"/>',
+  clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  personPlus: '<circle cx="9.5" cy="8.5" r="3.2"/><path d="M4 19.5c.8-3.2 3-5 5.5-5s4.7 1.8 5.5 5M18.5 8v6M15.5 11h6"/>',
+  doc: '<path d="M14 3.5H7.5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V8z"/><path d="M14 3.5V8h4.5M9 13h6M9 16.5h4"/>',
+  rate: '<circle cx="12" cy="12" r="8.5"/><path d="M12 12V3.5M12 12l6 6"/>',
+  trend: '<path d="M4 19h16M6 15l4-4 3 3 5-6"/>',
+  trendUp: '<path d="M4 17l5-5 4 3 7-8"/><path d="M15 7h5v5"/>',
+  bag: '<path d="M5.5 8.5h13l-1.2 11.5H6.7z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/>',
+  guest: '<circle cx="12" cy="8.5" r="3.4"/><path d="M5 20c.9-3.6 3.6-5.4 7-5.4s6.1 1.8 7 5.4"/>',
+  yen: '<circle cx="12" cy="12" r="8.5"/><path d="M8.8 7.5 12 11.5l3.2-4M9 12.5h6M9 15.5h6M12 11.5v6"/>',
+  off: '<circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/>',
+  alert: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5.5M12 16.5v.01"/>',
+  download: '<path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 20h14"/>',
+  lock: '<rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
+  addHome: '<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/>',
+  pin: '<path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/>',
+  up: '<path d="M12 19V5M6 11l6-6 6 6"/>', down: '<path d="M12 5v14M6 13l6 6 6-6"/>'
+};
+const ICON = (n, cls, style) => `<svg class="ic${cls ? " " + cls : ""}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"${style ? ` style="${style}"` : ""}>${ICP[n] || ""}</svg>`;
+document.querySelectorAll("svg[data-ic]").forEach(s => { s.outerHTML = ICON(s.dataset.ic, s.getAttribute("class")); });
+
 /* =====================================================================
    ホーム
    ===================================================================== */
@@ -984,8 +1096,8 @@ function animNum(id, val, html){
   const step = now => { const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.innerHTML = html(Math.round(from + (val - from) * e)); if (k < 1) requestAnimationFrame(step); else fitText(); };
   requestAnimationFrame(step);
 }
-const UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>';
-const DN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>';
+const UP = ICON("up", "", "stroke-width:2.4");
+const DN = ICON("down", "", "stroke-width:2.4");
 // 増減：矢印と符号を必ず付け、色は「良い・悪い」で決める（費用は減ると良い）
 function chg(el, v, goodWhenUp, unit){
   unit = unit || "%";
@@ -1009,10 +1121,10 @@ function renderSummary(){
   // お知らせ：未入力の日 → バックアップ
   const nt = $("notice"), ms = T.missing, days = D.meta.lastBackup ? Math.floor((Date.now() - new Date(D.meta.lastBackup).getTime()) / 864e5) : null, hasAny = D.sales.length + D.exps.length + D.shifts.length + D.pays.length > 0;
   if (ms.length) { nt.hidden = false; nt.className = "notice";
-    nt.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/></svg><span><b>売上の未入力 ${ms.length}日</b>（${ms.slice(0, 4).map(d => mm + "/" + d).join("・")}${ms.length > 4 ? " ほか" : ""}）</span><span class="go">入力 ›</span>`;
+    nt.innerHTML = `${ICON("alert")}<span><b>売上の未入力 ${ms.length}日</b>（${ms.slice(0, 4).map(d => mm + "/" + d).join("・")}${ms.length > 4 ? " ほか" : ""}）</span><span class="go">入力 ›</span>`;
     nt.onclick = () => openForm("sale", { y: cur.y, m: cur.m, d: ms[0] }); }
   else if (hasAny && (days === null ? (Date.now() - new Date(D.meta.created).getTime()) / 864e5 > 7 : days >= 14)) { nt.hidden = false; nt.className = "notice bk";
-    nt.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span><b>${days === null ? "まだバックアップがありません" : `最後のバックアップから${days}日`}</b>　機種変更や故障に備えて保存しましょう</span><span class="go">保存 ›</span>`;
+    nt.innerHTML = `${ICON("download")}<span><b>${days === null ? "まだバックアップがありません" : `最後のバックアップから${days}日`}</b>　機種変更や故障に備えて保存しましょう</span><span class="go">保存 ›</span>`;
     nt.onclick = () => doBackup(); }
   else nt.hidden = true;
   $("empty").hidden = hasAny;
@@ -1124,15 +1236,7 @@ function showTip(){
 function pickAt(clientX){ const r = $("chart").getBoundingClientRect(), xv = (clientX - r.left) / r.width * geom.W; let i = Math.floor((xv - geom.L) / geom.step); i = Math.max(0, Math.min(geom.n - 1, i)); while (i > 0 && (S[i].fut || S[i].none)) i--; if (S[i].fut || S[i].none) return; if (sel !== i) { sel = i; renderChart(false); } }
 
 /* ---------------- 売上の使い道・経営指標 ---------------- */
-const IC = {
-  exp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="6" width="17" height="13" rx="2.5"/><path d="M3.5 10h17M15.5 15h2"/></svg>',
-  lab: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.8-3 3-4.6 5.5-4.6s4.7 1.6 5.5 4.6"/><circle cx="17.5" cy="9" r="2.4"/><path d="M16 14.6c2.2-.3 4 1 4.6 3.6"/></svg>',
-  rate: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 12V3.5M12 12l6 6"/></svg>',
-  avg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 18h16M6 14l4-4 3 3 5-6"/></svg>',
-  cost: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.5 11h-11z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
-  guest: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c.9-3.6 3.6-5.4 7-5.4s6.1 1.8 7 5.4"/></svg>',
-  unit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 7.5l3.5 4.5 3.5-4.5M8.5 12.5h7M8.5 15.5h7M12 12v5.5"/></svg>'
-};
+const IC = { exp: ICON("card"), lab: ICON("staff"), rate: ICON("rate"), avg: ICON("trend"), cost: ICON("bag"), guest: ICON("guest"), unit: ICON("yen") };
 // 経費・人件費・利益（率）は上のパネルに出しているので、ここでは重ならない指標だけを出す
 const TEMPL = { std: ["avg", "unit", "guest", "cost"], food: ["cost", "unit", "guest", "avg"], retail: ["cost", "unit", "avg", "guest"], service: ["unit", "guest", "avg", "cost"], beauty: ["unit", "guest", "avg", "cost"] };
 const NAMES = { exp: "経費", lab: "人件費", rate: "利益率", avg: "1日平均売上", cost: "原価率", unit: "客単価", guest: "客数" };
@@ -1195,7 +1299,7 @@ function renderFlow(animate){
   if (animate && !CALM) { const p = $("flp"); if (p) { const len = p.getTotalLength(); p.style.strokeDasharray = len; p.animate([{ strokeDashoffset: len }, { strokeDashoffset: 0 }], { duration: 1100, easing: "cubic-bezier(.3,.7,.2,1)" });
     svg.querySelector(".fhead").animate([{ opacity: 0 }, { opacity: 0, offset: .7 }, { opacity: 1 }], { duration: 1300 }); } }
 }
-const GIC = { profit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17l5-5 4 3 7-8"/><path d="M15 7h5v5"/></svg>' };
+const GIC = { profit: ICON("trendUp") };
 function renderGauges(){
   const T = curTot(), c = compare(), S0 = Math.max(1, T.sales), pct = v => T.sales ? v / S0 * 100 : 0;
   const g = [
@@ -1208,7 +1312,7 @@ function renderGauges(){
 }
 function renderLoc(){
   const nm = D.biz.name || "VAULT", st = STORE !== "all" ? storeName(STORE) : D.stores.length > 1 ? `全店舗（${D.stores.length}店）` : (D.stores[0]?.name || "");
-  $("loc").innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5a7 7 0 0 0-7 7c0 5.2 7 12 7 12s7-6.8 7-12a7 7 0 0 0-7-7zm0 9.6a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2z"/></svg><span><b>${esc(nm)}</b>${esc([st, IND[D.biz.industry]].filter(Boolean).join("・"))}</span>`;
+  $("loc").innerHTML = `${ICON("pin")}<span><b>${esc(nm)}</b>${esc([st, IND[D.biz.industry]].filter(Boolean).join("・"))}</span>`;
 }
 
 /* ---------------- 時給換算 ---------------- */
@@ -1300,12 +1404,12 @@ function needStaff(){
 function openAdd(pre){
   pre = pre || {};
   openSheet(head(pre.d ? `${pre.m}月${pre.d}日に記録` : "何を記録しますか") + `<div class="picks">
-    <button class="pick" data-f="sale" style="color:var(--ice)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 20V12M10 20V6M15 20V10M20 20V4"/></svg><b>売上</b><small>その日の売上を入れる</small></button>
+    <button class="pick" data-f="sale" style="color:var(--ice)">${ICON("bars")}<b>売上</b><small>その日の売上を入れる</small></button>
     <button class="pick" data-f="exp" style="color:var(--exp)">${IC.exp}<b>経費</b><small>仕入れ・家賃・消耗品など</small></button>
-    <button class="pick" data-f="shift" style="color:var(--lab)">${IC.lab}<b>勤務記録</b><small>時間から人件費を自動計算</small></button>
-    <button class="pick" data-f="bonus" style="color:var(--lab)">${IC.unit}<b>歩合・金額の人件費</b><small>歩合や日当を金額で入れる</small></button>
-    ${pre.d ? `<button class="pick wide" data-f="off" style="color:var(--muted)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/></svg><span><b>この日は休み（売上0円）</b><small>未入力ではなく「休み」として記録します</small></span></button>`
-      : `<button class="pick wide" data-f="pdf" style="color:var(--ice)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 11v6M9 14l3 3 3-3"/></svg><span><b>PDFから売上を読み取る</b><small>レジや売上管理のPDFを選ぶと、日付と金額を自動で入力します</small></span></button>`}</div>`, () => {
+    <button class="pick" data-f="shift" style="color:var(--lab)">${ICON("clock")}<b>勤務記録</b><small>時間から人件費を自動計算</small></button>
+    <button class="pick" data-f="bonus" style="color:var(--lab)">${ICON("personPlus")}<b>歩合・金額の人件費</b><small>歩合や日当を金額で入れる</small></button>
+    ${pre.d ? `<button class="pick wide" data-f="off" style="color:var(--muted)">${ICON("off")}<span><b>この日は休み（売上0円）</b><small>未入力ではなく「休み」として記録します</small></span></button>`
+      : `<button class="pick wide" data-f="pdf" style="color:var(--ice)">${ICON("doc")}<span><b>PDFから売上を読み取る</b><small>レジや売上管理のPDFを選ぶと、日付と金額を自動で入力します</small></span></button>`}</div>`, () => {
     wire(); document.querySelectorAll(".pick").forEach(b => b.onclick = () => {
       const f = b.dataset.f;
       if (f === "pdf") return $("fPdf").click();
@@ -1451,7 +1555,7 @@ function openWage(){
    ===================================================================== */
 function setTab(i){ document.querySelectorAll(".tab").forEach(t => { const on = +t.dataset.t === i; t.classList.toggle("on", on); on ? t.setAttribute("aria-current", "page") : t.removeAttribute("aria-current"); }); }
 function openPage(i){ if (i === 1) openCal(); else if (i === 3) openList("all"); else if (i === 4) openPay(); }
-const chev = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+const chev = ICON("chevR", "chev");
 const monthNav = (fn) => `<div class="pmon"><button type="button" data-mv="-1" aria-label="前の月" ${key(cur.y, cur.m) <= firstKey() ? "disabled" : ""}>‹</button><b>${cur.y}年${cur.m}月</b><button type="button" data-mv="1" aria-label="次の月" ${isCur(cur.y, cur.m) ? "disabled" : ""}>›</button></div>`;
 function bindMonthNav(fn){ $("shBody").querySelectorAll("[data-mv]").forEach(b => b.onclick = () => { let { y, m } = cur; m += +b.dataset.mv; if (m < 1) { m = 12; y--; } if (m > 12) { m = 1; y++; } if (key(y, m) > key(TODAY.y, TODAY.m) || key(y, m) < firstKey()) return; cur = { y, m }; sel = null; renderAll(false); fn(); }); }
 
@@ -1818,9 +1922,9 @@ function openOnboarding(){
   const render = () => {
     let h = "";
     if (st.step === 0) h = `<h2>ようこそ、VAULTへ</h2><p class="lead">売上・経費・人件費をまとめて記録して、毎月の利益がひと目で分かるアプリです。最初に、お店のことを少しだけ教えてください（1分ほどで終わります）。</p>
-      <div class="feat"><div><svg viewBox="0 0 24 24" fill="none" stroke="var(--ice)" stroke-width="1.6" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20V10M20 20V4"/></svg><span><b>売上と利益がすぐ分かる</b>売上 − 経費 − 人件費 ＝ 利益を自動で計算します</span></div>
-      <div><svg viewBox="0 0 24 24" fill="none" stroke="var(--lab)" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span><b>勤務時間から給与を計算</b>深夜割増・交通費・歩合にも対応しています</span></div>
-      <div><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span><b>データはこのiPhoneの中だけ</b>外部のサーバーには送りません</span></div></div>
+      <div class="feat"><div>${ICON("bars", "", "color:var(--ice)")}<span><b>売上と利益がすぐ分かる</b>売上 − 経費 − 人件費 ＝ 利益を自動で計算します</span></div>
+      <div>${ICON("clock", "", "color:var(--lab)")}<span><b>勤務時間から給与を計算</b>深夜割増・交通費・歩合にも対応しています</span></div>
+      <div>${ICON("lock", "", "color:var(--gold)")}<span><b>データはこのiPhoneの中だけ</b>外部のサーバーには送りません</span></div></div>
       ${nav(0, "はじめる")}<button type="button" class="btn ghost2" id="obR" style="margin-top:10px">バックアップから戻す（機種変更など）</button>`;
     else if (st.step === 1) h = `<h2>お店の名前と業種</h2><p class="lead">業種に合わせて、ホームに出す指標を選びます。あとから設定で変えられます。</p>
       <label class="fld"><span>お店・事業の名前（任意）</span><input type="text" id="obNm" maxlength="40" value="${esc(st.name)}" placeholder="例：〇〇美容室"></label>
@@ -1840,8 +1944,8 @@ function openOnboarding(){
       <button type="button" class="btn ghost2" id="obSF">＋ このスタッフを追加</button><p class="err" hidden></p>
       <p class="note">交通費・深夜割増の有無は、あとで設定の「スタッフ」から変えられます。</p>${nav()}`;
     else h = `<h2>準備ができました</h2><p class="lead">使い始める前に、大切なことが2つあります。</p>
-      <div class="feat"><div><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/></svg><span><b>ホーム画面に追加してください</b>Safariの共有ボタン（四角から矢印）→「ホーム画面に追加」。追加しないまま長く開かないと、iPhoneがデータを消すことがあります。</span></div>
-      <div><svg viewBox="0 0 24 24" fill="none" stroke="var(--ice)" stroke-width="1.6" stroke-linecap="round"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/></svg><span><b>ときどきバックアップを保存</b>設定 →「バックアップを保存」。機種変更や故障のときに、そのファイルからデータを戻せます。2週間ごとにホームでお知らせします。</span></div></div>
+      <div class="feat"><div>${ICON("addHome", "", "color:var(--gold)")}<span><b>ホーム画面に追加してください</b>Safariの共有ボタン（四角から矢印）→「ホーム画面に追加」。追加しないまま長く開かないと、iPhoneがデータを消すことがあります。</span></div>
+      <div>${ICON("download", "", "color:var(--ice)")}<span><b>ときどきバックアップを保存</b>設定 →「バックアップを保存」。機種変更や故障のときに、そのファイルからデータを戻せます。2週間ごとにホームでお知らせします。</span></div></div>
       ${nav(0, "VAULTを使い始める")}`;
     box.innerHTML = `<div class="obin">${top()}${h}</div>`; box.scrollTop = 0;
     wireStep(); setTimeout(() => { if (!box.contains(document.activeElement) || document.activeElement === box) (box.querySelector("input,#obN") || box).focus({ preventScroll: true }); }, 30);
@@ -2089,11 +2193,11 @@ let rT; addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(() 
    記録ボタンの円形メニュー（＋を押すと、機械の羽根のように扇形が展開する）
    ===================================================================== */
 const DIAL = [
-  { f: "sale", t: "売上", s: "その日の売上を入れる", ic: '<path d="M5 20V12M10 20V6M15 20V10M20 20V4"/>' },
-  { f: "exp", t: "経費", s: "仕入れ・家賃・消耗品など", ic: '<rect x="3.5" y="6" width="17" height="13" rx="2.5"/><path d="M3.5 10h17M15.5 15h2"/>' },
-  { f: "shift", t: "勤務", s: "時間から人件費を自動計算", ic: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>' },
-  { f: "bonus", t: "歩合", s: "歩合・日当を金額で入れる", ic: '<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.8-3 3-4.6 5.5-4.6s4.7 1.6 5.5 4.6"/><path d="M18 8v6M15 11h6"/>' },
-  { f: "pdf", t: "PDF", s: "レジの日報をまとめて読み込む", ic: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>' }
+  { f: "sale", t: "売上", s: "その日の売上を入れる", ic: "bars" },
+  { f: "exp", t: "経費", s: "仕入れ・家賃・消耗品など", ic: "card" },
+  { f: "shift", t: "勤務", s: "時間から人件費を自動計算", ic: "clock" },
+  { f: "bonus", t: "歩合", s: "歩合・日当を金額で入れる", ic: "personPlus" },
+  { f: "pdf", t: "PDF", s: "レジの日報をまとめて読み込む", ic: "doc" }
 ];
 let dialFocus = 0, DG = null, needleA = 0, dialAnims = [];
 const RAD = a => a * Math.PI / 180;
@@ -2117,7 +2221,7 @@ function openDial(){
   let wedges = "", slots = "";
   DIAL.forEach((it, i) => { const s = G.a0 + G.step * i + 1.4, e = G.a0 + G.step * (i + 1) - 1.4, m = G.mid(i), rm = G.r + (G.R - G.r) * .6;
     wedges += `<g class="wgrp" data-i="${i}"><path class="wd" data-i="${i}" d="${arcPath(G.r + 22, G.R, s, e)}"/><path class="wedge-edge" d="${arcPath(G.R - 3, G.R, s, e)}"/></g>`;
-    slots += `<div class="dslot" data-i="${i}"><button type="button" class="dk" data-i="${i}" data-f="${it.f}" style="left:${(rm * Math.cos(RAD(m))).toFixed(1)}px;top:${(rm * Math.sin(RAD(m))).toFixed(1)}px" aria-label="${it.t}を記録（${it.s}）"><span class="dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${it.ic}</svg><span>${it.t}</span></span></button></div>`; });
+    slots += `<div class="dslot" data-i="${i}"><button type="button" class="dk" data-i="${i}" data-f="${it.f}" style="left:${(rm * Math.cos(RAD(m))).toFixed(1)}px;top:${(rm * Math.sin(RAD(m))).toFixed(1)}px" aria-label="${it.t}を記録（${it.s}）"><span class="dic">${ICON(it.ic)}<span>${it.t}</span></span></button></div>`; });
   fan.innerHTML = `<svg class="dsvg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">
     <defs><radialGradient id="dwg" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="${G.R}"><stop offset=".3" stop-color="#3d7dff" stop-opacity=".06"/><stop offset="1" stop-color="#3d7dff" stop-opacity=".6"/></radialGradient></defs>
     <g transform="translate(${G.cx} ${G.cy})">
