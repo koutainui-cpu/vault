@@ -973,7 +973,7 @@ body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index
    ===================================================================== */
 const $ = id => document.getElementById(id);
 document.documentElement.lang = "ja";
-const APP_VER = "1.2.0";
+const APP_VER = "1.3.0";
 const KEY = "vault-data-v1", UIKEY = "vault-ui-v1";
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const pad2 = n => String(n).padStart(2, "0");
@@ -1049,15 +1049,13 @@ const storeName = id => id === "all" ? "共通" : (D.stores.find(s => s.id === i
 const staffOf = id => D.staff.find(s => s.id === id);
 const staffName = id => staffOf(id)?.name || "削除したスタッフ";
 
-/* ---------------- 勤務の計算（深夜割増・交通費） ---------------- */
+/* ---------------- 勤務の計算（出勤〜退勤の時間 × 時給 ＋ 交通費。休憩・深夜割増は使わない） ---------------- */
 const toMin = t => { const [h, m] = String(t || "0:0").split(":").map(Number); return (h || 0) * 60 + (m || 0); };
 function shiftCalc(r){
-  const st = staffOf(r.staff) || {}, wage = +(r.wage ?? st.wage ?? 0), transit = +(r.transit ?? st.transit ?? 0), noNight = r.noNight ?? st.noNight ?? false;
+  const st = staffOf(r.staff) || {}, wage = +(r.wage ?? st.wage ?? 0), transit = +(r.transit ?? st.transit ?? 0);
   let s = toMin(r.start), e = toMin(r.end); if (e <= s) e += 1440;
-  const span = e - s, brk = Math.min(span, Math.max(0, +r.brk || 0)), total = span - brk;
-  let night = 0; for (const [a, b] of [[-120, 300], [1320, 1740], [2760, 3180]]) night += Math.max(0, Math.min(e, b) - Math.max(s, a));
-  night = Math.min(night, total);
-  const base = Math.round(total / 60 * wage), nightPay = noNight ? 0 : Math.round(night / 60 * wage * (D.rules.night || 0) / 100), tr = total > 0 ? transit : 0;
+  const total = e - s, night = 0, nightPay = 0;
+  const base = Math.round(total / 60 * wage), tr = total > 0 ? transit : 0;
   return { total, night, base, nightPay, transit: tr, pay: base + nightPay + tr, wage };
 }
 
@@ -1500,22 +1498,22 @@ function openForm(kind, pre, rec){
   if (kind === "sale") body = money("売上の金額", rec?.amount) + `<div class="row2">${dateF}<label class="fld"><span>客数（任意）</span><input id="fG" inputmode="numeric" placeholder="例：12" autocomplete="off" value="${rec?.guests || ""}"></label></div>${storeOpts(false)}${memo(rec?.memo)}`;
   if (kind === "exp") body = money("経費の金額", rec?.amount) + `<div class="fld"><span>分類</span><div class="opts" id="oC" role="group" aria-label="分類">${optBtns(D.cats.map(c => [c, c]), rec?.cat || D.cats[0])}</div></div>${dateF}${storeOpts(true)}${memo(rec?.memo)}`;
   if (kind === "shift") { const lastS = [...D.shifts].reverse().find(r => r.staff === (rec?.staff || D.staff[0]?.id));
-    body = staffOpts(rec?.staff) + dateF + `<div class="row3"><label class="fld"><span>出勤</span><input type="time" id="fS" value="${rec?.start || lastS?.start || "10:00"}"></label><label class="fld"><span>退勤</span><input type="time" id="fE" value="${rec?.end || lastS?.end || "18:00"}"></label><label class="fld"><span>休憩・分</span><input id="fB" inputmode="numeric" value="${rec ? rec.brk : (lastS?.brk ?? 60)}"></label></div><p class="hint2">退勤が出勤より早いときは、日をまたいだ勤務として計算します。22時〜翌5時は深夜割増（${D.rules.night}%）が付きます。</p><div class="calc" id="fCalc" aria-live="polite"></div>${storeOpts(false)}`; }
+    body = staffOpts(rec?.staff) + dateF + `<div class="row2"><label class="fld"><span>出勤</span><input type="time" id="fS" value="${rec?.start || lastS?.start || "10:00"}"></label><label class="fld"><span>退勤</span><input type="time" id="fE" value="${rec?.end || lastS?.end || "18:00"}"></label></div><p class="hint2">出勤から退勤までの時間 × 時給で計算します。退勤が出勤より早いときは、日をまたいだ勤務として計算します。</p><div class="calc" id="fCalc" aria-live="polite"></div>${storeOpts(false)}`; }
   if (kind === "bonus") body = staffOpts(rec?.staff) + `<div class="fld"><span>種類</span><div class="opts" id="oK" role="group" aria-label="種類">${optBtns([["bonus", "歩合"], ["wage", "人件費（日当・固定給など）"]], rec?.kind || pre.kind || "bonus")}</div></div>` + money("金額", rec?.amount) + dateF + `<div class="bonusprev" id="bPrev" aria-live="polite"></div>${storeOpts(false)}${memo(rec?.memo)}`;
   const title = editing ? `${kind === "bonus" ? (rec.kind === "bonus" ? "歩合" : "人件費") : KIND[kind]}を修正` : kind === "shift" ? "勤務を記録" : kind === "bonus" ? "歩合・人件費を記録" : `${KIND[kind]}を記録`;
   const back = editing ? editFrom : null; editFrom = null;
   openSheet(head(title, !editing || !!back) + body + `<div id="fWarn"></div><p class="err" id="fErr" role="alert" hidden></p><button class="btn" id="fSave" disabled>保存する</button>${editing ? `<button class="btn danger" id="fDel">この記録を削除する</button>` : ""}`, () => {
     wire(editing ? (back || closeSheet) : pre.dial ? () => { closeSheet(); openDial(); } : () => openAdd(pre)); let mode = "add", saving = false;
-    const calcShift = () => { const sid = pickVal("oP"), st = staffOf(sid) || {}; return shiftCalc({ staff: sid, start: $("fS").value, end: $("fE").value, brk: numOf($("fB").value), wage: rec && rec.staff === sid ? rec.wage : st.wage, transit: rec && rec.staff === sid ? rec.transit : st.transit }); };
+    const calcShift = () => { const sid = pickVal("oP"), st = staffOf(sid) || {}; return shiftCalc({ staff: sid, start: $("fS").value, end: $("fE").value, wage: rec && rec.staff === sid ? rec.wage : st.wage, transit: rec && rec.staff === sid ? rec.transit : st.transit }); };
     const amt = () => kind === "shift" ? calcShift().pay : numOf($("fA")?.value);
     function upd(){
       const Dt = parseD($("fD").value), a = amt(); let err = "";
       if (!Dt) err = `日付は今日（${today.m}月${today.d}日）までの日付を選んでください`;
       if (kind === "shift") { const c = calcShift(), st = staffOf(pickVal("oP"));
-        $("fCalc").innerHTML = `<span>${esc(st?.name || "")}・${hm(c.total)}${c.night ? `（深夜${hm(c.night)}）` : ""}${c.transit ? `・交通費${yenT(c.transit)}` : ""}<br><small>時給${yenT(c.wage)}${c.nightPay ? `・深夜割増${yenT(c.nightPay)}` : ""}</small></span><b class="n">${yenT(c.pay)}</b>`;
+        $("fCalc").innerHTML = `<span>${esc(st?.name || "")}・${hm(c.total)}${c.transit ? `・交通費${yenT(c.transit)}` : ""}<br><small>時給${yenT(c.wage)}</small></span><b class="n">${yenT(c.pay)}</b>`;
         if (!err && !$("fS").value) err = "出勤の時刻を入れてください"; if (!err && !$("fE").value) err = "退勤の時刻を入れてください";
         if (!err && c.total > 16 * 60) err = "勤務時間が16時間を超えています。出勤・退勤の時刻を確認してください";
-        if (!err && !c.total) err = "勤務時間が0分です。出勤・退勤・休憩を確認してください";
+        if (!err && !c.total) err = "勤務時間が0分です。出勤・退勤の時刻を確認してください";
         if (!err && !c.wage) err = "このスタッフの時給が0円です。設定のスタッフから時給を入れてください"; }
       if (!err && a > 99999999) err = "金額が大きすぎます。桁を確認してください";
       $("fErr").hidden = !err; $("fErr").textContent = err;
@@ -1533,7 +1531,7 @@ function openForm(kind, pre, rec){
       $("fSave").textContent = a && !err ? `${yenT(a)} を${editing ? "保存" : "記録"}する` : editing ? "保存する" : "記録する";
     }
     document.querySelectorAll("#shBody .opts").forEach(g => g.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { if (b.dataset.m) return; g.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); dirty = true;
-      if (kind === "shift" && g.id === "oP" && !editing) { const st = staffOf(b.dataset.v), l = [...D.shifts].reverse().find(r => r.staff === b.dataset.v); if (l) { $("fS").value = l.start; $("fE").value = l.end; $("fB").value = l.brk; } if (st && $("oS") && st.store) { $("oS").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.v === st.store))); } }
+      if (kind === "shift" && g.id === "oP" && !editing) { const st = staffOf(b.dataset.v), l = [...D.shifts].reverse().find(r => r.staff === b.dataset.v); if (l) { $("fS").value = l.start; $("fE").value = l.end; } if (st && $("oS") && st.store) { $("oS").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.v === st.store))); } }
       upd(); })));
     ["fA", "fG", "fB"].forEach(id => $(id) && liveComma($(id)));
     ["fA", "fD", "fS", "fE", "fB"].forEach(id => $(id) && ["input", "change"].forEach(ev => $(id).addEventListener(ev, upd)));
@@ -1546,7 +1544,7 @@ function openForm(kind, pre, rec){
       if (kind === "sale") { const f = { date, store: st, amount: a, guests: numOf($("fG").value), memo: memoV };
         undo = mutate(() => { if (editing) Object.assign(rec, f); else { if (mode === "rep") D.sales = D.sales.filter(r => !(r.date === date && r.store === st)); D.sales.push({ id: uid(), ...f }); } }); }
       if (kind === "exp") { const f = { date, store: st, cat: pickVal("oC"), amount: a, memo: memoV }; undo = mutate(() => editing ? Object.assign(rec, f) : D.exps.push({ id: uid(), ...f })); }
-      if (kind === "shift") { const sid = pickVal("oP"), sf = staffOf(sid), c = calcShift(), f = { date, staff: sid, store: st || sf?.store || D.stores[0]?.id, start: $("fS").value, end: $("fE").value, brk: numOf($("fB").value), wage: c.wage, transit: editing && rec.staff === sid ? rec.transit : (sf?.transit || 0) };
+      if (kind === "shift") { const sid = pickVal("oP"), sf = staffOf(sid), c = calcShift(), f = { date, staff: sid, store: st || sf?.store || D.stores[0]?.id, start: $("fS").value, end: $("fE").value, brk: 0, wage: c.wage, transit: editing && rec.staff === sid ? rec.transit : (sf?.transit || 0) };
         undo = mutate(() => editing ? Object.assign(rec, f) : D.shifts.push({ id: uid(), ...f })); }
       if (kind === "bonus") { const sid = pickVal("oP"), f = { date, staff: sid, store: st || staffOf(sid)?.store || D.stores[0]?.id, kind: pickVal("oK"), amount: a, memo: memoV }; undo = mutate(() => editing ? Object.assign(rec, f) : D.pays.push({ id: uid(), ...f })); }
       const moved = Dt.y !== cur.y || Dt.m !== cur.m; if (!editing) { cur = { y: Dt.y, m: Dt.m }; sel = null; }
@@ -1594,7 +1592,7 @@ function openWage(){
       <p class="def">利益 ${yenT(T.profit)} ÷ あなたの稼働時間 ${w.oh}時間</p>
       <label class="fld" style="margin:10px 0 0"><span>${cur.m}月のあなたの稼働時間</span><div class="hrs"><button type="button" data-h="-10" aria-label="10時間減らす">−10</button><input id="oH" inputmode="numeric" value="${w.oh}" aria-label="稼働時間" data-track="0"><em>時間</em><button type="button" data-h="10" aria-label="10時間増やす">＋10</button></div></label>
       <p class="def" style="font-size:11.5px;color:var(--muted);margin-top:6px">最初は「営業日${T.open}日 × 9時間」で計算しています。実際に働いた時間に直すと、正確な時給換算になります（自動で保存されます）。</p></div>
-    <h4 class="h4">スタッフ別の時給換算（深夜割増・交通費・歩合込み）</h4>
+    <h4 class="h4">スタッフ別の時給換算（交通費・歩合込み）</h4>
     ${w.staff.length ? `<div class="list">${w.staff.map(s => `<div class="it"><span>${esc(s.name)}</span><small>${hours(s.mins)}時間・支給 ${yenT(s.pay)}${s.st ? `・基本時給 ${yenT(s.st.wage)}` : ""}</small><b class="n">${s.mins ? yenT(s.eff) : "—"}<em class="per">/時</em>${s.st && s.mins && s.eff > s.st.wage + .5 ? `<i class="upby">+${yenT(s.eff - s.st.wage)}</i>` : ""}</b></div>`).join("")}
       <div class="it tot"><span>平均</span><small>人件費 ${yenT(T.lab)} ÷ ${w.staffH}時間</small><b class="n">${w.staffH ? yenT(w.avgEff) : "—"}<em class="per">/時</em></b></div></div>` : `<p class="def">この月の勤務記録はまだありません。</p>`}
     <h4 class="h4">1時間あたりの売上</h4>
@@ -1646,7 +1644,7 @@ function monthRecords(y, m){
   const out = [], pre = key(y, m), upto = isCur(y, m) ? TODAY.d : dim(y, m);
   D.sales.filter(r => r.date.startsWith(pre) && inStore(r)).forEach(r => out.push({ t: "sales", g: "sale", r, nm: `売上${D.stores.length > 1 ? `（${storeName(r.store)}）` : ""}`, sub: [r.guests ? r.guests + "人" : "", r.memo].filter(Boolean).join("・") || (r.amount ? "" : "休み（0円）"), v: r.amount, sign: 1 }));
   D.exps.filter(r => r.date.startsWith(pre) && inStore(r)).forEach(r => out.push({ t: "exps", g: "exp", r, nm: r.cat, sub: [D.stores.length > 1 ? storeName(r.store) : "", r.memo].filter(Boolean).join("・"), v: r.amount, sign: -1 }));
-  D.shifts.filter(r => r.date.startsWith(pre) && inStore(r)).forEach(r => { const c = shiftCalc(r); out.push({ t: "shifts", g: "lab", r, nm: `勤務（${staffName(r.staff)}）`, sub: `${r.start}〜${r.end}・${hm(c.total)}${c.night ? `・深夜${hm(c.night)}` : ""}${+r.brk ? `・休憩${r.brk}分` : ""}`, v: c.pay, sign: -1 }); });
+  D.shifts.filter(r => r.date.startsWith(pre) && inStore(r)).forEach(r => { const c = shiftCalc(r); out.push({ t: "shifts", g: "lab", r, nm: `勤務（${staffName(r.staff)}）`, sub: `${r.start}〜${r.end}・${hm(c.total)}`, v: c.pay, sign: -1 }); });
   D.pays.filter(r => r.date.startsWith(pre) && inStore(r)).forEach(r => out.push({ t: "pays", g: "lab", r, nm: `${r.kind === "bonus" ? "歩合" : "人件費"}（${staffName(r.staff)}）`, sub: r.memo || "", v: r.amount, sign: -1 }));
   for (let d = 1; d <= upto; d++) { const i = dayInfo(y, m, d); if (i.state === "missing") out.push({ t: "", g: "miss", nm: "売上 未入力", sub: "押すと入力できます", v: null, r: { date: isoD(y, m, d) }, d }); }
   return out.sort((a, b) => a.r.date < b.r.date ? 1 : a.r.date > b.r.date ? -1 : (a.sign < b.sign ? 1 : -1));
@@ -1668,9 +1666,9 @@ function openPay(){
   const T = curTot(), w = wageCalc(T);
   openSheet(head("給与") + monthNav() + `<div class="csum"><div><small>人件費の合計</small><b class="n">${yenT(T.lab)}</b></div><div><small>勤務時間</small><b class="n">${w.staffH}時間</b></div><div><small>売上に対して</small><b class="n">${T.sales ? (T.lab / T.sales * 100).toFixed(1) + "%" : "—"}</b></div></div>
     ${w.staff.length ? `<div class="pays">${w.staff.map(s => `<button type="button" class="pcard" data-sid="${s.id}"><div class="ph"><b>${esc(s.name)}</b><span class="n">${yenT(s.pay)}</span></div>
-      <div class="pgr"><div><small>勤務</small><span class="n">${s.days}日・${hours(s.mins)}時間</span></div><div><small>基本給</small><span class="n">${yenT(s.base)}</span></div><div><small>深夜割増</small><span class="n">${yenT(s.nightPay)}</span></div><div><small>交通費</small><span class="n">${yenT(s.transit)}</span></div><div><small>歩合</small><span class="n">${yenT(s.bonus)}</span></div><div><small>金額の人件費</small><span class="n">${yenT(s.fixed)}</span></div></div>
+      <div class="pgr"><div><small>勤務</small><span class="n">${s.days}日・${hours(s.mins)}時間</span></div><div><small>基本給</small><span class="n">${yenT(s.base)}</span></div><div><small>交通費</small><span class="n">${yenT(s.transit)}</span></div><div><small>歩合</small><span class="n">${yenT(s.bonus)}</span></div><div><small>金額の人件費</small><span class="n">${yenT(s.fixed)}</span></div></div>
       <div class="pf">時給換算（すべて込み） <b class="n">${s.mins ? yenT(s.eff) + "/時" : "—"}</b></div></button>`).join("")}</div>` : `<p class="def">この月の勤務記録・歩合はまだありません。</p>`}
-    <p class="def" style="font-size:11.5px;color:var(--muted)">支給額 ＝ 基本給（時間 × 時給）＋ 深夜割増（22時〜翌5時・${D.rules.night}%）＋ 交通費 ＋ 歩合 ＋ 金額の人件費。合計はホームの人件費と一致します。カードを押すと、そのスタッフの記録が出ます。</p>
+    <p class="def" style="font-size:11.5px;color:var(--muted)">支給額 ＝ 基本給（出勤〜退勤の時間 × 時給）＋ 交通費 ＋ 歩合 ＋ 金額の人件費。合計はホームの人件費と一致します。カードを押すと、そのスタッフの記録が出ます。</p>
     <button class="btn" id="pyAdd" style="margin-top:6px">勤務を記録する</button>`, () => {
     wire(); bindMonthNav(() => openPay());
     $("pyAdd").onclick = () => D.staff.length ? openForm("shift", { y: cur.y, m: cur.m }) : needStaff();
@@ -1698,7 +1696,7 @@ function openSettings(){
       ${item("sStore", "店舗", D.stores.map(s => esc(s.name)).join("・") || "未登録")}
       ${item("sStaff", "スタッフ", `${D.staff.filter(s => !s.retired).length}人`)}
       ${item("sCat", "経費の分類", `${D.cats.length}種類・原価：${esc(D.costCats.join("・") || "なし")}`)}
-      ${item("sRule", "定休日・開始日・深夜割増", `${+D.meta.start.slice(5, 7)}月${+D.meta.start.slice(8)}日から・${D.closedWd.length ? D.closedWd.map(i => WD[i]).join("・") + "曜" : "定休日なし"}・深夜${D.rules.night}%`)}</div>
+      ${item("sRule", "定休日・開始日", `${+D.meta.start.slice(5, 7)}月${+D.meta.start.slice(8)}日から・${D.closedWd.length ? D.closedWd.map(i => WD[i]).join("・") + "曜" : "定休日なし"}`)}</div>
     <h4 class="h4">データ</h4><div class="sgroup">
       ${item("sBk", "バックアップを保存", last ? `最後の保存：${last.getMonth() + 1}月${last.getDate()}日` : "まだ保存していません")}
       ${item("sRs", "バックアップから戻す", "保存したファイルを選んで、データを戻します")}
@@ -1752,7 +1750,7 @@ function openStoreEdit(id){
 }
 function openStaffs(){
   const act = D.staff.filter(s => !s.retired), ret = D.staff.filter(s => s.retired);
-  const row = s => `<button type="button" class="sitem" data-id="${s.id}"><span><b>${esc(s.name)}</b><small>時給 ${yenT(s.wage)}${s.transit ? `・交通費 ${yenT(s.transit)}/日` : ""}${D.stores.length > 1 ? `・${esc(storeName(s.store))}` : ""}${s.noNight ? "・深夜割増なし" : ""}</small></span>${chev}</button>`;
+  const row = s => `<button type="button" class="sitem" data-id="${s.id}"><span><b>${esc(s.name)}</b><small>時給 ${yenT(s.wage)}${s.transit ? `・交通費 ${yenT(s.transit)}/日` : ""}${D.stores.length > 1 ? `・${esc(storeName(s.store))}` : ""}</small></span>${chev}</button>`;
   openSheet(head("スタッフ", true) + `<div class="sgroup">${act.map(row).join("") || `<p class="def" style="padding:12px">まだ登録されていません</p>`}</div>
     <button class="btn ghost2" id="sfAdd">＋ スタッフを追加</button>${ret.length ? `<h4 class="h4">退職したスタッフ（記録は残っています）</h4><div class="sgroup">${ret.map(row).join("")}</div>` : ""}`, () => {
     wire(back2set); $("sfAdd").onclick = () => openStaffEdit(null); $("shBody").querySelectorAll("[data-id]").forEach(b => b.onclick = () => openStaffEdit(b.dataset.id));
@@ -1764,14 +1762,13 @@ function openStaffEdit(id, after){
     <div class="row2"><label class="fld"><span>時給（円）</span><div class="money"><input id="fW" inputmode="numeric" value="${s?.wage ? s.wage.toLocaleString("ja-JP") : ""}" placeholder="1,100"></div></label>
     <label class="fld"><span>交通費（1日・円）</span><div class="money"><input id="fT" inputmode="numeric" value="${s?.transit ? s.transit.toLocaleString("ja-JP") : ""}" placeholder="0"></div></label></div>
     ${D.stores.length > 1 ? `<div class="fld"><span>主に働く店舗</span><div class="opts" id="fSt">${optBtns(D.stores.map(x => [x.id, x.name]), s?.store || D.stores[0].id)}</div></div>` : ""}
-    <label class="sw"><span>深夜割増を付けない<small>オンにすると、22時〜翌5時の割増を計算しません</small></span><input type="checkbox" id="fNN" ${s?.noNight ? "checked" : ""}></label>
     ${s ? `<label class="sw"><span>退職した<small>入力の一覧から外します。これまでの記録はそのまま残ります</small></span><input type="checkbox" id="fRt" ${s.retired ? "checked" : ""}></label>` : ""}
     <p class="hint2">時給を変えても、すでに記録した勤務の金額は変わりません（記録したときの時給で計算します）。</p>
     <p class="err" id="fEr" hidden></p><button class="btn" id="fSv">保存する</button>
     ${s && !used ? `<button class="btn danger" id="fDl">このスタッフを削除する</button>` : ""}`, () => {
     wire(after || openStaffs); ["fW", "fT"].forEach(i => liveComma($(i)));
     $("fSv").onclick = () => { const n = $("fN").value.trim(), wg = numOf($("fW").value); if (!n || !wg) { $("fEr").hidden = false; $("fEr").textContent = !n ? "名前を入れてください" : "時給を入れてください"; return; }
-      const f = { name: n, wage: wg, transit: numOf($("fT").value), store: pickVal("fSt") || D.stores[0]?.id, noNight: $("fNN").checked, retired: $("fRt") ? $("fRt").checked : false };
+      const f = { name: n, wage: wg, transit: numOf($("fT").value), store: pickVal("fSt") || D.stores[0]?.id, retired: $("fRt") ? $("fRt").checked : false };
       const undo = mutate(() => { if (s) Object.assign(s, f); else D.staff.push({ id: uid(), ...f }); }); renderAll(false); (after || openStaffs)(); toast("保存しました", undo); };
     if ($("fDl")) $("fDl").onclick = () => confirmInline($("shBody"), `${esc(s.name)}さんを削除しますか？`, "削除する", () => { const undo = mutate(() => { D.staff = D.staff.filter(x => x.id !== id); }); renderAll(false); openStaffs(); toast("削除しました", undo); });
   }, true);
@@ -1794,17 +1791,15 @@ function openCats(){
   }, true);
 }
 function openRules(){
-  openSheet(head("定休日・開始日・深夜割増", true) + `<label class="fld"><span>記録を始めた日</span><input type="date" id="rSt" value="${D.meta.start}" min="${MIN_ISO}"></label>
+  openSheet(head("定休日・開始日", true) + `<label class="fld"><span>記録を始めた日</span><input type="date" id="rSt" value="${D.meta.start}" min="${MIN_ISO}"></label>
     <p class="hint2">この日より前は「売上の未入力」のお知らせを出しません。</p><div class="fld"><span>定休日（毎週）</span><div class="opts" id="rW">${[...WD].map((c, i) => `<button type="button" data-v="${i}" aria-pressed="${D.closedWd.includes(i)}">${c}</button>`).join("")}</div></div>
     <p class="hint2">定休日は自動で「休み（0円）」として扱い、未入力のお知らせを出しません。臨時休業の日は、カレンダーから「この日は休み」を記録できます。</p>
-    <label class="fld"><span>深夜割増（22時〜翌5時・%）</span><input id="rN" inputmode="numeric" value="${D.rules.night}"></label>
-    <p class="hint2">法律で決められた深夜割増は25%以上です。変更すると、これまでの勤務記録の深夜割増も計算し直されます。</p>
     <button class="btn" id="rSave">保存する</button>`, () => {
     wire(back2set);
     $("rW").querySelectorAll("button").forEach(b => b.onclick = () => { b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true")); dirty = true; });
-    $("rSave").onclick = () => { const w = [...$("rW").querySelectorAll('[aria-pressed="true"]')].map(b => +b.dataset.v), nr = Math.max(0, Math.min(100, numOf($("rN").value)));
+    $("rSave").onclick = () => { const w = [...$("rW").querySelectorAll('[aria-pressed="true"]')].map(b => +b.dataset.v);
       const sv = $("rSt").value, sOk = /^\d{4}-\d{2}-\d{2}$/.test(sv) && sv >= MIN_ISO;
-      const undo = mutate(() => { D.closedWd = w; D.rules.night = nr; if (sOk) D.meta.start = sv; }); renderAll(false); openSettings(); toast("保存しました", undo); };
+      const undo = mutate(() => { D.closedWd = w; if (sOk) D.meta.start = sv; }); renderAll(false); openSettings(); toast("保存しました", undo); };
   }, true);
 }
 
@@ -1834,7 +1829,7 @@ function openCsv(){
     $("cGo").onclick = () => { const p = pickVal("cP"), pre = p === "m" ? key(cur.y, cur.m) : p === "y" ? String(cur.y) : "", q = v => `"${String(v ?? "").replace(/"/g, '""')}"`, rows = [];
       D.sales.filter(r => r.date.startsWith(pre)).forEach(r => rows.push([r.date, "売上", storeName(r.store), "売上", r.amount, r.guests || "", r.memo || ""]));
       D.exps.filter(r => r.date.startsWith(pre)).forEach(r => rows.push([r.date, "経費", storeName(r.store), r.cat, r.amount, "", r.memo || ""]));
-      D.shifts.filter(r => r.date.startsWith(pre)).forEach(r => { const c = shiftCalc(r); rows.push([r.date, "人件費（勤務）", storeName(r.store), staffName(r.staff), c.pay, "", `${r.start}-${r.end} 休憩${r.brk}分 ${hm(c.total)} 基本${c.base} 深夜${c.nightPay} 交通費${c.transit}`]); });
+      D.shifts.filter(r => r.date.startsWith(pre)).forEach(r => { const c = shiftCalc(r); rows.push([r.date, "人件費（勤務）", storeName(r.store), staffName(r.staff), c.pay, "", `${r.start}-${r.end} ${hm(c.total)} 基本${c.base} 交通費${c.transit}`]); });
       D.pays.filter(r => r.date.startsWith(pre)).forEach(r => rows.push([r.date, r.kind === "bonus" ? "人件費（歩合）" : "人件費（金額）", storeName(r.store), staffName(r.staff), r.amount, "", r.memo || ""]));
       rows.sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0);
       const csv = "﻿" + [["日付", "種類", "店舗", "項目", "金額", "客数", "メモ"], ...rows].map(r => r.map(q).join(",")).join("\r\n");
@@ -1982,7 +1977,7 @@ function openOnboarding(){
     let h = "";
     if (st.step === 0) h = `<h2>ようこそ、VAULTへ</h2><p class="lead">売上・経費・人件費をまとめて記録して、毎月の利益がひと目で分かるアプリです。最初に、お店のことを少しだけ教えてください（1分ほどで終わります）。</p>
       <div class="feat"><div>${ICON("bars", "", "color:var(--ice)")}<span><b>売上と利益がすぐ分かる</b>売上 − 経費 − 人件費 ＝ 利益を自動で計算します</span></div>
-      <div>${ICON("clock", "", "color:var(--lab)")}<span><b>勤務時間から給与を計算</b>深夜割増・交通費・歩合にも対応しています</span></div>
+      <div>${ICON("clock", "", "color:var(--lab)")}<span><b>勤務時間から給与を計算</b>交通費・歩合にも対応しています</span></div>
       <div>${ICON("lock", "", "color:var(--gold)")}<span><b>データはこのiPhoneの中だけ</b>外部のサーバーには送りません</span></div></div>
       ${nav(0, "はじめる")}<button type="button" class="btn ghost2" id="obR" style="margin-top:10px">バックアップから戻す（機種変更など）</button>`;
     else if (st.step === 1) h = `<h2>お店の名前と業種</h2><p class="lead">業種に合わせて、ホームに出す指標を選びます。あとから設定で変えられます。</p>
@@ -2001,7 +1996,7 @@ function openOnboarding(){
       <div class="stl">${st.staff.map((s, i) => `<div class="srow"><span>${esc(s.name)}<small style="display:block;color:var(--muted);font-size:11.5px">時給 ${yenT(s.wage)}</small></span><button type="button" class="tg dl" data-x="${i}">外す</button></div>`).join("")}</div>
       <div class="row2"><label class="fld"><span>名前</span><input type="text" id="obSn" maxlength="20" placeholder="例：山田"></label><label class="fld"><span>時給（円）</span><div class="money"><input id="obSw" inputmode="numeric" placeholder="1,100"></div></label></div>
       <button type="button" class="btn ghost2" id="obSF">＋ このスタッフを追加</button><p class="err" hidden></p>
-      <p class="note">交通費・深夜割増の有無は、あとで設定の「スタッフ」から変えられます。</p>${nav()}`;
+      <p class="note">交通費は、あとで設定の「スタッフ」から入れられます。</p>${nav()}`;
     else h = `<h2>準備ができました</h2><p class="lead">使い始める前に、大切なことが2つあります。</p>
       <div class="feat"><div>${ICON("addHome", "", "color:var(--gold)")}<span><b>ホーム画面に追加してください</b>Safariの共有ボタン（四角から矢印）→「ホーム画面に追加」。追加しないまま長く開かないと、iPhoneがデータを消すことがあります。</span></div>
       <div>${ICON("download", "", "color:var(--ice)")}<span><b>ときどきバックアップを保存</b>設定 →「バックアップを保存」。機種変更や故障のときに、そのファイルからデータを戻せます。2週間ごとにホームでお知らせします。</span></div></div>
