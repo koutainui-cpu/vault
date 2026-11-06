@@ -869,6 +869,8 @@ body.dialon .dock{background:rgba(10,11,13,.5)!important}
 
 body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index:95}
 
+
+.storebar.pst{margin:-2px 0 12px}
 </style>
 </head>
 <body>
@@ -973,7 +975,7 @@ body.obon .scrim{z-index:90}body.obon .sheet{z-index:91}body.obon .toast{z-index
    ===================================================================== */
 const $ = id => document.getElementById(id);
 document.documentElement.lang = "ja";
-const APP_VER = "1.3.0";
+const APP_VER = "1.3.1";
 const KEY = "vault-data-v1", UIKEY = "vault-ui-v1";
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const pad2 = n => String(n).padStart(2, "0");
@@ -1613,8 +1615,11 @@ function openWage(){
 function setTab(i){ document.querySelectorAll(".tab").forEach(t => { const on = +t.dataset.t === i; t.classList.toggle("on", on); on ? t.setAttribute("aria-current", "page") : t.removeAttribute("aria-current"); }); }
 function openPage(i){ if (i === 1) openCal(); else if (i === 3) openList("all"); else if (i === 4) openPay(); }
 const chev = ICON("chevR", "chev");
-const monthNav = (fn) => `<div class="pmon"><button type="button" data-mv="-1" aria-label="前の月" ${key(cur.y, cur.m) <= firstKey() ? "disabled" : ""}>‹</button><b>${cur.y}年${cur.m}月</b><button type="button" data-mv="1" aria-label="次の月" ${isCur(cur.y, cur.m) ? "disabled" : ""}>›</button></div>`;
-function bindMonthNav(fn){ $("shBody").querySelectorAll("[data-mv]").forEach(b => b.onclick = () => { let { y, m } = cur; m += +b.dataset.mv; if (m < 1) { m = 12; y--; } if (m > 12) { m = 1; y++; } if (key(y, m) > key(TODAY.y, TODAY.m) || key(y, m) < firstKey()) return; cur = { y, m }; sel = null; renderAll(false); fn(); }); }
+const monthNav = (fn) => `<div class="pmon"><button type="button" data-mv="-1" aria-label="前の月" ${key(cur.y, cur.m) <= firstKey() ? "disabled" : ""}>‹</button><b>${cur.y}年${cur.m}月</b><button type="button" data-mv="1" aria-label="次の月" ${isCur(cur.y, cur.m) ? "disabled" : ""}>›</button></div>${storeChips()}`;
+// 店舗が2つ以上あるときは、カレンダー・明細・給与の画面でも店舗を切り替えられる
+const storeChips = () => D.stores.length < 2 ? "" : `<div class="storebar pst" role="group" aria-label="店舗の切り替え">${[["all", "全店舗"], ...D.stores.map(x => [x.id, x.name])].map(([id, nm]) => `<button type="button" data-ps="${esc(id)}" aria-pressed="${STORE === id}">${esc(nm)}</button>`).join("")}</div>`;
+function bindMonthNav(fn){ $("shBody").querySelectorAll("[data-mv]").forEach(b => b.onclick = () => { let { y, m } = cur; m += +b.dataset.mv; if (m < 1) { m = 12; y--; } if (m > 12) { m = 1; y++; } if (key(y, m) > key(TODAY.y, TODAY.m) || key(y, m) < firstKey()) return; cur = { y, m }; sel = null; renderAll(false); fn(); });
+  $("shBody").querySelectorAll("[data-ps]").forEach(b => b.onclick = () => { if (STORE === b.dataset.ps) return; STORE = b.dataset.ps; UI.store = STORE; saveUI(); sel = null; renderAll(false); fn(); }); }
 
 function openCal(selD){
   const y = cur.y, m = cur.m, n = dim(y, m), first = new Date(y, m - 1, 1).getDay(), now = isCur(y, m), T = curTot();
